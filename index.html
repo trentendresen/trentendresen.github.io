@@ -4,262 +4,346 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<title>F's for kamala Press Box</title>
+<title>F's for Kamala Press Box</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Public+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
 <style>
-/* Layout: a stadium-scoreboard masthead over a clean report: stories, standings with weekly score strips, a luck chart, and the five Week 7 matchups. */
+/* Layout: the masthead is a painted gridiron (the one loud element). Below it, a quiet weekly program:
+   lead story with a scoreboard, a two-column story run, standings, luck chart, Week 7 slate, league notes. */
 :root {
-  --bg: #f3f5ef;
+  --bg: #f4f2f7;
   --surface: #ffffff;
-  --fg: #14211b;
-  --muted: #55665c;
-  --line: #d3dbd0;
-  --turf: #1d5a3f;
-  --turf-deep: #14402d;
-  --chalk: #f3f5ef;
-  --flag: #f2c230;
-  --flag-ink: #2a2200;
-  --alt: #3c5c8e;
-  --lucky: #b9770e;
-  --unlucky: #2f6fb0;
-  --good: #1d7a4e;
-  --bad: #b83a2a;
-  --display: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
-  --body: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --fg: #1c1526;
+  --muted: #5f566b;
+  --line: #ddd6e6;
+  --turf: #7851a9;
+  --turf-a: #3b2759;
+  --turf-b: #33214e;
+  --turf-deep: #211630;
+  --chalk: #f6f3fa;
+  --flag: #c7aef0;
+  --flag-ink: #24153b;
+  --alt: #9fd8c9;
+  --lucky: #c2577a;
+  --unlucky: #3f7cc0;
+  --good: #2a7d57;
+  --bad: #b83a3a;
+  --display: "Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --body: "Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0e1913;
-    --surface: #15261d;
-    --fg: #e8efe9;
-    --muted: #9bafa3;
-    --line: #28402f;
-    --turf: #49a57a;
-    --turf-deep: #0b1f16;
-    --chalk: #e8efe9;
-    --flag: #f2c230;
-    --flag-ink: #2a2200;
-    --alt: #86a9dd;
-    --lucky: #e2a53a;
-    --unlucky: #6ea8e6;
-    --good: #55c18a;
+    --bg: #130e1b;
+    --surface: #1c1527;
+    --fg: #ece7f3;
+    --muted: #a99fb8;
+    --line: #322743;
+    --turf: #b293dc;
+    --turf-a: #33214e;
+    --turf-b: #2c1c44;
+    --turf-deep: #160f22;
+    --alt: #2f6f62;
+    --lucky: #e48aa8;
+    --unlucky: #7fb2ea;
+    --good: #5fc495;
     --bad: #ee7d6c;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #0e1913;
-  --surface: #15261d;
-  --fg: #e8efe9;
-  --muted: #9bafa3;
-  --line: #28402f;
-  --turf: #49a57a;
-  --turf-deep: #0b1f16;
-  --chalk: #e8efe9;
-  --flag: #f2c230;
-  --flag-ink: #2a2200;
-  --alt: #86a9dd;
-  --lucky: #e2a53a;
-  --unlucky: #6ea8e6;
-  --good: #55c18a;
+  --bg: #130e1b;
+  --surface: #1c1527;
+  --fg: #ece7f3;
+  --muted: #a99fb8;
+  --line: #322743;
+  --turf: #b293dc;
+  --turf-a: #33214e;
+  --turf-b: #2c1c44;
+  --turf-deep: #160f22;
+  --alt: #2f6f62;
+  --lucky: #e48aa8;
+  --unlucky: #7fb2ea;
+  --good: #5fc495;
   --bad: #ee7d6c;
   color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 body {
+  margin: 0;
   background: var(--bg);
   color: var(--fg);
   font-family: var(--body);
-  font-size: 16px;
-  line-height: 1.55;
+  font-size: 17px;
+  line-height: 1.5;
 }
 .wrap {
-  max-width: 1080px;
+  max-width: 1120px;
   margin: 0 auto;
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
 }
-h1, h2, h3 { font-family: var(--display); font-weight: 800; text-wrap: balance; margin: 0; letter-spacing: 0.01em; }
+h1, h2, h3 { font-family: var(--display); font-weight: 700; text-wrap: balance; margin: 0; }
 p { margin: 0; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--flag); outline-offset: 2px; }
 
-/* Masthead */
-.mast {
+/* Palette is built on #7851a9 (--turf). Masthead: a gridiron. Mow bands every 5 yards, chalk yard lines every 10, hash marks top and bottom. */
+.field {
+  position: relative;
+  overflow: hidden;
+  color: var(--chalk);
   background:
-    repeating-linear-gradient(90deg, rgba(255,255,255,0.045) 0 64px, rgba(0,0,0,0) 64px 128px),
-    var(--turf-deep);
-  color: #f3f5ef;
+    repeating-linear-gradient(90deg, rgba(246,243,250,0.55) 0 2px, transparent 2px 10%),
+    repeating-linear-gradient(90deg, var(--turf-a) 0 5%, var(--turf-b) 5% 10%);
+  border-bottom: 8px solid var(--flag);
+}
+.field::before, .field::after {
+  content: "";
+  position: absolute; left: 0; right: 0; height: 12px;
+  background: repeating-linear-gradient(90deg, rgba(246,243,250,0.5) 0 2px, transparent 2px 2%);
+  pointer-events: none;
+}
+.field::before { top: 18px; }
+.field::after { bottom: 18px; }
+.field .wrap { position: relative; padding-block: 56px 40px; }
+.kicker { font-family: var(--display); font-weight: 700; font-size: 22px; color: var(--flag); letter-spacing: 0.02em; }
+.field h1 {
+  font-size: clamp(48px, 11vw, 132px);
+  font-weight: 700;
+  line-height: 0.86;
+  text-transform: uppercase;
+  letter-spacing: -0.005em;
+  margin-top: 6px;
+  text-shadow: 0.035em 0.035em 0 var(--turf-deep);
+}
+.field .sub { margin-top: 20px; max-width: 54ch; font-size: 18px; color: #ddd3ea; }
+.meta {
+  margin: 28px 0 0; padding: 0;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px 24px;
+  max-width: 820px;
+}
+.meta div { border-left: 3px solid var(--flag); padding-left: 10px; }
+.meta dt { font-size: 13px; color: #bdb0d0; }
+.meta dd { margin: 0; font-weight: 600; font-size: 15px; line-height: 1.3; }
+.yards {
+  position: relative;
+  /* 9 columns inset 5% each side, so each number centers on a 10% yard line */
+  display: grid; grid-template-columns: repeat(9, 1fr); text-align: center;
+  padding: 0 5% 34px;
+  font-family: var(--display); font-weight: 700; font-size: clamp(16px, 3vw, 30px);
+  color: rgba(246,243,250,0.35);
+}
+
+/* Section nav */
+.nav { position: sticky; top: 0; z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); }
+.nav ul { list-style: none; margin: 0 auto; display: flex; gap: 4px 22px; overflow-x: auto; scrollbar-width: none; }
+.nav a { display: block; padding: 12px 0; text-decoration: none; font-weight: 600; font-size: 15px; white-space: nowrap; color: var(--muted); }
+.nav a:hover { color: var(--fg); }
+.nav a[aria-current] { color: var(--fg); box-shadow: inset 0 -3px 0 var(--turf); }
+
+main .wrap { padding-block: 8px 64px; }
+section { padding-top: 56px; scroll-margin-top: 48px; }
+.sec-head { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 4px 16px; margin-bottom: 22px; border-bottom: 3px solid var(--fg); padding-bottom: 8px; }
+.sec-head h2 { font-size: clamp(28px, 5vw, 44px); line-height: 0.95; text-transform: uppercase; }
+.sec-head .note { font-size: 14px; color: var(--muted); }
+.cat { font-weight: 700; font-size: 14px; color: var(--turf); }
+
+/* Stories: one lead with a scoreboard, then a balanced two-column run */
+.lead { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 28px; align-items: center; padding-bottom: 28px; border-bottom: 1px solid var(--line); }
+.board {
+  background: var(--turf-deep); color: var(--chalk);
+  padding: 22px 24px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: end; gap: 12px;
   border-bottom: 6px solid var(--flag);
 }
-.mast .wrap { padding-block: 40px 30px; }
-.kicker {
-  font-size: 13px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
-  color: var(--flag);
-}
-.mast h1 { font-size: clamp(46px, 11vw, 92px); line-height: 0.92; margin-top: 10px; text-transform: uppercase; }
-.mast .sub { margin-top: 14px; max-width: 60ch; color: #cfdcd2; font-size: 16px; }
-.mast .meta { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 13px; color: #b5c6ba; }
-.mast .meta b { color: #f3f5ef; font-weight: 600; }
-
-main .wrap { padding-block: 8px 56px; }
-section { padding-top: 44px; }
-.sec-head { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 4px 16px; margin-bottom: 18px; border-bottom: 2px solid var(--fg); padding-bottom: 8px; }
-.sec-head h2 { font-size: clamp(28px, 5vw, 40px); text-transform: uppercase; }
-.sec-head .note { font-size: 13px; color: var(--muted); }
-
-/* Stories */
-.stories { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 16px; }
-.story { background: var(--surface); border: 1px solid var(--line); padding: 18px 18px 20px; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
-.tag {
-  align-self: flex-start;
-  font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
-  background: var(--flag); color: var(--flag-ink); padding: 3px 8px;
-}
-.story h3 { font-size: 27px; line-height: 1.02; }
-.story p { color: var(--muted); font-size: 15px; }
-.story p b { color: var(--fg); font-weight: 600; }
+.board .team { display: block; margin-top: 6px; font-size: 14px; font-weight: 500; color: #ffffff; line-height: 1.25; }
+.board .pts { display: block; font-family: var(--display); font-weight: 700; font-size: clamp(32px, 8vw, 64px); line-height: 0.95; font-variant-numeric: tabular-nums; color: #ffffff; }
+.board .lose .pts, .board .lose .team { color: #b9acd0; }
+.board .r { text-align: right; }
+.board .dash { align-self: center; font-family: var(--display); font-size: 32px; color: #8a7ba3; }
+.lead h3 { font-size: clamp(26px, 3.4vw, 36px); line-height: 1; margin: 6px 0 12px; }
+.lead p:last-child { color: var(--muted); max-width: 60ch; }
+.story-run { columns: 2 340px; column-gap: 40px; margin-top: 4px; }
+.story { break-inside: avoid; padding: 22px 0; border-bottom: 1px solid var(--line); }
+.story h3 { font-size: 23px; line-height: 1.04; margin: 4px 0 8px; }
+.story p:last-child { color: var(--muted); font-size: 16px; }
+.story b, .lead b { color: var(--fg); font-weight: 600; }
 
 /* Standings */
 .tablewrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); }
 table { border-collapse: collapse; width: 100%; min-width: 720px; font-variant-numeric: tabular-nums; }
-th, td { padding: 10px 12px; text-align: left; font-size: 14px; white-space: nowrap; }
-th { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 700; border-bottom: 2px solid var(--fg); }
+th, td { padding: 11px 14px; text-align: left; font-size: 15px; white-space: nowrap; }
+th { font-size: 13px; color: var(--muted); font-weight: 600; border-bottom: 2px solid var(--fg); }
 td { border-bottom: 1px solid var(--line); }
 td.num, th.num { text-align: right; }
-td.rank { color: var(--muted); width: 32px; }
-td.team { font-weight: 600; }
-td.team small { display: block; font-weight: 400; color: var(--muted); font-size: 12px; }
-tr.cut td { border-bottom: 2px dashed var(--turf); }
-tr.cut-label td { padding: 4px 12px; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--turf); font-weight: 700; background: transparent; border-bottom: 1px solid var(--line); }
-.streak-W { color: var(--good); font-weight: 600; }
-.streak-L { color: var(--bad); font-weight: 600; }
+td.rank { font-family: var(--display); font-weight: 700; font-size: 20px; color: var(--muted); width: 40px; }
+tbody tr:nth-child(-n+6) td.rank { color: var(--turf); }
+td.team { font-weight: 700; }
+td.team small { display: block; font-weight: 400; color: var(--muted); font-size: 13px; }
+tr.cut td { border-bottom: 0; }
+tr.cut-label td { padding: 5px 14px; font-size: 13px; color: var(--flag-ink); font-weight: 700; background: var(--flag); border-bottom: 0; }
+.streak-W { color: var(--good); font-weight: 700; }
+.streak-L { color: var(--bad); font-weight: 700; }
 .spark { display: block; color: var(--turf); }
 .spark .base { stroke: var(--line); }
 .spark .end { fill: var(--flag); stroke: var(--turf-deep); stroke-width: 1; }
-.legend-line { margin-top: 10px; font-size: 13px; color: var(--muted); }
+.legend-line { margin-top: 12px; font-size: 14px; color: var(--muted); max-width: 80ch; }
 
 /* Luck chart */
-.chartwrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); padding: 14px 8px 6px; }
+.chartwrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); padding: 16px 8px 6px; }
 .chartwrap svg { display: block; min-width: 640px; width: 100%; height: auto; }
-.chart-intro { color: var(--muted); font-size: 15px; max-width: 70ch; margin-bottom: 14px; }
-.c-label { fill: var(--fg); font: 600 12.5px var(--body); }
-.c-val { fill: var(--muted); font: 500 12px var(--body); }
-.c-tick { fill: var(--muted); font: 500 11px var(--body); }
+.chart-intro { color: var(--muted); max-width: 66ch; margin-bottom: 16px; }
+.c-label { fill: var(--fg); font: 600 13px var(--body); }
+.c-val { fill: var(--muted); font: 500 12.5px var(--body); }
+.c-tick { fill: var(--muted); font: 500 11.5px var(--body); }
 .c-grid { stroke: var(--line); stroke-width: 1; }
 .c-act { stroke: var(--fg); stroke-width: 1.5; }
 .c-exp { fill: var(--surface); stroke-width: 2; }
-.key { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13px; color: var(--muted); margin: 10px 4px 6px; }
+.key { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 14px; color: var(--muted); margin: 10px 4px 6px; }
 .key span { display: inline-flex; align-items: center; gap: 6px; }
 .dot-act, .dot-exp { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
 .dot-act { background: var(--fg); }
 .dot-exp { border: 2px solid var(--muted); }
 
-/* Matchups */
-.matches { display: grid; gap: 16px; }
-.match { background: var(--surface); border: 1px solid var(--line); padding: 18px; min-width: 0; }
-.match .mtag { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
-.match h3 { font-size: 26px; line-height: 1.05; margin: 6px 0 14px; max-width: 34ch; }
-.vs { display: grid; grid-template-columns: 1fr auto 1fr; gap: 14px; align-items: start; }
-.side { min-width: 0; }
+/* Week 7 slate */
+.match { padding: 24px 0; border-bottom: 1px solid var(--line); }
+.match:first-child { padding-top: 0; }
+.match h3 { font-size: clamp(22px, 3vw, 28px); line-height: 1.04; margin-bottom: 16px; max-width: 30ch; }
+.vs { display: grid; grid-template-columns: minmax(0, 1fr) minmax(140px, 260px) minmax(0, 1fr); gap: 20px; align-items: center; }
 .side.r { text-align: right; }
-.side .tn { font-family: var(--display); font-weight: 800; font-size: 26px; line-height: 1.05; overflow-wrap: anywhere; }
-.side .mg { font-size: 13px; color: var(--muted); }
-.side .rec { margin-top: 6px; font-size: 14px; font-variant-numeric: tabular-nums; }
-.side .rec b { font-weight: 700; }
-.vs .at { font-family: var(--display); font-weight: 800; font-size: 20px; color: var(--muted); padding-top: 4px; }
-.bar { display: flex; height: 10px; margin-top: 14px; background: var(--line); }
+.side .tn { font-family: var(--display); font-weight: 700; font-size: clamp(20px, 2.6vw, 26px); line-height: 1.1; overflow-wrap: anywhere; }
+.side .mg { margin-top: 4px; font-size: 14px; color: var(--muted); }
+.side .rec { font-weight: 700; font-variant-numeric: tabular-nums; }
+.fav .tn { box-shadow: inset 0 -0.14em 0 var(--turf); display: inline; }
+.meter { min-width: 0; }
+.bar { display: flex; gap: 3px; height: 14px; }
 .bar i { display: block; height: 100%; }
 .bar .a { background: var(--turf); }
 .bar .b { background: var(--alt); }
-.bar-note { display: flex; justify-content: space-between; gap: 12px; font-size: 12px; color: var(--muted); margin-top: 6px; font-variant-numeric: tabular-nums; }
-.edge { margin-top: 12px; font-size: 14px; color: var(--muted); }
-.edge b { color: var(--fg); font-weight: 600; }
-.flagnote { margin-top: 10px; font-size: 13px; background: color-mix(in srgb, var(--flag) 22%, var(--surface)); border-left: 4px solid var(--flag); padding: 8px 10px; color: var(--fg); }
+.bar-note { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); margin-top: 6px; font-variant-numeric: tabular-nums; }
+.bar-note span:nth-child(2) { text-align: center; }
+.bar-note span:first-child, .bar-note span:last-child { color: var(--fg); font-weight: 700; font-size: 15px; }
+.odds { min-width: 0; margin-top: 18px; background: var(--surface); border: 1px solid var(--line); max-width: 720px; }
+.odds th, .odds td { padding: 8px 12px; font-size: 15px; }
+.odds th { font-size: 13px; }
+.odds td.team { white-space: normal; overflow-wrap: anywhere; font-weight: 600; }
+.odds tbody td.num { font-weight: 700; }
+.odds tfoot td { border-bottom: 0; background: color-mix(in srgb, var(--flag) 24%, var(--surface)); font-size: 14px; }
+.odds tfoot b { font-weight: 700; }
+.edge { margin-top: 14px; color: var(--muted); max-width: 72ch; }
+.edge b { color: var(--fg); font-weight: 700; }
+.flagnote { margin-top: 10px; max-width: 72ch; font-size: 15px; background: color-mix(in srgb, var(--flag) 24%, var(--surface)); border-left: 5px solid var(--flag); padding: 9px 12px; color: var(--fg); }
 
-/* Notes */
-.notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
-.note-card { background: var(--surface); border: 1px solid var(--line); padding: 18px; min-width: 0; }
-.note-card h3 { font-size: 24px; text-transform: uppercase; margin-bottom: 10px; }
-.note-card ul { margin: 0; padding-left: 18px; display: grid; gap: 8px; color: var(--muted); font-size: 15px; }
+/* League notes */
+.notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 8px 40px; }
+.note-card { padding: 16px 0 8px; border-top: 1px solid var(--line); }
+.note-card h3 { font-size: 24px; margin-bottom: 10px; }
+.note-card ul { margin: 0; padding-left: 18px; display: grid; gap: 9px; color: var(--muted); font-size: 16px; }
+.note-card li::marker { color: var(--turf); }
 .note-card li b { color: var(--fg); font-weight: 600; }
 
-footer .wrap { padding-block: 0 48px; font-size: 13px; color: var(--muted); display: grid; gap: 6px; max-width: 1080px; }
-footer .rule { border-top: 1px solid var(--line); padding-top: 16px; }
+footer { background: var(--turf-deep); color: #bdb0d0; border-top: 6px solid var(--flag); }
+footer .wrap { padding-block: 28px 40px; font-size: 14px; display: grid; gap: 8px; }
+footer .wrap > * { max-width: 80ch; }
 
-@media (max-width: 560px) {
-  .vs { grid-template-columns: 1fr; gap: 8px; }
-  .side.r { text-align: left; }
-  .vs .at { padding-top: 0; }
-  .mast .wrap { padding-block: 30px 24px; }
-  section { padding-top: 34px; }
+@media (max-width: 760px) {
+  .lead { grid-template-columns: 1fr; gap: 20px; }
 }
-@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
-a:focus-visible, .tablewrap:focus-visible, .chartwrap:focus-visible { outline: 3px solid var(--flag); outline-offset: 2px; }
-html { -webkit-text-size-adjust: 100%; }
-body { margin: 0; }
+@media (max-width: 560px) {
+  .field .wrap { padding-block: 44px 28px; }
+  .yards span:nth-child(even) { visibility: hidden; }
+  section { padding-top: 44px; }
+  .vs { grid-template-columns: 1fr 1fr; grid-template-areas: "a b" "m m"; gap: 14px 16px; }
+  .vs .side:first-child { grid-area: a; }
+  .vs .side.r { grid-area: b; }
+  .vs .meter { grid-area: m; }
+  .board { padding: 18px 14px; gap: 8px; }
+  .odds th, .odds td { padding: 7px 6px; font-size: 14px; }
+  .odds th { font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 </style>
 </head>
 <body>
 
-
-<header class="mast">
+<header class="field">
   <div class="wrap">
-    <div class="kicker">Week 7 Press Box</div>
-    <h1>F's for kamala</h1>
-    <p class="sub">Headlines, standings and matchup previews for a 10-team league that started this season. Nothing earlier exists to look back on, so the history here is Weeks 1 through 6.</p>
-    <div class="meta">
-      <span><b>Data through</b> Week 6 and Wednesday's waiver run</span>
-      <span><b>Posted</b> Wed, Oct 21, 2026</span>
-      <span><b>Playoffs</b> 6 teams, start Week 15</span>
-      <span><b>Trade deadline</b> Week 11</span>
-    </div>
+    <p class="kicker">Week 7 press box</p>
+    <h1>F's for Kamala</h1>
+    <p class="sub">Headlines, standings and matchup previews for F's for Kamala.</p>
+    <dl class="meta">
+      <div><dt>Data through</dt><dd>Week 6 and Wednesday's waiver run</dd></div>
+      <div><dt>Posted</dt><dd>Wed, Oct 21, 2026</dd></div>
+      <div><dt>Playoffs</dt><dd>6 teams, start Week 15</dd></div>
+      <div><dt>Trade deadline</dt><dd>Week 11</dd></div>
+    </dl>
   </div>
+  <div class="yards" aria-hidden="true"><span>10</span><span>20</span><span>30</span><span>40</span><span>50</span><span>40</span><span>30</span><span>20</span><span>10</span></div>
 </header>
+
+<nav class="nav" aria-label="Sections">
+  <ul class="wrap">
+    <li><a href="#stories">Headlines</a></li>
+    <li><a href="#standings">Standings</a></li>
+    <li><a href="#luck">Luck check</a></li>
+    <li><a href="#week7">Week 7</a></li>
+    <li><a href="#around">Around the league</a></li>
+  </ul>
+</nav>
 
 <main>
 <div class="wrap">
 
 <section id="stories">
   <div class="sec-head"><h2>Last week's headlines</h2><span class="note">Week 6 results</span></div>
-  <div class="stories">
-    <article class="story">
-      <span class="tag">Top score</span>
+
+  <article class="lead">
+    <div class="board" role="img" aria-label="Blueeeeyyyyyy bomb squad 150.36, Kiffin's Kittens 144.18">
+      <div><span class="pts">150.36</span><span class="team">Bomb Squad</span></div>
+      <div class="dash">–</div>
+      <div class="r lose"><span class="pts">144.18</span><span class="team">Kiffin's Kittens</span></div>
+    </div>
+    <div>
+      <p class="cat">Top score</p>
       <h3>Bomb Squad posts the week's high score, and the Nabers trade looks like a heist</h3>
       <p>Blueeeeyyyyyy bomb squad scored <b>150.36</b> and edged Kiffin's Kittens 144.18. Malik Nabers had <b>28.5</b>. The player sent out for him, Omarion Hampton, scored 7.9 on kcnotbuns's bench the same week.</p>
-    </article>
+    </div>
+  </article>
+
+  <div class="story-run">
     <article class="story">
-      <span class="tag">Bench watch</span>
+      <p class="cat">Bench watch</p>
       <h3>Kittens lose by 6 with 27 points sitting on the bench</h3>
       <p>Kiffin's Kittens fell by <b>6.18</b> while one bench player (ID 12545, name unresolved) scored <b>26.96</b>. If he was flex-eligible, swapping him for the 10.1-point flex would have flipped the game.</p>
     </article>
     <article class="story">
-      <span class="tag">Bench watch</span>
+      <p class="cat">Bench watch</p>
       <h3>Bijana starts a 0.0 tight end, loses by 4.7, and benches an 18.5</h3>
       <p>Picken Good Bijana lost 126.6 to 121.9. Colston Loveland scored <b>18.5</b> on the bench while the starting tight end scored 0.0. Loveland is in the Week 7 lineup.</p>
     </article>
     <article class="story">
-      <span class="tag">Rock bottom</span>
+      <p class="cat">Rock bottom</p>
       <h3>Make Bama Great Again! posts the season's lowest score, 56.62</h3>
       <p>Lamar Jackson scored 0.0, while Stefon Diggs (<b>16.4</b>) and kicker Jason Myers (<b>7.0</b>) sat on the bench. Overnight, TTLEE25 fired off seven waiver claims in about two minutes, and four bounced because the roster was full.</p>
     </article>
     <article class="story">
-      <span class="tag">Luck check</span>
+      <p class="cat">Luck check</p>
       <h3>Club Space is 4-2 on a very soft schedule</h3>
       <p>They own the <b>7th-most points</b> in the league, and opponents have scored a league-low 630.8 against them. Week 6's win came with 103.2, the lowest winning score of the week. Scored against everyone each week, they'd have about 2.1 wins.</p>
     </article>
     <article class="story">
-      <span class="tag">Still winless</span>
+      <p class="cat">Still winless</p>
       <h3>Azzfaulters are 0-6 and should have about two wins</h3>
       <p>They rank 8th of 10 in points scored, so the record is worse than the scoring. A 147.22 in Week 4 lost by <b>4.38</b>, and a 129.98 in Week 2 lost to a 144.80. They hold first waiver priority.</p>
     </article>
     <article class="story">
-      <span class="tag">Offense</span>
+      <p class="cat">Offense</p>
       <h3>Hanginwithhernandez has the league's best offense and a two-game skid</h3>
       <p>Highest points for (<b>924.2</b>, 154.0 per game), but losses in Weeks 5 and 6. The 165.54 in Week 5 would have beaten seven of the nine other teams that week. Only JoshisAntifa's 210.64 and Bijana's 172.86 were higher.</p>
     </article>
     <article class="story">
-      <span class="tag">Record watch</span>
+      <p class="cat">Record watch</p>
       <h3>JoshisAntifa's 210.64 is the score to beat</h3>
       <p>The season high came in Week 5 and kicked off a four-game win streak that has them 5-1. In Week 6, Trevor Lawrence added 27.3 and Isaiah Likely added 23.9.</p>
     </article>
@@ -283,7 +367,7 @@ body { margin: 0; }
 
 <section id="luck">
   <div class="sec-head"><h2>Luck check</h2><span class="note">Actual wins vs expected wins</span></div>
-  <p class="chart-intro">A filled dot is the record. A hollow dot is what the scoring says the record should be. Amber means the team has won more than its scores earned, blue means fewer.</p>
+  <p class="chart-intro">A filled dot is the record. A hollow dot is what the scoring says the record should be. Rose means the team has won more than its scores earned, blue means fewer.</p>
   <div class="chartwrap" tabindex="0" role="region" aria-label="Actual wins versus expected wins by team">
     <svg id="luck-chart" viewBox="0 0 720 420" role="img" aria-label="Dumbbell chart of actual wins and expected wins for each team"></svg>
   </div>
@@ -294,72 +378,58 @@ body { margin: 0; }
 </section>
 
 <section id="week7">
-  <div class="sec-head"><h2>Week 7 matchups</h2><span class="note">Edges use points per game only, no projections</span></div>
+  <div class="sec-head"><h2>Week 7 matchups</h2><span class="note">Favorite is underlined</span></div>
+  <p class="chart-intro">House lines, not from a sportsbook. Each team is projected at its season points per game, and the spread, moneyline and totals come from that plus how much each team's score has swung week to week. No vig.</p>
   <div class="matches">
 
-    <article class="match">
-      <div class="mtag">Matchup 1</div>
+    <article class="match" data-a="Blueeeeyyyyyy bomb squad" data-b="Azzfaulters">
       <h3>Winless Azzfaulters get a shot at a playoff-bubble team</h3>
       <div class="vs">
-        <div class="side"><div class="tn">Blueeeeyyyyyy bomb squad</div><div class="mg">trentxsweat</div><div class="rec"><b>3-3</b> · 5th · 140.1 per game</div></div>
-        <div class="at">vs</div>
-        <div class="side r"><div class="tn">Azzfaulters</div><div class="mg">ohmygodfrey2</div><div class="rec"><b>0-6</b> · 10th · 120.3 per game</div></div>
+        <div class="side fav"><div class="tn">Blueeeeyyyyyy bomb squad</div><div class="mg"><span class="rec">3-3</span>, 5th, trentxsweat</div></div>
+        <div class="meter"><div class="bar"><i class="a" style="width:53.8%"></i><i class="b" style="width:46.2%"></i></div><div class="bar-note"><span>140.1</span><span>per game</span><span>120.3</span></div></div>
+        <div class="side r"><div class="tn">Azzfaulters</div><div class="mg"><span class="rec">0-6</span>, 10th, ohmygodfrey2</div></div>
       </div>
-      <div class="bar"><i class="a" style="width:53.8%"></i><i class="b" style="width:46.2%"></i></div>
-      <div class="bar-note"><span>140.1</span><span>120.3</span></div>
       <p class="edge"><b>Edge: Bomb Squad.</b> Bomb Squad swapped KC for DEN at defense this morning. Azzfaulters have first waiver priority.</p>
     </article>
 
-    <article class="match">
-      <div class="mtag">Matchup 2</div>
+    <article class="match" data-a="Beggars" data-b="JoshisAntifa">
       <h3>The six seed meets the one seed</h3>
       <div class="vs">
-        <div class="side"><div class="tn">Beggars</div><div class="mg">jrk3</div><div class="rec"><b>3-3</b> · 6th · 128.0 per game</div></div>
-        <div class="at">vs</div>
-        <div class="side r"><div class="tn">JoshisAntifa</div><div class="mg">snakyjester</div><div class="rec"><b>5-1</b> · 1st · 146.4 per game</div></div>
+        <div class="side"><div class="tn">Beggars</div><div class="mg"><span class="rec">3-3</span>, 6th, jrk3</div></div>
+        <div class="meter"><div class="bar"><i class="a" style="width:46.6%"></i><i class="b" style="width:53.4%"></i></div><div class="bar-note"><span>128.0</span><span>per game</span><span>146.4</span></div></div>
+        <div class="side r fav"><div class="tn">JoshisAntifa</div><div class="mg"><span class="rec">5-1</span>, 1st, snakyjester</div></div>
       </div>
-      <div class="bar"><i class="a" style="width:46.6%"></i><i class="b" style="width:53.4%"></i></div>
-      <div class="bar-note"><span>128.0</span><span>146.4</span></div>
       <p class="edge"><b>Edge: JoshisAntifa.</b> Beggars have the third-highest week of the season, a 180.98 in Week 4, but also an 86.26 and a 93.42.</p>
     </article>
 
-    <article class="match">
-      <div class="mtag">Matchup 3</div>
+    <article class="match" data-a="kcnotbuns" data-b="Kiffin&#39;s Kittens">
       <h3>A bubble team faces the league's best point differential</h3>
       <div class="vs">
-        <div class="side"><div class="tn">kcnotbuns</div><div class="mg">kcnotbuns</div><div class="rec"><b>3-3</b> · 7th · 119.3 per game</div></div>
-        <div class="at">vs</div>
-        <div class="side r"><div class="tn">Kiffin's Kittens</div><div class="mg">stpederson</div><div class="rec"><b>4-2</b> · 3rd · 153.4 per game</div></div>
+        <div class="side"><div class="tn">kcnotbuns</div><div class="mg"><span class="rec">3-3</span>, 7th, kcnotbuns</div></div>
+        <div class="meter"><div class="bar"><i class="a" style="width:43.8%"></i><i class="b" style="width:56.2%"></i></div><div class="bar-note"><span>119.3</span><span>per game</span><span>153.4</span></div></div>
+        <div class="side r fav"><div class="tn">Kiffin's Kittens</div><div class="mg"><span class="rec">4-2</span>, 3rd, stpederson</div></div>
       </div>
-      <div class="bar"><i class="a" style="width:43.8%"></i><i class="b" style="width:56.2%"></i></div>
-      <div class="bar-note"><span>119.3</span><span>153.4</span></div>
       <p class="edge"><b>Edge: Kittens.</b> The Kittens are +150 in points for versus against, kcnotbuns is -126. kcnotbuns changed quarterbacks this morning, dropping Jayden Daniels, who scored 21.0 last week.</p>
     </article>
 
-    <article class="match">
-      <div class="mtag">Matchup 4</div>
+    <article class="match" data-a="Hanginwithhernandez" data-b="Club Space">
       <h3>Best offense vs softest schedule</h3>
       <div class="vs">
-        <div class="side"><div class="tn">Hanginwithhernandez</div><div class="mg">milsted</div><div class="rec"><b>4-2</b> · 2nd · 154.0 per game</div></div>
-        <div class="at">vs</div>
-        <div class="side r"><div class="tn">Club Space</div><div class="mg">Couget25</div><div class="rec"><b>4-2</b> · 4th · 126.7 per game</div></div>
+        <div class="side fav"><div class="tn">Hanginwithhernandez</div><div class="mg"><span class="rec">4-2</span>, 2nd, milsted</div></div>
+        <div class="meter"><div class="bar"><i class="a" style="width:54.9%"></i><i class="b" style="width:45.1%"></i></div><div class="bar-note"><span>154.0</span><span>per game</span><span>126.7</span></div></div>
+        <div class="side r"><div class="tn">Club Space</div><div class="mg"><span class="rec">4-2</span>, 4th, Couget25</div></div>
       </div>
-      <div class="bar"><i class="a" style="width:54.9%"></i><i class="b" style="width:45.1%"></i></div>
-      <div class="bar-note"><span>154.0</span><span>126.7</span></div>
       <p class="edge"><b>Edge: Hanginwithhernandez.</b> They are trying to snap a two-game skid.</p>
       <p class="flagnote">Club Space's lineup showed an empty kicker slot after Cam Little was dropped this morning. Worth a check before Thursday.</p>
     </article>
 
-    <article class="match">
-      <div class="mtag">Matchup 5</div>
+    <article class="match" data-a="Picken Good Bijana" data-b="Make Bama Great Again!">
       <h3>The #2 and #3 overall picks meet at 2-4</h3>
       <div class="vs">
-        <div class="side"><div class="tn">Picken Good Bijana</div><div class="mg">HunnaNe</div><div class="rec"><b>2-4</b> · 8th · 130.8 per game</div></div>
-        <div class="at">vs</div>
-        <div class="side r"><div class="tn">Make Bama Great Again!</div><div class="mg">TTLEE25</div><div class="rec"><b>2-4</b> · 9th · 113.0 per game</div></div>
+        <div class="side fav"><div class="tn">Picken Good Bijana</div><div class="mg"><span class="rec">2-4</span>, 8th, HunnaNe</div></div>
+        <div class="meter"><div class="bar"><i class="a" style="width:53.7%"></i><i class="b" style="width:46.3%"></i></div><div class="bar-note"><span>130.8</span><span>per game</span><span>113.0</span></div></div>
+        <div class="side r"><div class="tn">Make Bama Great Again!</div><div class="mg"><span class="rec">2-4</span>, 9th, TTLEE25</div></div>
       </div>
-      <div class="bar"><i class="a" style="width:53.7%"></i><i class="b" style="width:46.3%"></i></div>
-      <div class="bar-note"><span>130.8</span><span>113.0</span></div>
       <p class="edge"><b>Edge: Picken Good Bijana.</b> Bijan Robinson scored 7.3 last week. Both teams are two games out of the six-team cut.</p>
     </article>
 
@@ -413,8 +483,8 @@ body { margin: 0; }
 
 <footer>
   <div class="wrap">
-    <div class="rule">Built from Sleeper league data through Week 6 plus Wednesday's waiver run. Week 7 has not started, so no scores are final.</div>
-    <div>A few pickups appeared only as player IDs, so they are left unnamed. Claims about bench points assume the benched player was eligible for the slot.</div>
+    <p>Built from Sleeper league data through Week 6 plus Wednesday's waiver run. Week 7 has not started, so no scores are final.</p>
+    <p>A few pickups appeared only as player IDs, so they are left unnamed. Claims about bench points assume the benched player was eligible for the slot.</p>
   </div>
 </footer>
 
@@ -458,7 +528,7 @@ body { margin: 0; }
       '<td class="streak-' + t.st.charAt(0) + '">' + t.st + '</td>' +
       '<td>' + spark(t.s) + '</td>' +
       '<td class="num">' + f1(exp) + '</td></tr>';
-    if (idx === 5) html += '<tr class="cut-label"><td colspan="8">Playoff line · top six advance</td></tr>';
+    if (idx === 5) html += '<tr class="cut-label"><td colspan="8">Playoff line: top six advance</td></tr>';
   }
   body.innerHTML = html;
 
@@ -487,6 +557,66 @@ body { margin: 0; }
     out += '<text class="c-val" x="620" y="' + (cy + 4) + '">' + r.a + ' vs ' + r.e.toFixed(1) + ' (' + sign + diff.toFixed(1) + ')</text>';
   });
   svg.innerHTML = out;
+
+  /* Nav: scroll in JS so the tabs also work where #hash navigation is blocked (data: URLs, embeds) */
+  Array.prototype.forEach.call(document.querySelectorAll('.nav a[href^="#"]'), function (a) {
+    a.addEventListener("click", function (e) {
+      var target = document.getElementById(a.getAttribute("href").slice(1));
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+      try { history.replaceState(null, "", a.getAttribute("href")); } catch (err) {}
+    });
+  });
+
+  /* Highlight the tab for the section under the nav bar */
+  var links = Array.prototype.slice.call(document.querySelectorAll('.nav a[href^="#"]'));
+  function spy() {
+    var line = document.querySelector(".nav").offsetHeight + 80, current = null;
+    links.forEach(function (a) {
+      var s = document.getElementById(a.getAttribute("href").slice(1));
+      if (s && s.getBoundingClientRect().top <= line) current = a;
+    });
+    // at the very bottom the last short section can't reach the line, so give it the highlight
+    if (innerHeight + scrollY >= document.documentElement.scrollHeight - 2) current = links[links.length - 1];
+    links.forEach(function (a) { if (a === current) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current"); });
+  }
+  addEventListener("scroll", spy, { passive: true });
+  addEventListener("resize", spy);
+  spy();
+
+  /* Week 7 house lines: projection = season PPG, win odds from a normal on the score difference */
+  var MIN_SD = 20; // ponytail: six games is a tiny sample, so floor each team's swing; tune if lines look too sharp
+  function mean(s) { return s.reduce(function (a, b) { return a + b; }) / s.length; }
+  function sd(s) {
+    var m = mean(s);
+    return Math.max(MIN_SD, Math.sqrt(s.reduce(function (a, v) { return a + (v - m) * (v - m); }, 0) / (s.length - 1)));
+  }
+  function phi(z) { // standard normal CDF (Abramowitz-Stegun 26.2.17)
+    var t = 1 / (1 + 0.2316419 * Math.abs(z)), d = 0.3989423 * Math.exp(-z * z / 2);
+    var p = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
+    return z > 0 ? 1 - p : p;
+  }
+  function half(v) { return (Math.round(v * 2) / 2).toFixed(1); }
+  function ml(p) { var v = p >= 0.5 ? -Math.round(100 * p / (1 - p) / 5) * 5 : Math.round(100 * (1 - p) / p / 5) * 5; return v > 0 ? "+" + v : String(v); }
+  function spread(d) { var h = Math.round(d * 2) / 2; return h === 0 ? "PK" : (h > 0 ? "+" : "") + h.toFixed(1); }
+  function byName(n) { return T.filter(function (t) { return t.n === n; })[0]; }
+
+  Array.prototype.forEach.call(document.querySelectorAll(".match[data-a]"), function (m) {
+    var a = byName(m.dataset.a), b = byName(m.dataset.b);
+    var pa = mean(a.s), pb = mean(b.s);
+    var p = phi((pa - pb) / Math.sqrt(Math.pow(sd(a.s), 2) + Math.pow(sd(b.s), 2)));
+    function row(t, proj, opp, pr) {
+      return '<tr><td class="team">' + t.n + '</td><td class="num">' + spread(opp - proj) + '</td><td class="num">' + ml(pr) +
+        '</td><td class="num">' + half(proj) + '</td><td class="num">' + Math.round(pr * 100) + '%</td></tr>';
+    }
+    var tbl = document.createElement("table");
+    tbl.className = "odds";
+    tbl.innerHTML = '<thead><tr><th>Line</th><th class="num">Spread</th><th class="num">Moneyline</th><th class="num">Team total</th><th class="num">Win</th></tr></thead><tbody>' +
+      row(a, pa, pb, p) + row(b, pb, pa, 1 - p) +
+      '</tbody><tfoot><tr><td colspan="5">Game total over/under <b>' + half(pa + pb) + '</b></td></tr></tfoot>';
+    m.querySelector(".vs").after(tbl);
+  });
 })();
 </script>
 
