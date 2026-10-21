@@ -151,14 +151,14 @@ section { padding-top: 56px; scroll-margin-top: 48px; }
 .cat { font-weight: 700; font-size: 14px; color: var(--turf); }
 
 /* Stories: one lead with a scoreboard, then a balanced two-column run */
-.lead { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 28px; align-items: center; padding-bottom: 28px; border-bottom: 1px solid var(--line); }
+.lead { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; align-items: center; padding-bottom: 28px; border-bottom: 1px solid var(--line); }
 .board {
-  background: var(--turf-deep); color: var(--chalk);
+  background: var(--turf-b); color: var(--chalk); container-type: inline-size;
   padding: 22px 24px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: end; gap: 12px;
   border-bottom: 6px solid var(--flag);
 }
 .board .team { display: block; margin-top: 6px; font-size: 14px; font-weight: 500; color: #ffffff; line-height: 1.25; }
-.board .pts { display: block; font-family: var(--display); font-weight: 700; font-size: clamp(32px, 8vw, 64px); line-height: 0.95; font-variant-numeric: tabular-nums; color: #ffffff; }
+.board .pts { display: block; font-family: var(--display); font-weight: 700; font-size: clamp(28px, 12cqi, 64px); line-height: 0.95; font-variant-numeric: tabular-nums; color: #ffffff; }
 .board .lose .pts, .board .lose .team { color: #b9acd0; }
 .board .r { text-align: right; }
 .board .dash { align-self: center; font-family: var(--display); font-size: 32px; color: #8a7ba3; }
@@ -368,7 +368,7 @@ footer .wrap > * { max-width: 80ch; }
       <tbody id="standings-body"></tbody>
     </table>
   </div>
-  <p class="legend-line">Weekly score strips run Week 1 to Week 6 on one shared scale, 50 to 215 points. The yellow dot is Week 6. Exp. W is each week's score measured against all nine other teams, divided by nine.</p>
+  <p class="legend-line">Weekly score strips run Week 1 to Week <span class="js-g">6</span> on one shared scale, <span class="js-lo">50</span> to <span class="js-hi">220</span> points. The lavender dot is the latest week. Exp. W is each week's score measured against all nine other teams, divided by nine.</p>
 </section>
 
 <section id="luck">
@@ -509,9 +509,13 @@ footer .wrap > * { max-width: 80ch; }
     { n: "Azzfaulters", m: "ohmygodfrey2", w: 0, l: 6, pf: 721.94, pa: 863.48, st: "L6", ap: 17, s: [107.26,129.98,126.48,147.22,108.62,102.38] }
   ];
   function f1(v) { return v.toFixed(1); }
+  // Weeks played and the shared score range come from the data, so weekly updates only touch T
+  var all = [].concat.apply([], T.map(function (t) { return t.s; }));
+  var G = Math.max.apply(null, T.map(function (t) { return t.s.length; }));
+  var LO = Math.floor(Math.min.apply(null, all) / 10) * 10, HI = Math.ceil(Math.max.apply(null, all) / 10) * 10;
 
   function spark(scores) {
-    var W = 100, H = 30, lo = 50, hi = 215, px = 4, pts = [], i;
+    var W = 100, H = 30, lo = LO, hi = HI, px = 4, pts = [], i;
     function X(k) { return px + k * ((W - 2 * px) / (scores.length - 1)); }
     function Y(v) { return H - 3 - ((v - lo) / (hi - lo)) * (H - 6); }
     for (i = 0; i < scores.length; i++) pts.push(X(i).toFixed(1) + "," + Y(scores[i]).toFixed(1));
@@ -537,20 +541,21 @@ footer .wrap > * { max-width: 80ch; }
     if (idx === 5) html += '<tr class="cut-label"><td colspan="8">Playoff line: top six advance</td></tr>';
   }
   body.innerHTML = html;
+  [["js-g", G], ["js-lo", LO], ["js-hi", HI]].forEach(function (k) { document.querySelector("." + k[0]).textContent = k[1]; });
 
   /* Luck dumbbell chart */
   var rows = T.map(function (t) { return { n: t.n, a: t.w, e: t.ap / 9 }; });
   rows.sort(function (x, y) { return (y.a - y.e) - (x.a - x.e); });
   var svg = document.getElementById("luck-chart");
-  var left = 200, scale = 68, top = 28, rh = 36, i2, out = "";
+  var left = 200, scale = 408 / G, top = 28, rh = 36, i2, out = "";
   var H = top + rows.length * rh + 28;
   svg.setAttribute("viewBox", "0 0 720 " + H);
   function X(v) { return left + v * scale; }
-  for (i2 = 0; i2 <= 6; i2++) {
+  for (i2 = 0; i2 <= G; i2 += G > 10 ? 2 : 1) {
     out += '<line class="c-grid" x1="' + X(i2) + '" y1="' + (top - 10) + '" x2="' + X(i2) + '" y2="' + (top + rows.length * rh - 6) + '"/>' +
       '<text class="c-tick" x="' + X(i2) + '" y="' + (top + rows.length * rh + 12) + '" text-anchor="middle">' + i2 + '</text>';
   }
-  out += '<text class="c-tick" x="' + X(3) + '" y="' + (top + rows.length * rh + 26) + '" text-anchor="middle">wins after six games</text>';
+  out += '<text class="c-tick" x="' + X(G / 2) + '" y="' + (top + rows.length * rh + 26) + '" text-anchor="middle">wins after ' + G + ' games</text>';
   rows.forEach(function (r, k) {
     var cy = top + k * rh + 8, diff = r.a - r.e;
     var col = diff >= 0 ? "var(--lucky)" : "var(--unlucky)";
