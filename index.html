@@ -183,6 +183,11 @@ td.team { font-weight: 700; }
 td.team small { display: block; font-weight: 400; color: var(--muted); font-size: 13px; }
 tr.cut td { border-bottom: 0; }
 tr.cut-label td { padding: 5px 14px; font-size: 13px; color: var(--flag-ink); font-weight: 700; background: var(--flag); border-bottom: 0; }
+th[data-sort] button { all: inherit; background: none; border: 0; padding: 0; margin: 0; font: inherit; color: inherit; cursor: pointer; }
+th[data-sort] button:hover { color: var(--fg); }
+th[data-sort] button:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; }
+th[aria-sort="ascending"] button::after { content: " \25B2"; font-size: 10px; }
+th[aria-sort="descending"] button::after { content: " \25BC"; font-size: 10px; }
 .streak-W { color: var(--good); font-weight: 700; }
 .streak-L { color: var(--bad); font-weight: 700; }
 .spark { display: block; color: var(--turf); }
@@ -362,13 +367,14 @@ footer .wrap > * { max-width: 80ch; }
     <table>
       <thead>
         <tr>
-          <th>#</th><th>Team</th><th class="num">W-L</th><th class="num">PF</th><th class="num">PA</th><th>Streak</th><th>Weekly scores</th><th class="num">Exp. W</th>
+          <th data-sort="rank" aria-sort="ascending"><button type="button">#</button></th><th data-sort="team"><button type="button">Team</button></th><th class="num" data-sort="w"><button type="button">W-L</button></th><th class="num" data-sort="pf"><button type="button">PF</button></th><th class="num" data-sort="pa"><button type="button">PA</button></th><th data-sort="st"><button type="button">Streak</button></th><th>Weekly scores</th><th class="num" data-sort="ew"><button type="button">Exp. W</button></th><th class="num" data-sort="po"><button type="button">Playoff %</button></th>
         </tr>
       </thead>
       <tbody id="standings-body"></tbody>
     </table>
   </div>
   <p class="legend-line">Weekly score strips run Week 1 to Week <span class="js-g">6</span> on one shared scale, <span class="js-lo">50</span> to <span class="js-hi">220</span> points. The lavender dot is the latest week. Exp. W is each week's score measured against all nine other teams, divided by nine.</p>
+  <p class="legend-line">Playoff % is the share of 20,000 simulated seasons in which a team finishes in the top six after the Week 14 regular season. Each simulated week draws a score for every team from its own season average and week-to-week swing, using the projected lineup total for the upcoming week, and ties are broken by points for. Click any column heading to sort; click again to reverse.</p>
 </section>
 
 <section id="luck">
@@ -499,16 +505,16 @@ footer .wrap > * { max-width: 80ch; }
 <script>
 (function () {
   var T = [
-    { n: "JoshisAntifa", m: "snakyjester", w: 5, l: 1, pf: 878.40, pa: 757.72, st: "W4", ap: 33, s: [159.50,102.26,146.38,123.78,210.64,135.84], pj: 139.3 },
-    { n: "Hanginwithhernandez", m: "milsted", w: 4, l: 2, pf: 924.16, pa: 865.20, st: "L2", ap: 43, s: [167.60,164.56,164.84,151.60,165.54,110.02], pj: 109.8 },
-    { n: "Kiffin's Kittens", m: "stpederson", w: 4, l: 2, pf: 920.36, pa: 770.22, st: "L1", ap: 42, s: [155.36,154.24,153.94,193.10,119.54,144.18], pj: 141.2 },
-    { n: "Club Space", m: "Couget25", w: 4, l: 2, pf: 760.14, pa: 630.82, st: "W1", ap: 19, s: [143.86,153.22,107.36,144.02,108.48,103.20], pj: 123.7 },
-    { n: "Blueeeeyyyyyy bomb squad", m: "trentxsweat", w: 3, l: 3, pf: 840.76, pa: 817.18, st: "W1", ap: 31, s: [136.46,124.88,144.88,128.92,155.26,150.36], pj: 141.8 },
-    { n: "Beggars", m: "jrk3", w: 3, l: 3, pf: 767.90, pa: 765.38, st: "W1", ap: 25, s: [163.06,93.42,86.26,180.98,113.14,131.04], pj: 140.8 },
-    { n: "kcnotbuns", m: "kcnotbuns", w: 3, l: 3, pf: 715.96, pa: 841.96, st: "W2", ap: 17, s: [127.40,121.80,108.88,117.52,113.76,126.60], pj: 135.3 },
-    { n: "Picken Good Bijana", m: "HunnaNe", w: 2, l: 4, pf: 784.70, pa: 917.72, st: "L1", ap: 27, s: [100.82,70.32,167.84,150.96,172.86,121.90], pj: 124.3 },
-    { n: "Make Bama Great Again!", m: "TTLEE25", w: 2, l: 4, pf: 677.70, pa: 762.34, st: "L1", ap: 16, s: [119.66,144.80,118.04,100.68,137.90,56.62], pj: 114.0 },
-    { n: "Azzfaulters", m: "ohmygodfrey2", w: 0, l: 6, pf: 721.94, pa: 863.48, st: "L6", ap: 17, s: [107.26,129.98,126.48,147.22,108.62,102.38], pj: 114.9 }
+    { n: "JoshisAntifa", m: "snakyjester", w: 5, l: 1, pf: 878.40, pa: 757.72, st: "W4", ap: 33, s: [159.50,102.26,146.38,123.78,210.64,135.84], pj: 139.3, sch: ["Beggars", "Club Space", "Picken Good Bijana", "Kiffin's Kittens", "Blueeeeyyyyyy bomb squad", "kcnotbuns", "Make Bama Great Again!", "Hanginwithhernandez"] },
+    { n: "Hanginwithhernandez", m: "milsted", w: 4, l: 2, pf: 924.16, pa: 865.20, st: "L2", ap: 43, s: [167.60,164.56,164.84,151.60,165.54,110.02], pj: 109.8, sch: ["Club Space", "Picken Good Bijana", "Kiffin's Kittens", "Blueeeeyyyyyy bomb squad", "kcnotbuns", "Make Bama Great Again!", "Azzfaulters", "JoshisAntifa"] },
+    { n: "Kiffin's Kittens", m: "stpederson", w: 4, l: 2, pf: 920.36, pa: 770.22, st: "L1", ap: 42, s: [155.36,154.24,153.94,193.10,119.54,144.18], pj: 141.2, sch: ["kcnotbuns", "Make Bama Great Again!", "Hanginwithhernandez", "JoshisAntifa", "Beggars", "Club Space", "Picken Good Bijana", "Azzfaulters"] },
+    { n: "Club Space", m: "Couget25", w: 4, l: 2, pf: 760.14, pa: 630.82, st: "W1", ap: 19, s: [143.86,153.22,107.36,144.02,108.48,103.20], pj: 123.7, sch: ["Hanginwithhernandez", "JoshisAntifa", "Beggars", "Azzfaulters", "Picken Good Bijana", "Kiffin's Kittens", "Blueeeeyyyyyy bomb squad", "kcnotbuns"] },
+    { n: "Blueeeeyyyyyy bomb squad", m: "trentxsweat", w: 3, l: 3, pf: 840.76, pa: 817.18, st: "W1", ap: 31, s: [136.46,124.88,144.88,128.92,155.26,150.36], pj: 141.8, sch: ["Azzfaulters", "kcnotbuns", "Make Bama Great Again!", "Hanginwithhernandez", "JoshisAntifa", "Beggars", "Club Space", "Picken Good Bijana"] },
+    { n: "Beggars", m: "jrk3", w: 3, l: 3, pf: 767.90, pa: 765.38, st: "W1", ap: 25, s: [163.06,93.42,86.26,180.98,113.14,131.04], pj: 140.8, sch: ["JoshisAntifa", "Azzfaulters", "Club Space", "Picken Good Bijana", "Kiffin's Kittens", "Blueeeeyyyyyy bomb squad", "kcnotbuns", "Make Bama Great Again!"] },
+    { n: "kcnotbuns", m: "kcnotbuns", w: 3, l: 3, pf: 715.96, pa: 841.96, st: "W2", ap: 17, s: [127.40,121.80,108.88,117.52,113.76,126.60], pj: 135.3, sch: ["Kiffin's Kittens", "Blueeeeyyyyyy bomb squad", "Azzfaulters", "Make Bama Great Again!", "Hanginwithhernandez", "JoshisAntifa", "Beggars", "Club Space"] },
+    { n: "Picken Good Bijana", m: "HunnaNe", w: 2, l: 4, pf: 784.70, pa: 917.72, st: "L1", ap: 27, s: [100.82,70.32,167.84,150.96,172.86,121.90], pj: 124.3, sch: ["Make Bama Great Again!", "Hanginwithhernandez", "JoshisAntifa", "Beggars", "Club Space", "Azzfaulters", "Kiffin's Kittens", "Blueeeeyyyyyy bomb squad"] },
+    { n: "Make Bama Great Again!", m: "TTLEE25", w: 2, l: 4, pf: 677.70, pa: 762.34, st: "L1", ap: 16, s: [119.66,144.80,118.04,100.68,137.90,56.62], pj: 114.0, sch: ["Picken Good Bijana", "Kiffin's Kittens", "Blueeeeyyyyyy bomb squad", "kcnotbuns", "Azzfaulters", "Hanginwithhernandez", "JoshisAntifa", "Beggars"] },
+    { n: "Azzfaulters", m: "ohmygodfrey2", w: 0, l: 6, pf: 721.94, pa: 863.48, st: "L6", ap: 17, s: [107.26,129.98,126.48,147.22,108.62,102.38], pj: 114.9, sch: ["Blueeeeyyyyyy bomb squad", "Beggars", "kcnotbuns", "Club Space", "Make Bama Great Again!", "Picken Good Bijana", "Hanginwithhernandez", "Kiffin's Kittens"] }
   ];
   function f1(v) { return v.toFixed(1); }
   // Weeks played and the shared score range come from the data, so weekly updates only touch T
@@ -528,21 +534,79 @@ footer .wrap > * { max-width: 80ch; }
       '<circle class="end" cx="' + X(last).toFixed(1) + '" cy="' + Y(scores[last]).toFixed(1) + '" r="3.2"/></svg>';
   }
 
-  var body = document.getElementById("standings-body"), html = "", idx;
-  for (idx = 0; idx < T.length; idx++) {
-    var t = T[idx], exp = t.ap / 9;
-    var cut = idx === 5 ? ' class="cut"' : "";
-    html += '<tr' + cut + '><td class="rank">' + (idx + 1) + '</td>' +
-      '<td class="team">' + t.n + '<small>' + t.m + '</small></td>' +
-      '<td class="num">' + t.w + '-' + t.l + '</td>' +
-      '<td class="num">' + t.pf.toFixed(1) + '</td>' +
-      '<td class="num">' + t.pa.toFixed(1) + '</td>' +
-      '<td class="streak-' + t.st.charAt(0) + '">' + t.st + '</td>' +
-      '<td>' + spark(t.s) + '</td>' +
-      '<td class="num">' + f1(exp) + '</td></tr>';
-    if (idx === 5) html += '<tr class="cut-label"><td colspan="8">Playoff line: top six advance</td></tr>';
+  /* Playoff odds: simulate the rest of the regular season (weeks listed in each team's sch array) */
+  var SIMS = 20000, PLAYOFF_SPOTS = 6;
+  function meanSd(s) {
+    var m = s.reduce(function (a, b) { return a + b; }, 0) / s.length;
+    var v = s.reduce(function (a, x) { return a + (x - m) * (x - m); }, 0) / (s.length - 1);
+    return { m: m, sd: Math.max(20, Math.sqrt(v)) };
   }
-  body.innerHTML = html;
+  (function () {
+    var n = T.length, idxOf = {}, seed = 20261021, made = [], i, j, p, w, k;
+    T.forEach(function (t, k2) { idxOf[t.n] = k2; made.push(0); });
+    var st = T.map(function (t) { return meanSd(t.s); });
+    var left = Math.max.apply(null, T.map(function (t) { return (t.sch || []).length; }));
+    function rnd() { seed = seed + 0x6D2B79F5 | 0; var t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }
+    function gauss() { var u = 1 - rnd(), v = rnd(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }
+    for (p = 0; p < SIMS; p++) {
+      var Wn = T.map(function (t) { return t.w; }), Fp = T.map(function (t) { return t.pf; }), sc = [];
+      for (w = 0; w < left; w++) {
+        for (i = 0; i < n; i++) sc[i] = ((w === 0 && T[i].pj != null) ? T[i].pj : st[i].m) + st[i].sd * gauss();
+        for (i = 0; i < n; i++) {
+          Fp[i] += sc[i];
+          j = idxOf[(T[i].sch || [])[w]];
+          if (j !== undefined && j > i) { if (sc[i] > sc[j]) Wn[i]++; else Wn[j]++; }
+        }
+      }
+      var order = []; for (k = 0; k < n; k++) order.push(k);
+      order.sort(function (x, y) { return (Wn[y] - Wn[x]) || (Fp[y] - Fp[x]); });
+      for (k = 0; k < PLAYOFF_SPOTS; k++) made[order[k]]++;
+    }
+    T.forEach(function (t, k2) { t.po = made[k2] / SIMS; });
+  })();
+  function fmtPo(q) { return q > 0.995 ? ">99%" : q < 0.005 ? "<1%" : Math.round(q * 100) + "%"; }
+
+  /* Standings table, sortable by any column heading */
+  var body = document.getElementById("standings-body");
+  var srows = T.map(function (t, i) {
+    var sg = t.st.charAt(0) === "W" ? 1 : -1;
+    return { t: t, i: i, k: { rank: i, team: t.n.toLowerCase(), w: t.w + t.pf / 100000, pf: t.pf, pa: t.pa, st: sg * parseInt(t.st.slice(1), 10), ew: t.ap / 9, po: t.po } };
+  });
+  var sortKey = "rank", sortDir = 1;
+  function drawStandings() {
+    var list = srows.slice(), html = "", natural = sortKey === "rank" && sortDir === 1;
+    list.sort(function (a, b) {
+      var x = a.k[sortKey], y = b.k[sortKey];
+      var c = typeof x === "string" ? x.localeCompare(y) : x - y;
+      return c ? c * sortDir : a.i - b.i;
+    });
+    list.forEach(function (r, pos) {
+      var t = r.t, cut = natural && pos === 5 ? ' class="cut"' : "";
+      html += '<tr' + cut + '><td class="rank">' + (r.i + 1) + '</td>' +
+        '<td class="team">' + t.n + '<small>' + t.m + '</small></td>' +
+        '<td class="num">' + t.w + '-' + t.l + '</td>' +
+        '<td class="num">' + t.pf.toFixed(1) + '</td>' +
+        '<td class="num">' + t.pa.toFixed(1) + '</td>' +
+        '<td class="streak-' + t.st.charAt(0) + '">' + t.st + '</td>' +
+        '<td>' + spark(t.s) + '</td>' +
+        '<td class="num">' + f1(r.k.ew) + '</td>' +
+        '<td class="num">' + fmtPo(t.po) + '</td></tr>';
+      if (natural && pos === 5) html += '<tr class="cut-label"><td colspan="9">Playoff line: top six advance</td></tr>';
+    });
+    body.innerHTML = html;
+    Array.prototype.forEach.call(document.querySelectorAll("#standings th[data-sort]"), function (th) {
+      th.setAttribute("aria-sort", th.dataset.sort === sortKey ? (sortDir === 1 ? "ascending" : "descending") : "none");
+    });
+  }
+  Array.prototype.forEach.call(document.querySelectorAll("#standings th[data-sort]"), function (th) {
+    th.querySelector("button").addEventListener("click", function () {
+      var key = th.dataset.sort;
+      if (key === sortKey) sortDir = -sortDir;
+      else { sortKey = key; sortDir = (key === "rank" || key === "team" || key === "pa") ? 1 : -1; }
+      drawStandings();
+    });
+  });
+  drawStandings();
   [["js-g", G], ["js-lo", LO], ["js-hi", HI]].forEach(function (k) { document.querySelector("." + k[0]).textContent = k[1]; });
 
   /* Luck dumbbell chart */
