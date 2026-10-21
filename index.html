@@ -207,9 +207,10 @@ tr.cut-label td { padding: 5px 14px; font-size: 13px; color: var(--flag-ink); fo
 .dot-exp { border: 2px solid var(--muted); }
 
 /* Week 7 slate */
-.match { padding: 24px 0; border-bottom: 1px solid var(--line); }
+.matches { margin-top: 32px; }
+.match { padding: 36px 0; border-bottom: 1px solid var(--line); }
 .match:first-child { padding-top: 0; }
-.match h3 { font-size: clamp(22px, 3vw, 28px); line-height: 1.04; margin-bottom: 16px; max-width: 30ch; }
+.match h3 { font-size: clamp(22px, 3vw, 28px); line-height: 1.1; margin-bottom: 20px; max-width: 34ch; }
 .vs { display: grid; grid-template-columns: minmax(0, 1fr) minmax(140px, 260px) minmax(0, 1fr); gap: 20px; align-items: center; }
 .side.r { text-align: right; }
 .side .tn { font-family: var(--display); font-weight: 700; font-size: clamp(20px, 2.6vw, 26px); line-height: 1.1; overflow-wrap: anywhere; }
@@ -224,11 +225,16 @@ tr.cut-label td { padding: 5px 14px; font-size: 13px; color: var(--flag-ink); fo
 .bar-note { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); margin-top: 6px; font-variant-numeric: tabular-nums; }
 .bar-note span:nth-child(2) { text-align: center; }
 .bar-note span:first-child, .bar-note span:last-child { color: var(--fg); font-weight: 700; font-size: 15px; }
-.odds { min-width: 0; margin-top: 18px; background: var(--surface); border: 1px solid var(--line); max-width: 720px; }
+.oddswrap { margin-top: 22px; overflow-x: auto; background: var(--surface); border: 1px solid var(--line); }
+.odds { min-width: 680px; table-layout: fixed; }
+.odds th:first-child { width: 24%; }
+.odds .form { border-left: 1px solid var(--line); }
 .odds th, .odds td { padding: 8px 12px; font-size: 15px; }
 .odds th { font-size: 13px; }
 .odds td.team { white-space: normal; overflow-wrap: anywhere; font-weight: 600; }
 .odds tbody td.num { font-weight: 700; }
+.odds tbody td.form, .odds tbody td.form-n { font-weight: 400; color: var(--muted); }
+.odds tfoot .tot { display: flex; flex-wrap: wrap; gap: 6px 28px; }
 .odds tfoot td { border-bottom: 0; background: color-mix(in srgb, var(--flag) 24%, var(--surface)); font-size: 14px; }
 .odds tfoot b { font-weight: 700; }
 .edge { margin-top: 14px; color: var(--muted); max-width: 72ch; }
@@ -607,15 +613,24 @@ footer .wrap > * { max-width: 80ch; }
     var pa = mean(a.s), pb = mean(b.s);
     var p = phi((pa - pb) / Math.sqrt(Math.pow(sd(a.s), 2) + Math.pow(sd(b.s), 2)));
     function row(t, proj, opp, pr) {
+      var s = t.s, last = s[s.length - 1];
       return '<tr><td class="team">' + t.n + '</td><td class="num">' + spread(opp - proj) + '</td><td class="num">' + ml(pr) +
-        '</td><td class="num">' + half(proj) + '</td><td class="num">' + Math.round(pr * 100) + '%</td></tr>';
+        '</td><td class="num">' + half(proj) + '</td><td class="num">' + Math.round(pr * 100) + '%</td>' +
+        '<td class="num form">' + last.toFixed(1) + '</td><td class="num form-n">' + mean(s.slice(-3)).toFixed(1) +
+        '</td><td class="num form-n">' + Math.max.apply(null, s).toFixed(1) + '</td><td class="num form-n">' + Math.min.apply(null, s).toFixed(1) + '</td></tr>';
     }
-    var tbl = document.createElement("table");
-    tbl.className = "odds";
-    tbl.innerHTML = '<thead><tr><th>Line</th><th class="num">Spread</th><th class="num">Moneyline</th><th class="num">Team total</th><th class="num">Win</th></tr></thead><tbody>' +
+    var wrap = document.createElement("div");
+    wrap.className = "oddswrap";
+    wrap.tabIndex = 0;
+    wrap.setAttribute("role", "region");
+    wrap.setAttribute("aria-label", "Betting lines and recent form: " + a.n + " vs " + b.n);
+    wrap.innerHTML = '<table class="odds"><thead><tr><th>Team</th><th class="num">Spread</th><th class="num">Moneyline</th><th class="num">Team total</th><th class="num">Win</th>' +
+      '<th class="num form">Last week</th><th class="num">Last 3 avg</th><th class="num">High</th><th class="num">Low</th></tr></thead><tbody>' +
       row(a, pa, pb, p) + row(b, pb, pa, 1 - p) +
-      '</tbody><tfoot><tr><td colspan="5">Game total over/under <b>' + half(pa + pb) + '</b></td></tr></tfoot>';
-    m.querySelector(".vs").after(tbl);
+      '</tbody><tfoot><tr><td colspan="9"><div class="tot"><span>Game total over/under <b>' + half(pa + pb) + '</b></span>' +
+      '<span>Projected final <b>' + half(pa) + ' to ' + half(pb) + '</b></span>' +
+      '<span>Combined last week <b>' + (a.s[a.s.length - 1] + b.s[b.s.length - 1]).toFixed(1) + '</b></span></div></td></tr></tfoot></table>';
+    m.querySelector(".vs").after(wrap);
   });
 })();
 </script>
