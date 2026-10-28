@@ -1,1022 +1,3717 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="light dark">
-<title>F's for Kamala Press Box</title>
-<meta name="claude:viewport-fit-sides" content="cover">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
-<style>
-/* Layout: the masthead is a painted gridiron (the one loud element). Below it, a quiet weekly program:
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>F's for Kamala Press Box</title>
+    <meta name="claude:viewport-fit-sides" content="cover" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+    />
+    <style>
+      /* Layout: the masthead is a painted gridiron (the one loud element). Below it, a quiet weekly program:
    lead story with a scoreboard, a two-column story run, standings, luck chart, Week 7 slate, league notes. */
-:root {
-  --bg: #f4f2f7;
-  --surface: #ffffff;
-  --fg: #1c1526;
-  --muted: #5f566b;
-  --line: #ddd6e6;
-  --turf: #7851a9;
-  --turf-a: #3b2759;
-  --turf-b: #33214e;
-  --turf-deep: #211630;
-  --chalk: #f6f3fa;
-  --flag: #c7aef0;
-  --flag-ink: #24153b;
-  --alt: #9fd8c9;
-  --lucky: #c2577a;
-  --unlucky: #3f7cc0;
-  --good: #2a7d57;
-  --bad: #b83a3a;
-  --display: "Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --body: "Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #130e1b;
-    --surface: #1c1527;
-    --fg: #ece7f3;
-    --muted: #a99fb8;
-    --line: #322743;
-    --turf: #b293dc;
-    --turf-a: #33214e;
-    --turf-b: #2c1c44;
-    --turf-deep: #160f22;
-    --alt: #2f6f62;
-    --lucky: #e48aa8;
-    --unlucky: #7fb2ea;
-    --good: #5fc495;
-    --bad: #ee7d6c;
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #130e1b;
-  --surface: #1c1527;
-  --fg: #ece7f3;
-  --muted: #a99fb8;
-  --line: #322743;
-  --turf: #b293dc;
-  --turf-a: #33214e;
-  --turf-b: #2c1c44;
-  --turf-deep: #160f22;
-  --alt: #2f6f62;
-  --lucky: #e48aa8;
-  --unlucky: #7fb2ea;
-  --good: #5fc495;
-  --bad: #ee7d6c;
-  color-scheme: dark;
-}
-
-* { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--fg);
-  font-family: var(--body);
-  font-size: 17px;
-  line-height: 1.5;
-}
-.wrap {
-  max-width: 1120px;
-  margin: 0 auto;
-  padding-left: max(16px, env(safe-area-inset-left, 0px));
-  padding-right: max(16px, env(safe-area-inset-right, 0px));
-}
-h1, h2, h3 { font-family: var(--display); font-weight: 700; text-wrap: balance; margin: 0; }
-p { margin: 0; }
-a { color: inherit; }
-:focus-visible { outline: 3px solid var(--flag); outline-offset: 2px; }
-
-/* Palette is built on #7851a9 (--turf). Masthead: a gridiron. Mow bands every 5 yards, chalk yard lines every 10, hash marks top and bottom. */
-.field {
-  position: relative;
-  overflow: hidden;
-  color: var(--chalk);
-  background:
-    repeating-linear-gradient(90deg, rgba(246,243,250,0.55) 0 2px, transparent 2px 10%),
-    repeating-linear-gradient(90deg, var(--turf-a) 0 5%, var(--turf-b) 5% 10%);
-  border-bottom: 8px solid var(--flag);
-}
-.field::before, .field::after {
-  content: "";
-  position: absolute; left: 0; right: 0; height: 12px;
-  background: repeating-linear-gradient(90deg, rgba(246,243,250,0.5) 0 2px, transparent 2px 2%);
-  pointer-events: none;
-}
-.field::before { top: 18px; }
-.field::after { bottom: 18px; }
-.field .wrap { position: relative; padding-block: 56px 40px; }
-.kicker { font-family: var(--display); font-weight: 700; font-size: 22px; color: var(--flag); letter-spacing: 0.02em; }
-.field h1 {
-  font-size: clamp(48px, 11vw, 132px);
-  font-weight: 700;
-  line-height: 0.86;
-  text-transform: uppercase;
-  letter-spacing: -0.005em;
-  margin-top: 6px;
-  text-shadow: 0.035em 0.035em 0 var(--turf-deep);
-}
-.field .sub { margin-top: 20px; max-width: 54ch; font-size: 18px; color: #ddd3ea; }
-.meta {
-  margin: 28px 0 0; padding: 0;
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px 24px;
-  max-width: 820px;
-}
-.meta div { border-left: 3px solid var(--flag); padding-left: 10px; }
-.meta dt { font-size: 13px; color: #bdb0d0; }
-.meta dd { margin: 0; font-weight: 600; font-size: 15px; line-height: 1.3; }
-.yards {
-  position: relative;
-  /* 9 columns inset 5% each side, so each number centers on a 10% yard line */
-  display: grid; grid-template-columns: repeat(9, 1fr); text-align: center;
-  padding: 0 5% 34px;
-  font-family: var(--display); font-weight: 700; font-size: clamp(16px, 3vw, 30px);
-  color: rgba(246,243,250,0.35);
-}
-
-/* Section nav */
-.nav { position: sticky; top: 0; z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); }
-.nav ul { list-style: none; margin: 0 auto; display: flex; gap: 4px 22px; overflow-x: auto; scrollbar-width: none; }
-.nav a { display: block; padding: 12px 0; text-decoration: none; font-weight: 600; font-size: 15px; white-space: nowrap; color: var(--muted); }
-.nav a:hover { color: var(--fg); }
-.nav a[aria-current] { color: var(--fg); box-shadow: inset 0 -3px 0 var(--turf); }
-
-main .wrap { padding-block: 8px 64px; }
-section { padding-top: 56px; scroll-margin-top: 48px; }
-.sec-head { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 4px 16px; margin-bottom: 22px; border-bottom: 3px solid var(--fg); padding-bottom: 8px; }
-.sec-head h2 { font-size: clamp(28px, 5vw, 44px); line-height: 0.95; text-transform: uppercase; }
-.sec-head .note { font-size: 14px; color: var(--muted); }
-.cat { font-weight: 700; font-size: 14px; color: var(--turf); }
-
-/* Stories: one lead with a scoreboard, then a balanced two-column run */
-.lead { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; align-items: center; padding-bottom: 28px; border-bottom: 1px solid var(--line); }
-.board {
-  background: var(--turf-b); color: var(--chalk); container-type: inline-size;
-  padding: 22px 24px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: end; gap: 12px;
-  border-bottom: 6px solid var(--flag);
-}
-.board .team { display: block; margin-top: 6px; font-size: 14px; font-weight: 500; color: #ffffff; line-height: 1.25; }
-.board .pts { display: block; font-family: var(--display); font-weight: 700; font-size: clamp(28px, 12cqi, 64px); line-height: 0.95; font-variant-numeric: tabular-nums; color: #ffffff; }
-.board .lose .pts, .board .lose .team { color: #b9acd0; }
-.board .r { text-align: right; }
-.board .dash { align-self: center; font-family: var(--display); font-size: 32px; color: #8a7ba3; }
-.lead h3 { font-size: clamp(26px, 3.4vw, 36px); line-height: 1; margin: 6px 0 12px; }
-.lead p:last-child { color: var(--muted); max-width: 60ch; }
-.story-run { columns: 2 340px; column-gap: 40px; margin-top: 4px; }
-.story { break-inside: avoid; padding: 22px 0; border-bottom: 1px solid var(--line); }
-.story h3 { font-size: 23px; line-height: 1.04; margin: 4px 0 8px; }
-.story p:last-child { color: var(--muted); font-size: 16px; }
-.story b, .lead b { color: var(--fg); font-weight: 600; }
-
-/* Standings */
-.tablewrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); }
-table { border-collapse: collapse; width: 100%; min-width: 720px; font-variant-numeric: tabular-nums; }
-th, td { padding: 11px 14px; text-align: left; font-size: 15px; white-space: nowrap; }
-th { font-size: 13px; color: var(--muted); font-weight: 600; border-bottom: 2px solid var(--fg); }
-td { border-bottom: 1px solid var(--line); }
-td.num, th.num { text-align: right; }
-td.rank { font-family: var(--display); font-weight: 700; font-size: 20px; color: var(--muted); width: 40px; }
-tbody tr:nth-child(-n+6) td.rank { color: var(--turf); }
-td.team { font-weight: 700; }
-td.team small { display: block; font-weight: 400; color: var(--muted); font-size: 13px; }
-tr.cut td { border-bottom: 0; }
-tr.cut-label td { padding: 5px 14px; font-size: 13px; color: var(--flag-ink); font-weight: 700; background: var(--flag); border-bottom: 0; }
-th[data-k] button { display: block; width: 100%; background: none; border: 0; padding: 0; margin: 0; font: inherit; color: inherit; text-align: inherit; cursor: pointer; }
-th[data-k] button:hover { color: var(--fg); }
-th[data-k] button:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; }
-th[aria-sort="ascending"] button::after { content: " \25B2"; font-size: 10px; }
-th[aria-sort="descending"] button::after { content: " \25BC"; font-size: 10px; }
-.streak-W { color: var(--good); font-weight: 700; }
-.streak-L { color: var(--bad); font-weight: 700; }
-.spark { display: block; color: var(--turf); }
-.spark .base { stroke: var(--line); }
-.spark .end { fill: var(--flag); stroke: var(--turf-deep); stroke-width: 1; }
-.legend-line { margin-top: 12px; font-size: 14px; color: var(--muted); max-width: 80ch; }
-
-/* Luck chart */
-.chartwrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); padding: 16px 8px 6px; }
-.chartwrap svg { display: block; min-width: 640px; width: 100%; height: auto; }
-.chart-intro { color: var(--muted); max-width: 66ch; margin-bottom: 16px; }
-.c-label { fill: var(--fg); font: 600 13px var(--body); }
-.c-val { fill: var(--muted); font: 500 12.5px var(--body); }
-.c-tick { fill: var(--muted); font: 500 11.5px var(--body); }
-.c-grid { stroke: var(--line); stroke-width: 1; }
-.c-act { stroke: var(--fg); stroke-width: 1.5; }
-.c-exp { fill: var(--surface); stroke-width: 2; }
-.key { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 14px; color: var(--muted); margin: 10px 4px 6px; }
-.key span { display: inline-flex; align-items: center; gap: 6px; }
-.dot-act, .dot-exp { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
-.dot-act { background: var(--fg); }
-.dot-exp { border: 2px solid var(--muted); }
-
-/* Week 7 slate */
-.matches { margin-top: 32px; }
-.match { padding: 36px 0; border-bottom: 1px solid var(--line); }
-.match:first-child { padding-top: 0; }
-.match h3 { font-size: clamp(22px, 3vw, 28px); line-height: 1.1; margin-bottom: 20px; max-width: 34ch; }
-.vs { display: grid; grid-template-columns: minmax(0, 1fr) minmax(140px, 260px) minmax(0, 1fr); gap: 20px; align-items: center; }
-.side.r { text-align: right; }
-.side .tn { font-family: var(--display); font-weight: 700; font-size: clamp(20px, 2.6vw, 26px); line-height: 1.1; overflow-wrap: anywhere; }
-.side .mg { margin-top: 4px; font-size: 14px; color: var(--muted); }
-.side .rec { font-weight: 700; font-variant-numeric: tabular-nums; }
-.fav .tn { box-shadow: inset 0 -0.14em 0 var(--turf); display: inline; }
-.meter { min-width: 0; }
-.bar { display: flex; gap: 3px; height: 14px; }
-.bar i { display: block; height: 100%; }
-.bar .a { background: var(--turf); }
-.bar .b { background: var(--alt); }
-.bar-note { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); margin-top: 6px; font-variant-numeric: tabular-nums; }
-.bar-note span:nth-child(2) { text-align: center; }
-.bar-note span:first-child, .bar-note span:last-child { color: var(--fg); font-weight: 700; font-size: 15px; }
-.oddswrap { margin-top: 22px; overflow-x: auto; background: var(--surface); border: 1px solid var(--line); }
-.odds { min-width: 680px; table-layout: fixed; }
-.odds th:first-child { width: 24%; }
-.odds .form { border-left: 1px solid var(--line); }
-.odds th, .odds td { padding: 8px 12px; font-size: 15px; }
-.odds th { font-size: 13px; }
-.odds td.team { white-space: normal; overflow-wrap: anywhere; font-weight: 600; }
-.odds tbody td.num { font-weight: 700; }
-.odds tbody td.form, .odds tbody td.form-n { font-weight: 400; color: var(--muted); }
-.odds tfoot .tot { display: flex; flex-wrap: wrap; gap: 6px 28px; }
-.odds tfoot td { border-bottom: 0; background: color-mix(in srgb, var(--flag) 24%, var(--surface)); font-size: 14px; }
-.odds tfoot b { font-weight: 700; }
-.edge { margin-top: 14px; color: var(--muted); max-width: 72ch; }
-.edge b { color: var(--fg); font-weight: 700; }
-.flagnote { margin-top: 10px; max-width: 72ch; font-size: 15px; background: color-mix(in srgb, var(--flag) 24%, var(--surface)); border-left: 5px solid var(--flag); padding: 9px 12px; color: var(--fg); }
-
-/* League notes */
-.notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 8px 40px; }
-.note-card { padding: 16px 0 8px; border-top: 1px solid var(--line); }
-.note-card h3 { font-size: 24px; margin-bottom: 10px; }
-.note-card ul { margin: 0; padding-left: 18px; display: grid; gap: 9px; color: var(--muted); font-size: 16px; }
-.note-card li::marker { color: var(--turf); }
-.note-card li b { color: var(--fg); font-weight: 600; }
-
-
-/* Added sections */
-.tlink { background: none; border: 0; padding: 0; margin: 0; font: inherit; font-weight: 700; color: inherit; text-align: left; cursor: pointer; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
-.tlink:hover { text-decoration-color: var(--turf); }
-.sub-head { font-size: 24px; text-transform: uppercase; margin: 36px 0 12px; }
-.dim { color: var(--muted); font-weight: 400; }
-.grid td.heat { text-align: center; font-size: 14px; padding: 9px 6px; }
-.grid th.num { text-align: center; padding-inline: 6px; }
-#seed-table { min-width: 860px; }
-#h2h-table { min-width: 860px; }
-#h2h-table td.h2h { text-align: center; font-size: 13px; padding: 7px 6px; line-height: 1.3; }
-#h2h-table td.self { background: var(--line); }
-#h2h-table .w { color: var(--good); font-weight: 700; }
-#h2h-table .l { color: var(--bad); font-weight: 700; }
-#h2h-table .up { color: var(--muted); }
-.dist { display: block; color: var(--turf); }
-.dist text { fill: var(--muted); font: 500 10px var(--body); }
-.note-card p { color: var(--muted); font-size: 16px; }
-.note-card p b { color: var(--fg); font-weight: 600; }
-.nav .tools { margin-left: auto; }
-.navbtn { background: none; border: 1px solid var(--line); color: var(--muted); font: 600 13px var(--body); padding: 5px 12px; margin: 8px 0; cursor: pointer; white-space: nowrap; }
-.navbtn:hover { color: var(--fg); border-color: var(--fg); }
-dialog.team-card { width: min(680px, calc(100vw - 24px)); max-height: calc(100vh - 32px); padding: 0; border: 1px solid var(--line); background: var(--surface); color: var(--fg); overflow: hidden; flex-direction: column; }
-dialog.team-card[open] { display: flex; }
-dialog.team-card::backdrop { background: rgba(14, 8, 22, 0.66); }
-.dlg-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; padding: 18px 20px 12px; border-bottom: 3px solid var(--fg); }
-.dlg-head h3 { font-size: clamp(24px, 6vw, 34px); line-height: 1; text-transform: uppercase; }
-.dlg-sub { color: var(--muted); font-size: 14px; margin-top: 4px; }
-.dlg-x { background: none; border: 1px solid var(--line); color: var(--muted); font: 600 13px var(--body); padding: 5px 12px; cursor: pointer; }
-.dlg-x:hover { color: var(--fg); border-color: var(--fg); }
-.dlg-body { padding: 16px 20px 22px; overflow-y: auto; }
-.dlg-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)); gap: 10px 16px; margin: 0 0 18px; }
-.dlg-stats div { border-left: 3px solid var(--flag); padding-left: 9px; }
-.dlg-stats dt { font-size: 13px; color: var(--muted); }
-.dlg-stats dd { margin: 0; font-weight: 700; font-size: 17px; }
-table.mini { min-width: 0; }
-table.mini th, table.mini td { padding: 8px 10px; font-size: 14px; }
-table.mini td.team { white-space: normal; }
-table.mini tr.upc td { color: var(--muted); }
-
-footer { background: var(--turf-deep); color: #bdb0d0; border-top: 6px solid var(--flag); }
-footer .wrap { padding-block: 28px 40px; font-size: 14px; display: grid; gap: 8px; }
-footer .wrap > * { max-width: 80ch; }
-
-@media (max-width: 760px) {
-  .lead { grid-template-columns: 1fr; gap: 20px; }
-}
-@media (max-width: 560px) {
-  .field .wrap { padding-block: 44px 28px; }
-  .yards span:nth-child(even) { visibility: hidden; }
-  section { padding-top: 44px; }
-  .vs { grid-template-columns: 1fr 1fr; grid-template-areas: "a b" "m m"; gap: 14px 16px; }
-  .vs .side:first-child { grid-area: a; }
-  .vs .side.r { grid-area: b; }
-  .vs .meter { grid-area: m; }
-  .board { padding: 18px 14px; gap: 8px; }
-  .odds th, .odds td { padding: 7px 6px; font-size: 14px; }
-  .odds th { font-size: 12px; }
-}
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
-</style>
-</head>
-<body>
-
-<header class="field">
-  <div class="wrap">
-    <p class="kicker">Week 7 press box</p>
-    <h1>F's for Kamala</h1>
-    <p class="sub">Headlines, standings and matchup previews for F's for Kamala.</p>
-    <dl class="meta">
-      <div><dt>Data through</dt><dd>Week 6 and Wednesday's waiver run</dd></div>
-      <div><dt>Posted</dt><dd>Wed, Oct 21, 2026</dd></div>
-      <div><dt>Playoffs</dt><dd>6 teams, start Week 15</dd></div>
-      <div><dt>Trade deadline</dt><dd>Week 11</dd></div>
-    </dl>
-  </div>
-  <div class="yards" aria-hidden="true"><span>10</span><span>20</span><span>30</span><span>40</span><span>50</span><span>40</span><span>30</span><span>20</span><span>10</span></div>
-</header>
-
-<nav class="nav" aria-label="Sections">
-  <ul class="wrap">
-    <li><a href="#stories">Headlines</a></li>
-    <li><a href="#standings">Standings</a></li>
-    <li><a href="#power">Power</a></li>
-    <li><a href="#seeds">Seeds</a></li>
-    <li><a href="#awards">Awards</a></li>
-    <li><a href="#rivals">Head to head</a></li>
-    <li><a href="#luck">Luck check</a></li>
-    <li><a href="#week7">Week 7</a></li>
-    <li><a href="#corner">Trash talk</a></li>
-    <li><a href="#around">Around the league</a></li>
-    <li class="tools"><button type="button" class="navbtn" id="sharebtn">Share card</button></li>
-    <li><button type="button" class="navbtn" id="themebtn">Dark mode</button></li>
-  </ul>
-</nav>
-
-<main>
-<div class="wrap">
-
-<section id="stories">
-  <div class="sec-head"><h2>Last week's headlines</h2><span class="note">Week 6 results</span></div>
-
-  <article class="lead">
-    <div class="board" role="img" aria-label="Blueeeeyyyyyy bomb squad 150.36, Kiffin's Kittens 144.18">
-      <div><span class="pts">150.36</span><span class="team">Bomb Squad</span></div>
-      <div class="dash">–</div>
-      <div class="r lose"><span class="pts">144.18</span><span class="team">Kiffin's Kittens</span></div>
-    </div>
-    <div>
-      <p class="cat">Top score</p>
-      <h3>Bomb Squad posts the week's high score, and the Nabers trade looks like a heist</h3>
-      <p>Blueeeeyyyyyy bomb squad scored <b>150.36</b> and edged Kiffin's Kittens 144.18. Malik Nabers had <b>28.5</b>. The player sent out for him, Omarion Hampton, scored 7.9 on kcnotbuns's bench the same week.</p>
-    </div>
-  </article>
-
-  <div class="story-run">
-    <article class="story">
-      <p class="cat">Bench watch</p>
-      <h3>Kittens lose by 6 with 27 points sitting on the bench</h3>
-      <p>Kiffin's Kittens fell by <b>6.18</b> while one bench player (ID 12545, name unresolved) scored <b>26.96</b>. If he was flex-eligible, swapping him for the 10.1-point flex would have flipped the game.</p>
-    </article>
-    <article class="story">
-      <p class="cat">Bench watch</p>
-      <h3>Bijana starts a 0.0 tight end, loses by 4.7, and benches an 18.5</h3>
-      <p>Picken Good Bijana lost 126.6 to 121.9. Colston Loveland scored <b>18.5</b> on the bench while the starting tight end scored 0.0. Loveland is in the Week 7 lineup.</p>
-    </article>
-    <article class="story">
-      <p class="cat">Rock bottom</p>
-      <h3>Make Bama Great Again! posts the season's lowest score, 56.62</h3>
-      <p>Lamar Jackson scored 0.0, while Stefon Diggs (<b>16.4</b>) and kicker Jason Myers (<b>7.0</b>) sat on the bench. Overnight, TTLEE25 fired off seven waiver claims in about two minutes, and four bounced because the roster was full.</p>
-    </article>
-    <article class="story">
-      <p class="cat">Luck check</p>
-      <h3>Club Space is 4-2 on a very soft schedule</h3>
-      <p>They own the <b>7th-most points</b> in the league, and opponents have scored a league-low 630.8 against them. Week 6's win came with 103.2, the lowest winning score of the week. Scored against everyone each week, they'd have about 2.1 wins.</p>
-    </article>
-    <article class="story">
-      <p class="cat">Still winless</p>
-      <h3>Azzfaulters are 0-6 and should have about two wins</h3>
-      <p>They rank 8th of 10 in points scored, so the record is worse than the scoring. A 147.22 in Week 4 lost by <b>4.38</b>, and a 129.98 in Week 2 lost to a 144.80. They hold first waiver priority.</p>
-    </article>
-    <article class="story">
-      <p class="cat">Offense</p>
-      <h3>Hanginwithhernandez has the league's best offense and a two-game skid</h3>
-      <p>Highest points for (<b>924.2</b>, 154.0 per game), but losses in Weeks 5 and 6. The 165.54 in Week 5 would have beaten seven of the nine other teams that week. Only JoshisAntifa's 210.64 and Bijana's 172.86 were higher.</p>
-    </article>
-    <article class="story">
-      <p class="cat">Record watch</p>
-      <h3>JoshisAntifa's 210.64 is the score to beat</h3>
-      <p>The season high came in Week 5 and kicked off a four-game win streak that has them 5-1. In Week 6, Trevor Lawrence added 27.3 and Isaiah Likely added 23.9.</p>
-    </article>
-  </div>
-</section>
-
-<section id="standings">
-  <div class="sec-head"><h2>Standings</h2><span class="note">Tiebreaker assumed: points for</span></div>
-  <div class="tablewrap" tabindex="0" role="region" aria-label="League standings">
-    <table id="standings-table"><thead><tr></tr></thead><tbody></tbody></table>
-  </div>
-  <p class="legend-line">Weekly score strips run Week 1 to Week <span class="js-g">6</span> on one shared scale, <span class="js-lo">50</span> to <span class="js-hi">220</span> points. The lavender dot is the latest week. Exp. W is each week's score measured against all nine other teams, divided by nine.</p>
-  <p class="legend-line">Playoff % is the share of 20,000 simulated seasons in which a team finishes in the top six after the Week 14 regular season. Each simulated week draws a score for every team from its own season average and week-to-week swing, using the projected lineup total for the upcoming week, and ties are broken by points for. Click any column heading to sort; click again to reverse. Luck is wins minus expected wins. Proj. W is the simulation's average final win total. Sched. left is the average points per game of the opponents still to come, so a lower number is an easier schedule. Click a team name anywhere on the page for its team card.</p>
-</section>
-
-<section id="power">
-  <div class="sec-head"><h2>Power rankings</h2><span class="note">Not the standings</span></div>
-  <div class="tablewrap" tabindex="0" role="region" aria-label="Power rankings">
-    <table id="power-table"><thead><tr></tr></thead><tbody></tbody></table>
-  </div>
-  <p class="legend-line">The index blends 40% season points per game, 30% the last three weeks and 30% all-play win rate, each compared with the rest of the league. "Vs. record" shows how far a team's power rank sits above or below its place in the standings.</p>
-</section>
-
-<section id="seeds">
-  <div class="sec-head"><h2>Seeds and the bubble</h2><span class="note">Playoff simulation</span></div>
-  <h3 class="sub-head">Chance of each seed</h3>
-  <div class="tablewrap" tabindex="0" role="region" aria-label="Seed odds grid">
-    <table id="seed-table" class="grid"></table>
-  </div>
-  <p class="legend-line">Each cell is the percent of 20,000 simulated seasons in which the team finishes in that spot after Week 14. The top six make the playoffs. A dash means under half a percent.</p>
-  <h3 class="sub-head">Clinch and elimination tracker</h3>
-  <div class="tablewrap" tabindex="0" role="region" aria-label="Clinch and elimination tracker">
-    <table id="bubble-table"></table>
-  </div>
-  <p class="legend-line">"Even odds at" is the lowest final win total that made the playoffs in at least half of the simulated seasons where a team finished with it. "Safe at" is the same cutoff at 95%.</p>
-  <h3 class="sub-head">Where the win totals land</h3>
-  <div class="tablewrap" tabindex="0" role="region" aria-label="Final win total chances">
-    <table id="dist-table"></table>
-  </div>
-</section>
-
-<section id="awards">
-  <div class="sec-head"><h2>Awards and records</h2><span class="note" id="award-note">Week 6 results</span></div>
-  <div class="notes" id="award-cards"></div>
-  <h3 class="sub-head">Season records</h3>
-  <div class="notes" id="record-cards"></div>
-  <h3 class="sub-head">Bench points</h3>
-  <div class="tablewrap" tabindex="0" role="region" aria-label="Bench points">
-    <table id="bench-table"><thead><tr></tr></thead><tbody></tbody></table>
-  </div>
-  <p class="legend-line">Bench points are every point scored by players who were not in the starting lineup. Positions and lineup slots limit what could have been started, so this is not all points left on the table.</p>
-</section>
-
-<section id="rivals">
-  <div class="sec-head"><h2>Head to head</h2><span class="note">This season</span></div>
-  <div class="tablewrap" tabindex="0" role="region" aria-label="Head to head results">
-    <table id="h2h-table" class="grid"></table>
-  </div>
-  <p class="legend-line">Rows show how each team did against the team in the column, with the scoring margin. Upcoming meetings show the week. Only this season is counted.</p>
-</section>
-
-<section id="luck">
-  <div class="sec-head"><h2>Luck check</h2><span class="note">Actual wins vs expected wins</span></div>
-  <p class="chart-intro">A filled dot is the record. A hollow dot is what the scoring says the record should be. Rose means the team has won more than its scores earned, blue means fewer.</p>
-  <div class="chartwrap" tabindex="0" role="region" aria-label="Actual wins versus expected wins by team">
-    <svg id="luck-chart" viewBox="0 0 720 420" role="img" aria-label="Dumbbell chart of actual wins and expected wins for each team"></svg>
-  </div>
-  <div class="key">
-    <span><i class="dot-act"></i> Actual wins</span>
-    <span><i class="dot-exp"></i> Expected wins</span>
-  </div>
-</section>
-
-<section id="week7">
-  <div class="sec-head"><h2>Week 7 matchups</h2><span class="note">Favorite is underlined</span></div>
-  <p class="chart-intro">House lines, not from a sportsbook. Each team is projected from player projections for the lineup it has set, and the spread, moneyline and totals come from that plus how much each team's score has swung week to week. No vig.</p>
-  <div class="matches">
-
-    <article class="match" data-a="Blueeeeyyyyyy bomb squad" data-b="Azzfaulters">
-      <h3>Winless Azzfaulters get a shot at a playoff-bubble team</h3>
-      <div class="vs">
-        <div class="side fav"><div class="tn">Blueeeeyyyyyy bomb squad</div><div class="mg"><span class="rec">3-3</span>, 5th, trentxsweat</div></div>
-        <div class="meter"><div class="bar"><i class="a" style="width:53.8%"></i><i class="b" style="width:46.2%"></i></div><div class="bar-note"><span>140.1</span><span>per game</span><span>120.3</span></div></div>
-        <div class="side r"><div class="tn">Azzfaulters</div><div class="mg"><span class="rec">0-6</span>, 10th, ohmygodfrey2</div></div>
-      </div>
-      <p class="edge"><b>Edge: Bomb Squad.</b> Projected lineups favor Bomb Squad, 141.8 to 114.9. Bomb Squad swapped KC for DEN at defense this morning. Azzfaulters have first waiver priority.</p>
-    </article>
-
-    <article class="match" data-a="Beggars" data-b="JoshisAntifa">
-      <h3>The six seed meets the one seed</h3>
-      <div class="vs">
-        <div class="side fav"><div class="tn">Beggars</div><div class="mg"><span class="rec">3-3</span>, 6th, jrk3</div></div>
-        <div class="meter"><div class="bar"><i class="a" style="width:46.6%"></i><i class="b" style="width:53.4%"></i></div><div class="bar-note"><span>128.0</span><span>per game</span><span>146.4</span></div></div>
-        <div class="side r"><div class="tn">JoshisAntifa</div><div class="mg"><span class="rec">5-1</span>, 1st, snakyjester</div></div>
-      </div>
-      <p class="edge"><b>Edge: Beggars.</b> Projected lineups have it close, 140.8 to 139.3. Beggars have the third-highest week of the season, a 180.98 in Week 4, but also an 86.26 and a 93.42.</p>
-    </article>
-
-    <article class="match" data-a="kcnotbuns" data-b="Kiffin&#39;s Kittens">
-      <h3>A bubble team faces the league's best point differential</h3>
-      <div class="vs">
-        <div class="side"><div class="tn">kcnotbuns</div><div class="mg"><span class="rec">3-3</span>, 7th, kcnotbuns</div></div>
-        <div class="meter"><div class="bar"><i class="a" style="width:43.8%"></i><i class="b" style="width:56.2%"></i></div><div class="bar-note"><span>119.3</span><span>per game</span><span>153.4</span></div></div>
-        <div class="side r fav"><div class="tn">Kiffin's Kittens</div><div class="mg"><span class="rec">4-2</span>, 3rd, stpederson</div></div>
-      </div>
-      <p class="edge"><b>Edge: Kittens.</b> Projected lineups favor the Kittens, 141.2 to 135.3. The Kittens are +150 in points for versus against, kcnotbuns is -126. kcnotbuns changed quarterbacks this morning, dropping Jayden Daniels, who scored 21.0 last week.</p>
-    </article>
-
-    <article class="match" data-a="Hanginwithhernandez" data-b="Club Space">
-      <h3>Best offense vs softest schedule</h3>
-      <div class="vs">
-        <div class="side"><div class="tn">Hanginwithhernandez</div><div class="mg"><span class="rec">4-2</span>, 2nd, milsted</div></div>
-        <div class="meter"><div class="bar"><i class="a" style="width:54.9%"></i><i class="b" style="width:45.1%"></i></div><div class="bar-note"><span>154.0</span><span>per game</span><span>126.7</span></div></div>
-        <div class="side r fav"><div class="tn">Club Space</div><div class="mg"><span class="rec">4-2</span>, 4th, Couget25</div></div>
-      </div>
-      <p class="edge"><b>Edge: Club Space.</b> Projected lineups give Club Space 123.7 to 109.8, even with the empty kicker slot. Hanginwithhernandez are trying to snap a two-game skid.</p>
-      <p class="flagnote">Club Space's lineup showed an empty kicker slot after Cam Little was dropped this morning. Worth a check before Thursday.</p>
-    </article>
-
-    <article class="match" data-a="Picken Good Bijana" data-b="Make Bama Great Again!">
-      <h3>The #2 and #3 overall picks meet at 2-4</h3>
-      <div class="vs">
-        <div class="side fav"><div class="tn">Picken Good Bijana</div><div class="mg"><span class="rec">2-4</span>, 8th, HunnaNe</div></div>
-        <div class="meter"><div class="bar"><i class="a" style="width:53.7%"></i><i class="b" style="width:46.3%"></i></div><div class="bar-note"><span>130.8</span><span>per game</span><span>113.0</span></div></div>
-        <div class="side r"><div class="tn">Make Bama Great Again!</div><div class="mg"><span class="rec">2-4</span>, 9th, TTLEE25</div></div>
-      </div>
-      <p class="edge"><b>Edge: Picken Good Bijana.</b> Projected lineups favor them, 124.3 to 114.0. Bijan Robinson scored 7.3 last week. Both teams are two games out of the six-team cut.</p>
-      <p class="flagnote">Make Bama Great Again! have Lamar Jackson at quarterback, and the projection data lists him as Out with an ankle sprain, so he counts as zero in their projection. Worth a check before Thursday.</p>
-    </article>
-
-  </div>
-</section>
-
-<section id="corner">
-  <div class="sec-head"><h2>Trash talk corner</h2><span class="note">All in good fun</span></div>
-  <div class="notes">
-    <div class="note-card">
-      <h3>Winless, not hopeless</h3>
-      <p>Azzfaulters are 0-6 but have scored <b>721.9</b> points, more than kcnotbuns (716.0) and Make Bama Great Again! (677.7). Their closest loss was by 4.4 to Hanginwithhernandez in Week 4.</p>
-    </div>
-    <div class="note-card">
-      <h3>Floor, meet basement</h3>
-      <p>Make Bama Great Again! scored <b>56.62</b> in Week 6, the lowest team total of the season. The next-lowest, Bijana's 70.32 in Week 2, now looks like a good week by comparison.</p>
-    </div>
-    <div class="note-card">
-      <h3>Stingy, not scary</h3>
-      <p>Club Space has allowed the fewest points in the league (<b>630.8</b>) while scoring the seventh-most (760.1). The simulation still has them at 79% to make the playoffs.</p>
-    </div>
-  </div>
-</section>
-
-<section id="around">
-  <div class="sec-head"><h2>Around the league</h2><span class="note">Trades, waivers, draft</span></div>
-  <div class="notes">
-    <div class="note-card">
-      <h3>Trades</h3>
-      <ul>
-        <li><b>Only three so far, all in one week.</b></li>
-        <li><b>Bomb Squad and kcnotbuns.</b> Nabers for Hampton. Nabers 28.5, Hampton 7.9 last week.</li>
-        <li><b>JoshisAntifa and Kittens.</b> JoshisAntifa received Travis Kelce and Kyren Williams, the Kittens received Nico Collins. JoshisAntifa is 5-1, the Kittens 4-2.</li>
-        <li><b>Azzfaulters and kcnotbuns.</b> Azzfaulters received Cam Skattebo and Emeka Egbuka for Jeremiyah Love. Azzfaulters are still winless.</li>
-      </ul>
-    </div>
-    <div class="note-card">
-      <h3>Waiver wire</h3>
-      <ul>
-        <li><b>Four teams bid on the CLE defense.</b> Bomb Squad, Beggars, JoshisAntifa and Club Space all put in claims. Club Space won.</li>
-        <li><b>Seven claims in about two minutes.</b> TTLEE25 got three through. Four failed with "roster too full."</li>
-        <li><b>DJ Moore changed hands.</b> Azzfaulters dropped him and Bomb Squad claimed him.</li>
-        <li><b>Waiver order.</b> Azzfaulters, kcnotbuns, Hanginwithhernandez, Kittens, Bijana, Bomb Squad, Beggars, Club Space, JoshisAntifa, Make Bama.</li>
-      </ul>
-    </div>
-    <div class="note-card">
-      <h3>Draft day, revisited</h3>
-      <ul>
-        <li><b>#1 pick Jahmyr Gibbs</b> belongs to the 5-1 team.</li>
-        <li><b>#2 pick Bijan Robinson and #3 pick Ja'Marr Chase</b> belong to the two 2-4 teams.</li>
-        <li><b>#9 pick CeeDee Lamb</b> belongs to the 0-6 team.</li>
-        <li><b>Late-round value in Week 6.</b> Trevor Lawrence (round 8) 27.3, Isaiah Likely (round 11) 23.9, Matthew Golden (round 12) 22.4.</li>
-      </ul>
-    </div>
-    <div class="note-card">
-      <h3>Scoring by week</h3>
-      <ul>
-        <li><b>League average per team.</b> Week 1 138.1, Week 2 126.0, Week 3 132.5, Week 4 143.9, Week 5 140.6, Week 6 118.2.</li>
-        <li><b>Week 6 was the lowest-scoring week</b> of the season so far, at 118.2 per team.</li>
-        <li><b>Season highs.</b> JoshisAntifa 210.64 (Week 5), Kittens 193.10 (Week 4), Beggars 180.98 (Week 4).</li>
-        <li><b>Season low.</b> Make Bama 56.62 (Week 6), then Bijana 70.32 (Week 2).</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-</div>
-</main>
-
-<footer>
-  <div class="wrap">
-    <p>Built from Sleeper league data through Week 6 plus Wednesday's waiver run. Week 7 has not started, so no scores are final.</p>
-    <p>A few pickups appeared only as player IDs, so they are left unnamed. Claims about bench points assume the benched player was eligible for the slot.</p>
-    <p>Projected points are Sleeper player projections for each lineup as set Wednesday morning. A starter with no Week 7 projection counts as zero (two for Hanginwithhernandez, one for Picken Good Bijana), and lineups can change before kickoff.</p>
-  </div>
-</footer>
-
-<script>
-(function () {
-  var T = [
-    { n: "JoshisAntifa", m: "snakyjester", w: 5, l: 1, pf: 878.40, pa: 757.72, st: "W4", ap: 33, s: [159.50,102.26,146.38,123.78,210.64,135.84], pj: 139.3, sch: ["Beggars", "Club Space", "Picken Good Bijana", "Kiffin's Kittens", "Blueeeeyyyyyy bomb squad", "kcnotbuns", "Make Bama Great Again!", "Hanginwithhernandez"], opp: ["Kiffin's Kittens", "Blueeeeyyyyyy bomb squad", "kcnotbuns", "Make Bama Great Again!", "Hanginwithhernandez", "Azzfaulters"], bn: [53.2, 49.3, 16.4, 63.6, 16.0, 13.3], bb: [27.8, 39.5, 7.4, 28.0, 11.0, 6.9], sh: "Josh" },
-    { n: "Hanginwithhernandez", m: "milsted", w: 4, l: 2, pf: 924.16, pa: 865.20, st: "L2", ap: 43, s: [167.60,164.56,164.84,151.60,165.54,110.02], pj: 109.8, sch: ["Club Space", "Picken Good Bijana", "Kiffin's Kittens", "Blueeeeyyyyyy bomb squad", "kcnotbuns", "Make Bama Great Again!", "Azzfaulters", "JoshisAntifa"], opp: ["Blueeeeyyyyyy bomb squad", "kcnotbuns", "Make Bama Great Again!", "Azzfaulters", "JoshisAntifa", "Beggars"], bn: [28.5, 37.3, 41.2, 42.4, 40.0, 27.9], bb: [8.1, 13.5, 21.0, 21.6, 15.4, 14.3], sh: "Hangin" },
-    { n: "Kiffin's Kittens", m: "stpederson", w: 4, l: 2, pf: 920.36, pa: 770.22, st: "L1", ap: 42, s: [155.36,154.24,153.94,193.10,119.54,144.18], pj: 141.2, sch: ["kcnotbuns", "Make Bama Great Again!", "Hanginwithhernandez", "JoshisAntifa", "Beggars", "Club Space", "Picken Good Bijana", "Azzfaulters"], opp: ["JoshisAntifa", "Beggars", "Club Space", "Picken Good Bijana", "Azzfaulters", "Blueeeeyyyyyy bomb squad"], bn: [47.0, 32.9, 46.4, 48.2, 4.5, 68.8], bb: [21.7, 29.0, 23.8, 22.8, 2.6, 27.0], sh: "Kittens" },
-    { n: "Club Space", m: "Couget25", w: 4, l: 2, pf: 760.14, pa: 630.82, st: "W1", ap: 19, s: [143.86,153.22,107.36,144.02,108.48,103.20], pj: 123.7, sch: ["Hanginwithhernandez", "JoshisAntifa", "Beggars", "Azzfaulters", "Picken Good Bijana", "Kiffin's Kittens", "Blueeeeyyyyyy bomb squad", "kcnotbuns"], opp: ["Azzfaulters", "Picken Good Bijana", "Kiffin's Kittens", "Blueeeeyyyyyy bomb squad", "kcnotbuns", "Make Bama Great Again!"], bn: [34.6, 32.8, 94.3, 50.6, 13.4, 0.0], bb: [18.0, 13.6, 25.9, 18.0, 5.7, 0.0], sh: "Club" },
-    { n: "Blueeeeyyyyyy bomb squad", m: "trentxsweat", w: 3, l: 3, pf: 840.76, pa: 817.18, st: "W1", ap: 31, s: [136.46,124.88,144.88,128.92,155.26,150.36], pj: 141.8, sch: ["Azzfaulters", "kcnotbuns", "Make Bama Great Again!", "Hanginwithhernandez", "JoshisAntifa", "Beggars", "Club Space", "Picken Good Bijana"], opp: ["Hanginwithhernandez", "JoshisAntifa", "Beggars", "Club Space", "Picken Good Bijana", "Kiffin's Kittens"], bn: [28.3, 41.3, 55.4, 40.3, 38.1, 12.0], bb: [10.3, 14.2, 20.6, 18.4, 17.5, 4.9], sh: "Bomb Sq" },
-    { n: "Beggars", m: "jrk3", w: 3, l: 3, pf: 767.90, pa: 765.38, st: "W1", ap: 25, s: [163.06,93.42,86.26,180.98,113.14,131.04], pj: 140.8, sch: ["JoshisAntifa", "Azzfaulters", "Club Space", "Picken Good Bijana", "Kiffin's Kittens", "Blueeeeyyyyyy bomb squad", "kcnotbuns", "Make Bama Great Again!"], opp: ["Picken Good Bijana", "Kiffin's Kittens", "Blueeeeyyyyyy bomb squad", "kcnotbuns", "Make Bama Great Again!", "Hanginwithhernandez"], bn: [65.3, 42.0, 9.9, 26.1, 3.7, 44.4], bb: [23.7, 22.5, 7.0, 11.4, 3.7, 16.5], sh: "Beggars" },
-    { n: "kcnotbuns", m: "kcnotbuns", w: 3, l: 3, pf: 715.96, pa: 841.96, st: "W2", ap: 17, s: [127.40,121.80,108.88,117.52,113.76,126.60], pj: 135.3, sch: ["Kiffin's Kittens", "Blueeeeyyyyyy bomb squad", "Azzfaulters", "Make Bama Great Again!", "Hanginwithhernandez", "JoshisAntifa", "Beggars", "Club Space"], opp: ["Make Bama Great Again!", "Hanginwithhernandez", "JoshisAntifa", "Beggars", "Club Space", "Picken Good Bijana"], bn: [20.8, 23.7, 37.2, 40.4, 9.5, 39.6], bb: [7.8, 14.6, 11.8, 19.3, 4.9, 25.7], sh: "kcnot" },
-    { n: "Picken Good Bijana", m: "HunnaNe", w: 2, l: 4, pf: 784.70, pa: 917.72, st: "L1", ap: 27, s: [100.82,70.32,167.84,150.96,172.86,121.90], pj: 124.3, sch: ["Make Bama Great Again!", "Hanginwithhernandez", "JoshisAntifa", "Beggars", "Club Space", "Azzfaulters", "Kiffin's Kittens", "Blueeeeyyyyyy bomb squad"], opp: ["Beggars", "Club Space", "Azzfaulters", "Kiffin's Kittens", "Blueeeeyyyyyy bomb squad", "kcnotbuns"], bn: [38.2, 42.6, 25.6, 41.4, 6.9, 54.0], bb: [15.5, 14.3, 11.1, 26.2, 3.9, 19.8], sh: "Bijana" },
-    { n: "Make Bama Great Again!", m: "TTLEE25", w: 2, l: 4, pf: 677.70, pa: 762.34, st: "L1", ap: 16, s: [119.66,144.80,118.04,100.68,137.90,56.62], pj: 114.0, sch: ["Picken Good Bijana", "Kiffin's Kittens", "Blueeeeyyyyyy bomb squad", "kcnotbuns", "Azzfaulters", "Hanginwithhernandez", "JoshisAntifa", "Beggars"], opp: ["kcnotbuns", "Azzfaulters", "Hanginwithhernandez", "JoshisAntifa", "Beggars", "Club Space"], bn: [55.8, 30.5, 43.4, 31.9, 28.8, 23.4], bb: [24.7, 16.2, 19.7, 13.5, 16.7, 16.4], sh: "Bama" },
-    { n: "Azzfaulters", m: "ohmygodfrey2", w: 0, l: 6, pf: 721.94, pa: 863.48, st: "L6", ap: 17, s: [107.26,129.98,126.48,147.22,108.62,102.38], pj: 114.9, sch: ["Blueeeeyyyyyy bomb squad", "Beggars", "kcnotbuns", "Club Space", "Make Bama Great Again!", "Picken Good Bijana", "Hanginwithhernandez", "Kiffin's Kittens"], opp: ["Club Space", "Make Bama Great Again!", "Picken Good Bijana", "Hanginwithhernandez", "Kiffin's Kittens", "JoshisAntifa"], bn: [35.0, 45.5, 39.5, 33.1, 46.5, 0.0], bb: [12.6, 27.0, 20.9, 13.7, 24.6, 0.0], sh: "Azz" }
-  ];
-  function f1(v) { return v.toFixed(1); }
-  // Weeks played and the shared score range come from the data, so weekly updates only touch T
-  var all = [].concat.apply([], T.map(function (t) { return t.s; }));
-  var G = Math.max.apply(null, T.map(function (t) { return t.s.length; }));
-  var LO = Math.floor(Math.min.apply(null, all) / 10) * 10, HI = Math.ceil(Math.max.apply(null, all) / 10) * 10;
-
-  function spark(scores) {
-    var W = 100, H = 30, lo = LO, hi = HI, px = 4, pts = [], i;
-    function X(k) { return px + k * ((W - 2 * px) / (scores.length - 1)); }
-    function Y(v) { return H - 3 - ((v - lo) / (hi - lo)) * (H - 6); }
-    for (i = 0; i < scores.length; i++) pts.push(X(i).toFixed(1) + "," + Y(scores[i]).toFixed(1));
-    var last = scores.length - 1;
-    return '<svg class="spark" width="100" height="30" viewBox="0 0 100 30" role="img" aria-label="Weekly scores ' + scores.map(function (v) { return Math.round(v); }).join(", ") + '">' +
-      '<line class="base" x1="0" y1="' + Y(130).toFixed(1) + '" x2="100" y2="' + Y(130).toFixed(1) + '" stroke-dasharray="2 3"/>' +
-      '<polyline points="' + pts.join(" ") + '" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>' +
-      '<circle class="end" cx="' + X(last).toFixed(1) + '" cy="' + Y(scores[last]).toFixed(1) + '" r="3.2"/></svg>';
-  }
-
-  /* ===== Season model: standings math, playoff odds, power rankings, awards, rivalries and team cards (all computed from T) ===== */
-  (function () {
-    var REG = 14, SIMS = 20000, SPOTS = 6, MINSD = 20;
-    var n = T.length, idx = {}, a, b, k, w, p;
-    T.forEach(function (t, q) { idx[t.n] = q; });
-    function zeros(m) { var r = []; while (m--) r.push(0); return r; }
-    function avg(x) { return x.reduce(function (s, v) { return s + v; }, 0) / x.length; }
-    function sdev(x) { var m = avg(x); return Math.max(MINSD, Math.sqrt(x.reduce(function (s, v) { return s + (v - m) * (v - m); }, 0) / (x.length - 1))); }
-    function sg(v, d) { return (v > 0 ? "+" : "") + v.toFixed(d); }
-    function tl(q) { return '<button type="button" class="tlink" data-t="' + q + '">' + T[q].n + '</button>'; }
-    function sum(x) { return x.reduce(function (s, v) { return s + v; }, 0); }
-    function ord(v) { var s = ["th", "st", "nd", "rd"], m = v % 100; return v + (s[(m - 20) % 10] || s[m] || s[0]); }
-    var ppg = T.map(function (t) { return avg(t.s); }), sdv = T.map(function (t) { return sdev(t.s); }), l3 = T.map(function (t) { return avg(t.s.slice(-3)); });
-    var left = Math.max.apply(null, T.map(function (t) { return (t.sch || []).length; }));
-    var res = T.map(function (t) { return t.s.map(function (sc, wk) { var o = idx[t.opp[wk]], os = T[o].s[wk]; return { wk: wk + 1, o: o, f: sc, ag: os, m: sc - os, win: sc > os }; }); });
-    var games = [];
-    T.forEach(function (t, q) { res[q].forEach(function (r) { if (r.o > q) games.push({ wk: r.wk, a: q, b: r.o, sa: r.f, sb: r.ag }); }); });
-
-    /* Playoff odds: simulate the rest of the regular season (weeks listed in each team's sch array) */
-    var seedN = [], winN = [], madeW = [], sumW = [], made = [], seed = 20261021;
-    for (a = 0; a < n; a++) { seedN.push(zeros(n)); winN.push(zeros(REG + 1)); madeW.push(zeros(REG + 1)); sumW.push(0); made.push(0); }
-    function rnd() { seed = seed + 0x6D2B79F5 | 0; var t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }
-    function gauss() { var u = 1 - rnd(), v = rnd(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }
-    for (p = 0; p < SIMS; p++) {
-      var Wn = T.map(function (t) { return t.w; }), Fp = T.map(function (t) { return t.pf; }), sc = [], order = [];
-      for (w = 0; w < left; w++) {
-        for (a = 0; a < n; a++) sc[a] = ((w === 0 && T[a].pj != null) ? T[a].pj : ppg[a]) + sdv[a] * gauss();
-        for (a = 0; a < n; a++) {
-          Fp[a] += sc[a];
-          b = idx[(T[a].sch || [])[w]];
-          if (b !== undefined && b > a) { if (sc[a] > sc[b]) Wn[a]++; else Wn[b]++; }
+      :root {
+        --bg: #f4f2f7;
+        --surface: #ffffff;
+        --fg: #1c1526;
+        --muted: #5f566b;
+        --line: #ddd6e6;
+        --turf: #7851a9;
+        --turf-a: #3b2759;
+        --turf-b: #33214e;
+        --turf-deep: #211630;
+        --chalk: #f6f3fa;
+        --flag: #c7aef0;
+        --flag-ink: #24153b;
+        --alt: #9fd8c9;
+        --lucky: #c2577a;
+        --unlucky: #3f7cc0;
+        --good: #2a7d57;
+        --bad: #b83a3a;
+        --display: "Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
+        --body: "Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg: #130e1b;
+          --surface: #1c1527;
+          --fg: #ece7f3;
+          --muted: #a99fb8;
+          --line: #322743;
+          --turf: #b293dc;
+          --turf-a: #33214e;
+          --turf-b: #2c1c44;
+          --turf-deep: #160f22;
+          --alt: #2f6f62;
+          --lucky: #e48aa8;
+          --unlucky: #7fb2ea;
+          --good: #5fc495;
+          --bad: #ee7d6c;
+          color-scheme: dark;
         }
       }
-      for (a = 0; a < n; a++) order.push(a);
-      order.sort(function (x, y) { return (Wn[y] - Wn[x]) || (Fp[y] - Fp[x]); });
-      for (k = 0; k < n; k++) {
-        a = order[k]; seedN[a][k]++;
-        var fw = Math.min(Wn[a], REG); winN[a][fw]++; sumW[a] += Wn[a];
-        if (k < SPOTS) { made[a]++; madeW[a][fw]++; }
+      :root[data-theme="dark"] {
+        --bg: #130e1b;
+        --surface: #1c1527;
+        --fg: #ece7f3;
+        --muted: #a99fb8;
+        --line: #322743;
+        --turf: #b293dc;
+        --turf-a: #33214e;
+        --turf-b: #2c1c44;
+        --turf-deep: #160f22;
+        --alt: #2f6f62;
+        --lucky: #e48aa8;
+        --unlucky: #7fb2ea;
+        --good: #5fc495;
+        --bad: #ee7d6c;
+        color-scheme: dark;
       }
-    }
-    var po = made.map(function (m) { return m / SIMS; }), pw = sumW.map(function (m) { return m / SIMS; });
-    function fmtPo(q) { return q > 0.995 ? ">99%" : q < 0.005 ? "<1%" : Math.round(q * 100) + "%"; }
-    var sos = T.map(function (t) { var s = t.sch || []; return s.length ? avg(s.map(function (nm) { return ppg[idx[nm]]; })) : 0; });
 
-    /* Power index: 40% season points per game, 30% last three weeks, 30% all-play win rate (z-scores) */
-    function zs(x) { var m = avg(x), s = Math.sqrt(avg(x.map(function (v) { return (v - m) * (v - m); }))) || 1; return x.map(function (v) { return (v - m) / s; }); }
-    var apr = T.map(function (t) { return t.ap / (9 * t.s.length); });
-    var zp = zs(ppg), zl = zs(l3), za = zs(apr);
-    var pidx = T.map(function (t, q) { return 0.4 * zp[q] + 0.3 * zl[q] + 0.3 * za[q]; });
-    var prank = T.map(function (t, q) { return 1 + pidx.filter(function (v) { return v > pidx[q]; }).length; });
-    var pscore = pidx.map(function (v) { return Math.round(50 + 15 * v); });
-
-    /* Generic sortable table: cols = [{ label, cls, v(row), html(row), first: 1 asc / -1 desc, sort: false }] */
-    function sorter(table, cols, rows, o) {
-      var head = table.tHead.rows[0], body = table.tBodies[0], key = o.key, dir = o.dir, key0 = o.key, dir0 = o.dir, by = {};
-      cols.forEach(function (c) { if (c.sort !== false) by[c.k] = c; });
-      head.innerHTML = cols.map(function (c) {
-        var cl = c.cls ? ' class="' + c.cls + '"' : "";
-        return c.sort === false ? '<th' + cl + '>' + c.label + '</th>' : '<th' + cl + ' data-k="' + c.k + '" aria-sort="none"><button type="button">' + c.label + '</button></th>';
-      }).join("");
-      function draw() {
-        var list = rows.slice(), c = by[key], natural = key === key0 && dir === dir0;
-        list.sort(function (x, y) { var u = c.v(x), v = c.v(y), d = typeof u === "string" ? u.localeCompare(v) : u - v; return d ? d * dir : x.i - y.i; });
-        body.innerHTML = list.map(function (r, pos) { return o.row(r, pos, natural, cols); }).join("");
-        Array.prototype.forEach.call(head.querySelectorAll("th[data-k]"), function (th) { th.setAttribute("aria-sort", th.dataset.k === key ? (dir === 1 ? "ascending" : "descending") : "none"); });
+      * {
+        box-sizing: border-box;
       }
-      head.addEventListener("click", function (e) {
-        var th = e.target.closest("th[data-k]"); if (!th) return;
-        var kk = th.dataset.k;
-        if (kk === key) dir = -dir; else { key = kk; dir = by[kk].first; }
-        draw();
-      });
-      draw();
-    }
-    function cells(r, cols) { return cols.map(function (c) { return c.html(r); }).join(""); }
-    function srows() { return T.map(function (t, q) { return { i: q, t: t }; }); }
-
-    /* Standings */
-    var stCols = [
-      { k: "rank", label: "#", v: function (r) { return r.i; }, html: function (r) { return '<td class="rank">' + (r.i + 1) + '</td>'; }, first: 1 },
-      { k: "team", label: "Team", v: function (r) { return r.t.n.toLowerCase(); }, html: function (r) { return '<td class="team">' + tl(r.i) + '<small>' + r.t.m + '</small></td>'; }, first: 1 },
-      { k: "w", label: "W-L", cls: "num", v: function (r) { return r.t.w + r.t.pf / 100000; }, html: function (r) { return '<td class="num">' + r.t.w + '-' + r.t.l + '</td>'; }, first: -1 },
-      { k: "pf", label: "PF", cls: "num", v: function (r) { return r.t.pf; }, html: function (r) { return '<td class="num">' + r.t.pf.toFixed(1) + '</td>'; }, first: -1 },
-      { k: "pa", label: "PA", cls: "num", v: function (r) { return r.t.pa; }, html: function (r) { return '<td class="num">' + r.t.pa.toFixed(1) + '</td>'; }, first: 1 },
-      { k: "st", label: "Streak", v: function (r) { return (r.t.st.charAt(0) === "W" ? 1 : -1) * parseInt(r.t.st.slice(1), 10); }, html: function (r) { return '<td class="streak-' + r.t.st.charAt(0) + '">' + r.t.st + '</td>'; }, first: -1 },
-      { k: "sp", label: "Weekly scores", sort: false, html: function (r) { return '<td>' + spark(r.t.s) + '</td>'; } },
-      { k: "ew", label: "Exp. W", cls: "num", v: function (r) { return r.t.ap / 9; }, html: function (r) { return '<td class="num">' + f1(r.t.ap / 9) + '</td>'; }, first: -1 },
-      { k: "lk", label: "Luck", cls: "num", v: function (r) { return r.t.w - r.t.ap / 9; }, html: function (r) { return '<td class="num">' + sg(r.t.w - r.t.ap / 9, 1) + '</td>'; }, first: -1 },
-      { k: "pw", label: "Proj. W", cls: "num", v: function (r) { return pw[r.i]; }, html: function (r) { return '<td class="num">' + f1(pw[r.i]) + '</td>'; }, first: -1 },
-      { k: "so", label: "Sched. left", cls: "num", v: function (r) { return sos[r.i]; }, html: function (r) { return '<td class="num">' + (sos[r.i] ? f1(sos[r.i]) : "-") + '</td>'; }, first: 1 },
-      { k: "po", label: "Playoff %", cls: "num", v: function (r) { return po[r.i]; }, html: function (r) { return '<td class="num">' + fmtPo(po[r.i]) + '</td>'; }, first: -1 }
-    ];
-    sorter(document.getElementById("standings-table"), stCols, srows(), { key: "rank", dir: 1, row: function (r, pos, natural, cols) {
-      return '<tr' + (natural && pos === 5 ? ' class="cut"' : '') + '>' + cells(r, cols) + '</tr>' +
-        (natural && pos === 5 ? '<tr class="cut-label"><td colspan="' + cols.length + '">Playoff line: top six advance</td></tr>' : '');
-    } });
-
-    /* Power rankings */
-    var pwCols = [
-      { k: "pr", label: "Power", v: function (r) { return prank[r.i]; }, html: function (r) { return '<td class="rank">' + prank[r.i] + '</td>'; }, first: 1 },
-      { k: "team", label: "Team", v: function (r) { return r.t.n.toLowerCase(); }, html: function (r) { return '<td class="team">' + tl(r.i) + '<small>' + r.t.w + '-' + r.t.l + ', ' + ord(r.i + 1) + ' in the standings</small></td>'; }, first: 1 },
-      { k: "ix", label: "Index", cls: "num", v: function (r) { return pscore[r.i]; }, html: function (r) { return '<td class="num">' + pscore[r.i] + '</td>'; }, first: -1 },
-      { k: "mv", label: "Vs. record", cls: "num", v: function (r) { return r.i - (prank[r.i] - 1); }, html: function (r) { var d = r.i + 1 - prank[r.i]; return '<td class="num ' + (d > 0 ? "streak-W" : d < 0 ? "streak-L" : "") + '">' + (d > 0 ? "▲ " + d : d < 0 ? "▼ " + (-d) : "even") + '</td>'; }, first: -1 },
-      { k: "pg", label: "Season PPG", cls: "num", v: function (r) { return ppg[r.i]; }, html: function (r) { return '<td class="num">' + f1(ppg[r.i]) + '</td>'; }, first: -1 },
-      { k: "l3", label: "Last 3", cls: "num", v: function (r) { return l3[r.i]; }, html: function (r) { return '<td class="num">' + f1(l3[r.i]) + '</td>'; }, first: -1 },
-      { k: "ap", label: "All-play", cls: "num", v: function (r) { return apr[r.i]; }, html: function (r) { return '<td class="num">' + Math.round(apr[r.i] * 100) + '%</td>'; }, first: -1 }
-    ];
-    sorter(document.getElementById("power-table"), pwCols, srows(), { key: "pr", dir: 1, row: function (r, pos, nat, cols) { return '<tr>' + cells(r, cols) + '</tr>'; } });
-
-    /* Seed odds grid, bubble tracker and final-win charts */
-    var byPo = srows().sort(function (x, y) { return po[y.i] - po[x.i] || x.i - y.i; });
-    var sh = '<thead><tr><th>Team</th>';
-    for (k = 1; k <= n; k++) sh += '<th class="num">' + ord(k) + '</th>';
-    sh += '<th class="num">Top 6</th></tr></thead><tbody>';
-    byPo.forEach(function (r) {
-      sh += '<tr><td class="team">' + tl(r.i) + '</td>';
-      for (k = 0; k < n; k++) {
-        var q = seedN[r.i][k] / SIMS;
-        sh += '<td class="num heat" style="background:color-mix(in srgb, var(--turf) ' + Math.round(q * 85) + '%, var(--surface))">' + (q < 0.005 ? '<span class="dim">-</span>' : Math.round(q * 100)) + '</td>';
+      html {
+        -webkit-text-size-adjust: 100%;
+        scroll-behavior: smooth;
       }
-      sh += '<td class="num"><b>' + fmtPo(po[r.i]) + '</b></td></tr>';
-    });
-    document.getElementById("seed-table").innerHTML = sh + '</tbody>';
-
-    function line(q, ratio) { for (var kk = 0; kk <= REG; kk++) { if (winN[q][kk] >= 25 && madeW[q][kk] / winN[q][kk] >= ratio) return kk; } return -1; }
-    var bh = '<thead><tr><th>Team</th><th class="num">Record</th><th class="num">Games left</th><th>Status</th><th class="num">Even odds at</th><th class="num">Safe at</th></tr></thead><tbody>';
-    byPo.forEach(function (r) {
-      var q = r.i, gl = (T[q].sch || []).length, st = po[q] >= 0.9995 ? "Clinched" : po[q] <= 0.0005 ? "Eliminated" : "Alive";
-      function need(kk) { return kk < 0 ? "-" : kk + " wins" + (kk > T[q].w ? " (" + (kk - T[q].w) + " more)" : ""); }
-      bh += '<tr><td class="team">' + tl(q) + '</td><td class="num">' + T[q].w + '-' + T[q].l + '</td><td class="num">' + gl + '</td><td class="' + (st === "Clinched" ? "streak-W" : st === "Eliminated" ? "streak-L" : "") + '">' + st + '</td><td class="num">' + need(line(q, 0.5)) + '</td><td class="num">' + need(line(q, 0.95)) + '</td></tr>';
-    });
-    document.getElementById("bubble-table").innerHTML = bh + '</tbody>';
-
-    function dist(q, W, H) {
-      var mx = Math.max.apply(null, winN[q]), bw = W / (REG + 1), mode = winN[q].indexOf(mx), s = '<svg class="dist" width="' + W + '" height="' + (H + 14) + '" viewBox="0 0 ' + W + ' ' + (H + 14) + '" role="img" aria-label="Chance of each final win total for ' + T[q].n + '. Most likely: ' + mode + ' wins.">';
-      for (var kk = 0; kk <= REG; kk++) {
-        var h = winN[q][kk] / mx * H;
-        s += '<rect x="' + (kk * bw + 1).toFixed(1) + '" y="' + (H - h).toFixed(1) + '" width="' + (bw - 2).toFixed(1) + '" height="' + Math.max(h, 0).toFixed(1) + '" fill="currentColor" opacity="' + (kk === mode ? 1 : 0.5) + '"/>';
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: var(--body);
+        font-size: 17px;
+        line-height: 1.5;
       }
-      [0, 7, 14].forEach(function (kk) { s += '<text x="' + ((kk + 0.5) * bw).toFixed(1) + '" y="' + (H + 11) + '" text-anchor="middle">' + kk + '</text>'; });
-      return s + '</svg>';
-    }
-    var dh = '<thead><tr><th>Team</th><th>Final wins, 0 to 14</th><th class="num">Most likely</th><th class="num">Proj. W</th></tr></thead><tbody>';
-    byPo.forEach(function (r) {
-      var q = r.i;
-      dh += '<tr><td class="team">' + tl(q) + '</td><td>' + dist(q, 210, 34) + '</td><td class="num">' + winN[q].indexOf(Math.max.apply(null, winN[q])) + ' wins</td><td class="num">' + f1(pw[q]) + '</td></tr>';
-    });
-    document.getElementById("dist-table").innerHTML = dh + '</tbody>';
-
-    /* Awards for the latest week */
-    var wk = G, wg = games.filter(function (g) { return g.wk === wk; }), wt = [];
-    T.forEach(function (t, q) { wt.push(res[q][wk - 1]); wt[q].q = q; });
-    function card(title, body) { return '<div class="note-card"><h3>' + title + '</h3><p>' + body + '</p></div>'; }
-    var top = wt.slice().sort(function (x, y) { return y.f - x.f; })[0];
-    var losers = wt.filter(function (r) { return !r.win; }).sort(function (x, y) { return y.f - x.f; })[0];
-    var winners = wt.filter(function (r) { return r.win; }).sort(function (x, y) { return x.f - y.f; })[0];
-    var low = wt.slice().sort(function (x, y) { return x.f - y.f; })[0];
-    var close = wg.slice().sort(function (x, y) { return Math.abs(x.sa - x.sb) - Math.abs(y.sa - y.sb); })[0];
-    var blow = wg.slice().sort(function (x, y) { return Math.abs(y.sa - y.sb) - Math.abs(x.sa - x.sb); })[0];
-    function gm(g) { var win = g.sa > g.sb ? g.a : g.b, los = g.sa > g.sb ? g.b : g.a; return { w: win, l: los, ws: Math.max(g.sa, g.sb), ls: Math.min(g.sa, g.sb), m: Math.abs(g.sa - g.sb) }; }
-    var cg = gm(close), bg = gm(blow);
-    document.getElementById("award-cards").innerHTML =
-      card("Team of the week", '<b>' + T[top.q].n + '</b> posted the top score of the week, <b>' + top.f.toFixed(1) + '</b>, ' + (top.win ? 'and beat ' : 'but lost to ') + T[top.o].n + ' (' + top.ag.toFixed(1) + ').') +
-      card("Unlucky loser", '<b>' + T[losers.q].n + '</b> scored <b>' + losers.f.toFixed(1) + '</b> and still lost to ' + T[losers.o].n + ', who put up ' + losers.ag.toFixed(1) + '.') +
-      card("Lucky winner", '<b>' + T[winners.q].n + '</b> won with just <b>' + winners.f.toFixed(1) + '</b>, because ' + T[winners.o].n + ' managed only ' + winners.ag.toFixed(1) + '.') +
-      card("Nail-biter", '<b>' + T[cg.w].n + '</b> ' + cg.ws.toFixed(1) + ', ' + T[cg.l].n + ' ' + cg.ls.toFixed(1) + '. A <b>' + cg.m.toFixed(1) + '</b> point margin.') +
-      card("Blowout of the week", '<b>' + T[bg.w].n + '</b> ' + bg.ws.toFixed(1) + ', ' + T[bg.l].n + ' ' + bg.ls.toFixed(1) + '. A <b>' + bg.m.toFixed(1) + '</b> point margin.') +
-      card("Clunker of the week", '<b>' + T[low.q].n + '</b> scored the lowest total of the week, <b>' + low.f.toFixed(1) + '</b>' + (low.win ? ', and still won.' : '.'));
-    document.getElementById("award-note").textContent = "Week " + wk + " results";
-
-    /* Season records */
-    var allr = []; res.forEach(function (rr, q) { rr.forEach(function (r) { r.q = q; allr.push(r); }); });
-    var hi = allr.slice().sort(function (x, y) { return y.f - x.f; })[0], lo = allr.slice().sort(function (x, y) { return x.f - y.f; })[0];
-    var sgm = games.slice().sort(function (x, y) { return Math.abs(y.sa - y.sb) - Math.abs(x.sa - x.sb); })[0], cgm = games.slice().sort(function (x, y) { return Math.abs(x.sa - x.sb) - Math.abs(y.sa - y.sb); })[0];
-    function run(q, want) { var best = 0, cur = 0; res[q].forEach(function (r) { cur = r.win === want ? cur + 1 : 0; if (cur > best) best = cur; }); return best; }
-    var ws = T.map(function (t, q) { return { q: q, v: run(q, true) }; }).sort(function (x, y) { return y.v - x.v; })[0];
-    var ls = T.map(function (t, q) { return { q: q, v: run(q, false) }; }).sort(function (x, y) { return y.v - x.v; })[0];
-    var pamax = srows().sort(function (x, y) { return y.t.pa - x.t.pa; })[0];
-    var bn = T.map(function (t) { return sum(t.bn || []); }), bking = srows().sort(function (x, y) { return bn[y.i] - bn[x.i]; })[0];
-    var bbest = { v: -1, q: 0, wk: 0 }; T.forEach(function (t, q) { (t.bb || []).forEach(function (v, kk) { if (v > bbest.v) bbest = { v: v, q: q, wk: kk + 1 }; }); });
-    var s1 = gm(sgm), s2 = gm(cgm);
-    document.getElementById("record-cards").innerHTML =
-      card("Highest score", '<b>' + hi.f.toFixed(1) + '</b> by ' + T[hi.q].n + ' in Week ' + hi.wk + '.') +
-      card("Lowest score", '<b>' + lo.f.toFixed(1) + '</b> by ' + T[lo.q].n + ' in Week ' + lo.wk + '.') +
-      card("Biggest blowout", '<b>' + s1.m.toFixed(1) + '</b> points. ' + T[s1.w].n + ' ' + s1.ws.toFixed(1) + ', ' + T[s1.l].n + ' ' + s1.ls.toFixed(1) + ' (Week ' + sgm.wk + ').') +
-      card("Closest game", '<b>' + s2.m.toFixed(1) + '</b> points. ' + T[s2.w].n + ' ' + s2.ws.toFixed(1) + ', ' + T[s2.l].n + ' ' + s2.ls.toFixed(1) + ' (Week ' + cgm.wk + ').') +
-      card("Longest win streak", '<b>' + ws.v + '</b> games, ' + T[ws.q].n + '.') +
-      card("Hall of shame: losing streak", '<b>' + ls.v + '</b> straight losses, ' + T[ls.q].n + '.') +
-      card("Most points against", '<b>' + pamax.t.pa.toFixed(1) + '</b>, ' + pamax.t.n + '. Opponents keep going off on them.') +
-      card("Best bench score", '<b>' + bbest.v.toFixed(1) + '</b> from one bench player, ' + T[bbest.q].n + ', Week ' + bbest.wk + '.');
-
-    /* Bench points */
-    var bnCols = [
-      { k: "team", label: "Team", v: function (r) { return r.t.n.toLowerCase(); }, html: function (r) { return '<td class="team">' + tl(r.i) + '</td>'; }, first: 1 },
-      { k: "tot", label: "Season bench points", cls: "num", v: function (r) { return bn[r.i]; }, html: function (r) { return '<td class="num">' + bn[r.i].toFixed(1) + '</td>'; }, first: -1 },
-      { k: "avg", label: "Per week", cls: "num", v: function (r) { return bn[r.i] / r.t.bn.length; }, html: function (r) { return '<td class="num">' + f1(bn[r.i] / r.t.bn.length) + '</td>'; }, first: -1 },
-      { k: "top", label: "Best bench score", cls: "num", v: function (r) { return Math.max.apply(null, r.t.bb); }, html: function (r) { var m = Math.max.apply(null, r.t.bb); return '<td class="num">' + m.toFixed(1) + ' <span class="dim">Wk ' + (r.t.bb.indexOf(m) + 1) + '</span></td>'; }, first: -1 },
-      { k: "lw", label: "Last week", cls: "num", v: function (r) { return r.t.bn[r.t.bn.length - 1]; }, html: function (r) { return '<td class="num">' + r.t.bn[r.t.bn.length - 1].toFixed(1) + '</td>'; }, first: -1 }
-    ];
-    sorter(document.getElementById("bench-table"), bnCols, srows(), { key: "tot", dir: -1, row: function (r, pos, nat, cols) { return '<tr>' + cells(r, cols) + '</tr>'; } });
-
-    /* Head to head grid: this season's results, with upcoming meetings by week */
-    var hh = '<thead><tr><th></th>' + T.map(function (t, q) { return '<th class="num">' + t.sh + '</th>'; }).join("") + '</tr></thead><tbody>';
-    T.forEach(function (t, q) {
-      hh += '<tr><td class="team">' + tl(q) + '</td>';
-      T.forEach(function (u, o) {
-        if (o === q) { hh += '<td class="h2h self"></td>'; return; }
-        var items = [];
-        res[q].forEach(function (r) { if (r.o === o) items.push('<span class="' + (r.win ? "w" : "l") + '">' + (r.win ? "W" : "L") + ' ' + sg(r.m, 1) + '</span>'); });
-        (t.sch || []).forEach(function (nm, kk) { if (idx[nm] === o) items.push('<span class="up">Wk ' + (G + 1 + kk) + '</span>'); });
-        hh += '<td class="h2h">' + (items.join("<br>") || '<span class="dim">-</span>') + '</td>';
-      });
-      hh += '</tr>';
-    });
-    document.getElementById("h2h-table").innerHTML = hh + '</tbody>';
-
-    /* Team card: click any team name */
-    var dlg = document.createElement("dialog");
-    dlg.className = "team-card"; dlg.setAttribute("aria-label", "Team card");
-    document.body.appendChild(dlg);
-    function teamHtml(q) {
-      var t = T[q], s = '<div class="dlg-head"><div><h3>' + t.n + '</h3><p class="dlg-sub">' + t.m + '</p></div><button type="button" class="dlg-x" aria-label="Close">Close</button></div><div class="dlg-body">';
-      s += '<dl class="dlg-stats">' +
-        '<div><dt>Record</dt><dd>' + t.w + '-' + t.l + ', ' + ord(q + 1) + '</dd></div>' +
-        '<div><dt>Playoff odds</dt><dd>' + fmtPo(po[q]) + '</dd></div>' +
-        '<div><dt>Projected wins</dt><dd>' + f1(pw[q]) + '</dd></div>' +
-        '<div><dt>Power rank</dt><dd>' + ord(prank[q]) + '</dd></div>' +
-        '<div><dt>Points per game</dt><dd>' + f1(ppg[q]) + '</dd></div>' +
-        '<div><dt>Bench points</dt><dd>' + sum(t.bn || []).toFixed(1) + '</dd></div></dl>';
-      s += '<div class="tablewrap"><table class="mini"><thead><tr><th>Week</th><th>Opponent</th><th class="num">Score</th><th class="num">Opp.</th><th class="num">Result</th><th class="num">Bench</th></tr></thead><tbody>';
-      res[q].forEach(function (r, kk) { s += '<tr><td>' + r.wk + '</td><td class="team">' + T[r.o].n + '</td><td class="num">' + r.f.toFixed(1) + '</td><td class="num">' + r.ag.toFixed(1) + '</td><td class="num ' + (r.win ? "streak-W" : "streak-L") + '">' + (r.win ? "W " : "L ") + sg(r.m, 1) + '</td><td class="num">' + ((t.bn || [])[kk] != null ? t.bn[kk].toFixed(1) : "-") + '</td></tr>'; });
-      (t.sch || []).forEach(function (nm, kk) { s += '<tr class="upc"><td>' + (G + 1 + kk) + '</td><td class="team">' + nm + '</td><td class="num" colspan="2">' + f1(ppg[idx[nm]]) + ' per game</td><td class="num">' + (kk === 0 && t.pj != null ? 'proj ' + f1(t.pj) : '') + '</td><td></td></tr>'; });
-      s += '</tbody></table></div><p class="legend-line">Final wins chart: chance of each season win total from the playoff simulation.</p>' + dist(q, 420, 44) + '</div>';
-      return s;
-    }
-    document.addEventListener("click", function (e) {
-      var tb = e.target.closest(".tlink");
-      if (tb) { dlg.innerHTML = teamHtml(+tb.dataset.t); if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open", ""); return; }
-      if (dlg.open && (e.target === dlg || e.target.closest(".dlg-x"))) dlg.close();
-    });
-
-    /* Theme toggle and share card */
-    var root = document.documentElement, tbtn = document.getElementById("themebtn"), sbtn = document.getElementById("sharebtn");
-    function isDark() { var v = root.getAttribute("data-theme"); return v ? v === "dark" : !!(window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches); }
-    function paint() { tbtn.textContent = isDark() ? "Light mode" : "Dark mode"; }
-    try { var sv = localStorage.getItem("fk-theme"); if (sv === "light" || sv === "dark") root.setAttribute("data-theme", sv); } catch (er) {}
-    paint();
-    tbtn.addEventListener("click", function () { var nv = isDark() ? "light" : "dark"; root.setAttribute("data-theme", nv); try { localStorage.setItem("fk-theme", nv); } catch (er) {} paint(); });
-    sbtn.addEventListener("click", function () {
-      var c = document.createElement("canvas"), g, i2, F = "Roboto, system-ui, sans-serif";
-      c.width = 1200; c.height = 630; g = c.getContext("2d");
-      for (i2 = 0; i2 < 12; i2++) { g.fillStyle = i2 % 2 ? "#2c1c44" : "#33214e"; g.fillRect(i2 * 100, 0, 100, 630); }
-      g.fillStyle = "rgba(246,243,250,0.18)"; for (i2 = 0; i2 <= 12; i2++) g.fillRect(i2 * 100 - 1, 0, 2, 630);
-      g.fillStyle = "#c7aef0"; g.fillRect(0, 618, 1200, 12);
-      g.fillStyle = "#211630"; g.fillRect(0, 0, 1200, 8);
-      g.textBaseline = "alphabetic";
-      g.fillStyle = "#c7aef0"; g.font = "700 34px " + F; g.fillText(document.querySelector(".kicker").textContent, 60, 90);
-      g.fillStyle = "#ffffff"; g.font = "700 92px " + F; g.fillText("F'S FOR KAMALA", 60, 190);
-      var pts = document.querySelectorAll(".board .pts"), tms = document.querySelectorAll(".board .team");
-      if (pts.length > 1) {
-        g.fillStyle = "#c7aef0"; g.font = "700 26px " + F; g.fillText(document.getElementById("award-note").textContent.toUpperCase() + ": TOP GAME", 60, 270);
-        g.fillStyle = "#ffffff"; g.font = "700 84px " + F; g.fillText(pts[0].textContent, 60, 360);
-        g.fillStyle = "#b9acd0"; g.fillText(pts[1].textContent, 60, 450);
-        g.font = "500 28px " + F; g.fillStyle = "#ffffff"; g.fillText(tms[0].textContent, 330, 355); g.fillStyle = "#b9acd0"; g.fillText(tms[1].textContent, 330, 445);
+      .wrap {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding-left: max(16px, env(safe-area-inset-left, 0px));
+        padding-right: max(16px, env(safe-area-inset-right, 0px));
       }
-      g.fillStyle = "#c7aef0"; g.font = "700 26px " + F; g.fillText("PLAYOFF ODDS", 800, 270);
-      byPo.slice(0, 6).forEach(function (r, kk) {
-        g.fillStyle = "#ffffff"; g.font = "700 28px " + F; g.fillText(r.t.n.length > 20 ? r.t.n.slice(0, 19) + "…" : r.t.n, 800, 315 + kk * 46);
-        g.textAlign = "right"; g.fillStyle = "#c7aef0"; g.fillText(fmtPo(po[r.i]), 1140, 315 + kk * 46); g.textAlign = "left";
-      });
-      g.fillStyle = "#bdb0d0"; g.font = "500 22px " + F; g.fillText(location.hostname || "F's for Kamala press box", 60, 590);
-      var done = function (m) { sbtn.textContent = m; setTimeout(function () { sbtn.textContent = "Share card"; }, 2200); };
-      function dl(bl) { var an = document.createElement("a"); an.href = URL.createObjectURL(bl); an.download = "fs-for-kamala-press-box.png"; document.body.appendChild(an); an.click(); an.remove(); }
-      c.toBlob(function (bl) {
-        if (!bl) return;
-        if (navigator.clipboard && window.ClipboardItem) navigator.clipboard.write([new ClipboardItem({ "image/png": bl })]).then(function () { done("Copied"); }, function () { dl(bl); done("Saved"); });
-        else { dl(bl); done("Saved"); }
-      });
-    });
-  })();
-  [["js-g", G], ["js-lo", LO], ["js-hi", HI]].forEach(function (k) { document.querySelector("." + k[0]).textContent = k[1]; });
+      h1,
+      h2,
+      h3 {
+        font-family: var(--display);
+        font-weight: 700;
+        text-wrap: balance;
+        margin: 0;
+      }
+      p {
+        margin: 0;
+      }
+      a {
+        color: inherit;
+      }
+      :focus-visible {
+        outline: 3px solid var(--flag);
+        outline-offset: 2px;
+      }
 
-  /* Luck dumbbell chart */
-  var rows = T.map(function (t) { return { n: t.n, a: t.w, e: t.ap / 9 }; });
-  rows.sort(function (x, y) { return (y.a - y.e) - (x.a - x.e); });
-  var svg = document.getElementById("luck-chart");
-  var left = 200, scale = 408 / G, top = 28, rh = 36, i2, out = "";
-  var H = top + rows.length * rh + 28;
-  svg.setAttribute("viewBox", "0 0 720 " + H);
-  function X(v) { return left + v * scale; }
-  for (i2 = 0; i2 <= G; i2 += G > 10 ? 2 : 1) {
-    out += '<line class="c-grid" x1="' + X(i2) + '" y1="' + (top - 10) + '" x2="' + X(i2) + '" y2="' + (top + rows.length * rh - 6) + '"/>' +
-      '<text class="c-tick" x="' + X(i2) + '" y="' + (top + rows.length * rh + 12) + '" text-anchor="middle">' + i2 + '</text>';
-  }
-  out += '<text class="c-tick" x="' + X(G / 2) + '" y="' + (top + rows.length * rh + 26) + '" text-anchor="middle">wins after ' + G + ' games</text>';
-  rows.forEach(function (r, k) {
-    var cy = top + k * rh + 8, diff = r.a - r.e;
-    var col = diff >= 0 ? "var(--lucky)" : "var(--unlucky)";
-    var x1 = X(Math.min(r.a, r.e)), x2 = X(Math.max(r.a, r.e));
-    out += '<text class="c-label" x="' + (left - 14) + '" y="' + (cy + 4) + '" text-anchor="end">' + r.n + '</text>';
-    out += '<line x1="' + x1 + '" y1="' + cy + '" x2="' + x2 + '" y2="' + cy + '" stroke="' + col + '" stroke-width="4" stroke-linecap="round"/>';
-    out += '<circle class="c-exp" cx="' + X(r.e) + '" cy="' + cy + '" r="6" stroke="' + col + '"/>';
-    out += '<circle class="c-act" cx="' + X(r.a) + '" cy="' + cy + '" r="6" fill="var(--fg)"/>';
-    var sign = diff > 0.05 ? "+" : "";
-    out += '<text class="c-val" x="620" y="' + (cy + 4) + '">' + r.a + ' vs ' + r.e.toFixed(1) + ' (' + sign + diff.toFixed(1) + ')</text>';
-  });
-  svg.innerHTML = out;
+      /* Palette is built on #7851a9 (--turf). Masthead: a gridiron. Mow bands every 5 yards, chalk yard lines every 10, hash marks top and bottom. */
+      .field {
+        position: relative;
+        overflow: hidden;
+        color: var(--chalk);
+        background: repeating-linear-gradient(
+            90deg,
+            rgba(246, 243, 250, 0.55) 0 2px,
+            transparent 2px 10%
+          ),
+          repeating-linear-gradient(
+            90deg,
+            var(--turf-a) 0 5%,
+            var(--turf-b) 5% 10%
+          );
+        border-bottom: 8px solid var(--flag);
+      }
+      .field::before,
+      .field::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 12px;
+        background: repeating-linear-gradient(
+          90deg,
+          rgba(246, 243, 250, 0.5) 0 2px,
+          transparent 2px 2%
+        );
+        pointer-events: none;
+      }
+      .field::before {
+        top: 18px;
+      }
+      .field::after {
+        bottom: 18px;
+      }
+      .field .wrap {
+        position: relative;
+        padding-block: 56px 40px;
+      }
+      .kicker {
+        font-family: var(--display);
+        font-weight: 700;
+        font-size: 22px;
+        color: var(--flag);
+        letter-spacing: 0.02em;
+      }
+      .field h1 {
+        font-size: clamp(48px, 11vw, 132px);
+        font-weight: 700;
+        line-height: 0.86;
+        text-transform: uppercase;
+        letter-spacing: -0.005em;
+        margin-top: 6px;
+        text-shadow: 0.035em 0.035em 0 var(--turf-deep);
+      }
+      .field .sub {
+        margin-top: 20px;
+        max-width: 54ch;
+        font-size: 18px;
+        color: #ddd3ea;
+      }
+      .meta {
+        margin: 28px 0 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+        gap: 12px 24px;
+        max-width: 820px;
+      }
+      .meta div {
+        border-left: 3px solid var(--flag);
+        padding-left: 10px;
+      }
+      .meta dt {
+        font-size: 13px;
+        color: #bdb0d0;
+      }
+      .meta dd {
+        margin: 0;
+        font-weight: 600;
+        font-size: 15px;
+        line-height: 1.3;
+      }
+      .yards {
+        position: relative;
+        /* 9 columns inset 5% each side, so each number centers on a 10% yard line */
+        display: grid;
+        grid-template-columns: repeat(9, 1fr);
+        text-align: center;
+        padding: 0 5% 34px;
+        font-family: var(--display);
+        font-weight: 700;
+        font-size: clamp(16px, 3vw, 30px);
+        color: rgba(246, 243, 250, 0.35);
+      }
 
-  /* Nav: scroll in JS so the tabs also work where #hash navigation is blocked (data: URLs, embeds) */
-  Array.prototype.forEach.call(document.querySelectorAll('.nav a[href^="#"]'), function (a) {
-    a.addEventListener("click", function (e) {
-      var target = document.getElementById(a.getAttribute("href").slice(1));
-      if (!target) return;
-      e.preventDefault();
-      target.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
-      try { history.replaceState(null, "", a.getAttribute("href")); } catch (err) {}
-    });
-  });
+      /* Section nav */
+      .nav {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        background: var(--bg);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav ul {
+        list-style: none;
+        margin: 0 auto;
+        display: flex;
+        gap: 4px 22px;
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+      .nav a {
+        display: block;
+        padding: 12px 0;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 15px;
+        white-space: nowrap;
+        color: var(--muted);
+      }
+      .nav a:hover {
+        color: var(--fg);
+      }
+      .nav a[aria-current] {
+        color: var(--fg);
+        box-shadow: inset 0 -3px 0 var(--turf);
+      }
 
-  /* Highlight the tab for the section under the nav bar */
-  var links = Array.prototype.slice.call(document.querySelectorAll('.nav a[href^="#"]'));
-  function spy() {
-    var line = document.querySelector(".nav").offsetHeight + 80, current = null;
-    links.forEach(function (a) {
-      var s = document.getElementById(a.getAttribute("href").slice(1));
-      if (s && s.getBoundingClientRect().top <= line) current = a;
-    });
-    // at the very bottom the last short section can't reach the line, so give it the highlight
-    if (innerHeight + scrollY >= document.documentElement.scrollHeight - 2) current = links[links.length - 1];
-    links.forEach(function (a) { if (a === current) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current"); });
-  }
-  addEventListener("scroll", spy, { passive: true });
-  addEventListener("resize", spy);
-  spy();
+      main .wrap {
+        padding-block: 8px 64px;
+      }
+      section {
+        padding-top: 56px;
+        scroll-margin-top: 48px;
+      }
+      .sec-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 4px 16px;
+        margin-bottom: 22px;
+        border-bottom: 3px solid var(--fg);
+        padding-bottom: 8px;
+      }
+      .sec-head h2 {
+        font-size: clamp(28px, 5vw, 44px);
+        line-height: 0.95;
+        text-transform: uppercase;
+      }
+      .sec-head .note {
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .cat {
+        font-weight: 700;
+        font-size: 14px;
+        color: var(--turf);
+      }
 
-  /* Week 7 house lines: projection = sum of starters' projected points (falls back to season PPG), win odds from a normal on the score difference */
-  var MIN_SD = 20; // ponytail: six games is a tiny sample, so floor each team's swing; tune if lines look too sharp
-  function mean(s) { return s.reduce(function (a, b) { return a + b; }) / s.length; }
-  function sd(s) {
-    var m = mean(s);
-    return Math.max(MIN_SD, Math.sqrt(s.reduce(function (a, v) { return a + (v - m) * (v - m); }, 0) / (s.length - 1)));
-  }
-  function phi(z) { // standard normal CDF (Abramowitz-Stegun 26.2.17)
-    var t = 1 / (1 + 0.2316419 * Math.abs(z)), d = 0.3989423 * Math.exp(-z * z / 2);
-    var p = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
-    return z > 0 ? 1 - p : p;
-  }
-  function half(v) { return (Math.round(v * 2) / 2).toFixed(1); }
-  function ml(p) { var v = p >= 0.5 ? -Math.round(100 * p / (1 - p) / 5) * 5 : Math.round(100 * (1 - p) / p / 5) * 5; return v > 0 ? "+" + v : String(v); }
-  function spread(d) { var h = Math.round(d * 2) / 2; return h === 0 ? "PK" : (h > 0 ? "+" : "") + h.toFixed(1); }
-  function byName(n) { return T.filter(function (t) { return t.n === n; })[0]; }
+      /* Stories: one lead with a scoreboard, then a balanced two-column run */
+      .lead {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 28px;
+        align-items: center;
+        padding-bottom: 28px;
+        border-bottom: 1px solid var(--line);
+      }
+      .board {
+        background: var(--turf-b);
+        color: var(--chalk);
+        container-type: inline-size;
+        padding: 22px 24px;
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: end;
+        gap: 12px;
+        border-bottom: 6px solid var(--flag);
+      }
+      .board .team {
+        display: block;
+        margin-top: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #ffffff;
+        line-height: 1.25;
+      }
+      .board .pts {
+        display: block;
+        font-family: var(--display);
+        font-weight: 700;
+        font-size: clamp(28px, 12cqi, 64px);
+        line-height: 0.95;
+        font-variant-numeric: tabular-nums;
+        color: #ffffff;
+      }
+      .board .lose .pts,
+      .board .lose .team {
+        color: #b9acd0;
+      }
+      .board .r {
+        text-align: right;
+      }
+      .board .dash {
+        align-self: center;
+        font-family: var(--display);
+        font-size: 32px;
+        color: #8a7ba3;
+      }
+      .lead h3 {
+        font-size: clamp(26px, 3.4vw, 36px);
+        line-height: 1;
+        margin: 6px 0 12px;
+      }
+      .lead p:last-child {
+        color: var(--muted);
+        max-width: 60ch;
+      }
+      .story-run {
+        columns: 2 340px;
+        column-gap: 40px;
+        margin-top: 4px;
+      }
+      .story {
+        break-inside: avoid;
+        padding: 22px 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .story h3 {
+        font-size: 23px;
+        line-height: 1.04;
+        margin: 4px 0 8px;
+      }
+      .story p:last-child {
+        color: var(--muted);
+        font-size: 16px;
+      }
+      .story b,
+      .lead b {
+        color: var(--fg);
+        font-weight: 600;
+      }
 
-  Array.prototype.forEach.call(document.querySelectorAll(".match[data-a]"), function (m) {
-    var a = byName(m.dataset.a), b = byName(m.dataset.b);
-    var pa = a.pj != null ? a.pj : mean(a.s), pb = b.pj != null ? b.pj : mean(b.s);
-    var p = phi((pa - pb) / Math.sqrt(Math.pow(sd(a.s), 2) + Math.pow(sd(b.s), 2)));
-    function row(t, proj, opp, pr) {
-      var s = t.s, last = s[s.length - 1];
-      return '<tr><td class="team">' + t.n + '</td><td class="num">' + spread(opp - proj) + '</td><td class="num">' + ml(pr) +
-        '</td><td class="num">' + half(proj) + '</td><td class="num">' + Math.round(pr * 100) + '%</td>' +
-        '<td class="num form">' + last.toFixed(1) + '</td><td class="num form-n">' + mean(s.slice(-3)).toFixed(1) +
-        '</td><td class="num form-n">' + Math.max.apply(null, s).toFixed(1) + '</td><td class="num form-n">' + Math.min.apply(null, s).toFixed(1) + '</td></tr>';
-    }
-    var wrap = document.createElement("div");
-    wrap.className = "oddswrap";
-    wrap.tabIndex = 0;
-    wrap.setAttribute("role", "region");
-    wrap.setAttribute("aria-label", "Betting lines and recent form: " + a.n + " vs " + b.n);
-    wrap.innerHTML = '<table class="odds"><thead><tr><th>Team</th><th class="num">Spread</th><th class="num">Moneyline</th><th class="num">Team total</th><th class="num">Win</th>' +
-      '<th class="num form">Last week</th><th class="num">Last 3 avg</th><th class="num">High</th><th class="num">Low</th></tr></thead><tbody>' +
-      row(a, pa, pb, p) + row(b, pb, pa, 1 - p) +
-      '</tbody><tfoot><tr><td colspan="9"><div class="tot"><span>Game total over/under <b>' + half(pa + pb) + '</b></span>' +
-      '<span>Projected final <b>' + half(pa) + ' to ' + half(pb) + '</b></span>' +
-      '<span>Combined last week <b>' + (a.s[a.s.length - 1] + b.s[b.s.length - 1]).toFixed(1) + '</b></span></div></td></tr></tfoot></table>';
-    m.querySelector(".vs").after(wrap);
-  });
-})();
-</script>
+      /* Standings */
+      .tablewrap {
+        overflow-x: auto;
+        background: var(--surface);
+        border: 1px solid var(--line);
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        min-width: 720px;
+        font-variant-numeric: tabular-nums;
+      }
+      th,
+      td {
+        padding: 11px 14px;
+        text-align: left;
+        font-size: 15px;
+        white-space: nowrap;
+      }
+      th {
+        font-size: 13px;
+        color: var(--muted);
+        font-weight: 600;
+        border-bottom: 2px solid var(--fg);
+      }
+      td {
+        border-bottom: 1px solid var(--line);
+      }
+      td.num,
+      th.num {
+        text-align: right;
+      }
+      td.rank {
+        font-family: var(--display);
+        font-weight: 700;
+        font-size: 20px;
+        color: var(--muted);
+        width: 40px;
+      }
+      tbody tr:nth-child(-n + 6) td.rank {
+        color: var(--turf);
+      }
+      td.team {
+        font-weight: 700;
+      }
+      td.team small {
+        display: block;
+        font-weight: 400;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      tr.cut td {
+        border-bottom: 0;
+      }
+      tr.cut-label td {
+        padding: 5px 14px;
+        font-size: 13px;
+        color: var(--flag-ink);
+        font-weight: 700;
+        background: var(--flag);
+        border-bottom: 0;
+      }
+      th[data-k] button {
+        display: block;
+        width: 100%;
+        background: none;
+        border: 0;
+        padding: 0;
+        margin: 0;
+        font: inherit;
+        color: inherit;
+        text-align: inherit;
+        cursor: pointer;
+      }
+      th[data-k] button:hover {
+        color: var(--fg);
+      }
+      th[data-k] button:focus-visible {
+        outline: 2px solid var(--fg);
+        outline-offset: 3px;
+      }
+      th[aria-sort="ascending"] button::after {
+        content: " \25B2";
+        font-size: 10px;
+      }
+      th[aria-sort="descending"] button::after {
+        content: " \25BC";
+        font-size: 10px;
+      }
+      .streak-W {
+        color: var(--good);
+        font-weight: 700;
+      }
+      .streak-L {
+        color: var(--bad);
+        font-weight: 700;
+      }
+      .spark {
+        display: block;
+        color: var(--turf);
+      }
+      .spark .base {
+        stroke: var(--line);
+      }
+      .spark .end {
+        fill: var(--flag);
+        stroke: var(--turf-deep);
+        stroke-width: 1;
+      }
+      .legend-line {
+        margin-top: 12px;
+        font-size: 14px;
+        color: var(--muted);
+        max-width: 80ch;
+      }
 
-</body>
+      /* Luck chart */
+      .chartwrap {
+        overflow-x: auto;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        padding: 16px 8px 6px;
+      }
+      .chartwrap svg {
+        display: block;
+        min-width: 640px;
+        width: 100%;
+        height: auto;
+      }
+      .chart-intro {
+        color: var(--muted);
+        max-width: 66ch;
+        margin-bottom: 16px;
+      }
+      .c-label {
+        fill: var(--fg);
+        font: 600 13px var(--body);
+      }
+      .c-val {
+        fill: var(--muted);
+        font: 500 12.5px var(--body);
+      }
+      .c-tick {
+        fill: var(--muted);
+        font: 500 11.5px var(--body);
+      }
+      .c-grid {
+        stroke: var(--line);
+        stroke-width: 1;
+      }
+      .c-act {
+        stroke: var(--fg);
+        stroke-width: 1.5;
+      }
+      .c-exp {
+        fill: var(--surface);
+        stroke-width: 2;
+      }
+      .key {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 18px;
+        font-size: 14px;
+        color: var(--muted);
+        margin: 10px 4px 6px;
+      }
+      .key span {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .dot-act,
+      .dot-exp {
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+        display: inline-block;
+      }
+      .dot-act {
+        background: var(--fg);
+      }
+      .dot-exp {
+        border: 2px solid var(--muted);
+      }
+
+      /* Week 7 slate */
+      .matches {
+        margin-top: 32px;
+      }
+      .match {
+        padding: 36px 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .match:first-child {
+        padding-top: 0;
+      }
+      .match h3 {
+        font-size: clamp(22px, 3vw, 28px);
+        line-height: 1.1;
+        margin-bottom: 20px;
+        max-width: 34ch;
+      }
+      .vs {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(140px, 260px) minmax(
+            0,
+            1fr
+          );
+        gap: 20px;
+        align-items: center;
+      }
+      .side.r {
+        text-align: right;
+      }
+      .side .tn {
+        font-family: var(--display);
+        font-weight: 700;
+        font-size: clamp(20px, 2.6vw, 26px);
+        line-height: 1.1;
+        overflow-wrap: anywhere;
+      }
+      .side .mg {
+        margin-top: 4px;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .side .rec {
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+      }
+      .fav .tn {
+        box-shadow: inset 0 -0.14em 0 var(--turf);
+        display: inline;
+      }
+      .meter {
+        min-width: 0;
+      }
+      .bar {
+        display: flex;
+        gap: 3px;
+        height: 14px;
+      }
+      .bar i {
+        display: block;
+        height: 100%;
+      }
+      .bar .a {
+        background: var(--turf);
+      }
+      .bar .b {
+        background: var(--alt);
+      }
+      .bar-note {
+        display: flex;
+        justify-content: space-between;
+        font-size: 13px;
+        color: var(--muted);
+        margin-top: 6px;
+        font-variant-numeric: tabular-nums;
+      }
+      .bar-note span:nth-child(2) {
+        text-align: center;
+      }
+      .bar-note span:first-child,
+      .bar-note span:last-child {
+        color: var(--fg);
+        font-weight: 700;
+        font-size: 15px;
+      }
+      .oddswrap {
+        margin-top: 22px;
+        overflow-x: auto;
+        background: var(--surface);
+        border: 1px solid var(--line);
+      }
+      .odds {
+        min-width: 680px;
+        table-layout: fixed;
+      }
+      .odds th:first-child {
+        width: 24%;
+      }
+      .odds .form {
+        border-left: 1px solid var(--line);
+      }
+      .odds th,
+      .odds td {
+        padding: 8px 12px;
+        font-size: 15px;
+      }
+      .odds th {
+        font-size: 13px;
+      }
+      .odds td.team {
+        white-space: normal;
+        overflow-wrap: anywhere;
+        font-weight: 600;
+      }
+      .odds tbody td.num {
+        font-weight: 700;
+      }
+      .odds tbody td.form,
+      .odds tbody td.form-n {
+        font-weight: 400;
+        color: var(--muted);
+      }
+      .odds tfoot .tot {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 28px;
+      }
+      .odds tfoot td {
+        border-bottom: 0;
+        background: color-mix(in srgb, var(--flag) 24%, var(--surface));
+        font-size: 14px;
+      }
+      .odds tfoot b {
+        font-weight: 700;
+      }
+      .edge {
+        margin-top: 14px;
+        color: var(--muted);
+        max-width: 72ch;
+      }
+      .edge b {
+        color: var(--fg);
+        font-weight: 700;
+      }
+      .flagnote {
+        margin-top: 10px;
+        max-width: 72ch;
+        font-size: 15px;
+        background: color-mix(in srgb, var(--flag) 24%, var(--surface));
+        border-left: 5px solid var(--flag);
+        padding: 9px 12px;
+        color: var(--fg);
+      }
+
+      /* League notes */
+      .notes {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 8px 40px;
+      }
+      .note-card {
+        padding: 16px 0 8px;
+        border-top: 1px solid var(--line);
+      }
+      .note-card h3 {
+        font-size: 24px;
+        margin-bottom: 10px;
+      }
+      .note-card ul {
+        margin: 0;
+        padding-left: 18px;
+        display: grid;
+        gap: 9px;
+        color: var(--muted);
+        font-size: 16px;
+      }
+      .note-card li::marker {
+        color: var(--turf);
+      }
+      .note-card li b {
+        color: var(--fg);
+        font-weight: 600;
+      }
+
+      /* Added sections */
+      .tlink {
+        background: none;
+        border: 0;
+        padding: 0;
+        margin: 0;
+        font: inherit;
+        font-weight: 700;
+        color: inherit;
+        text-align: left;
+        cursor: pointer;
+        text-decoration: underline;
+        text-decoration-color: var(--line);
+        text-underline-offset: 3px;
+      }
+      .tlink:hover {
+        text-decoration-color: var(--turf);
+      }
+      .sub-head {
+        font-size: 24px;
+        text-transform: uppercase;
+        margin: 36px 0 12px;
+      }
+      .dim {
+        color: var(--muted);
+        font-weight: 400;
+      }
+      .grid td.heat {
+        text-align: center;
+        font-size: 14px;
+        padding: 9px 6px;
+      }
+      .grid th.num {
+        text-align: center;
+        padding-inline: 6px;
+      }
+      #seed-table {
+        min-width: 860px;
+      }
+      #h2h-table {
+        min-width: 860px;
+      }
+      #h2h-table td.h2h {
+        text-align: center;
+        font-size: 13px;
+        padding: 7px 6px;
+        line-height: 1.3;
+      }
+      #h2h-table td.self {
+        background: var(--line);
+      }
+      #h2h-table .w {
+        color: var(--good);
+        font-weight: 700;
+      }
+      #h2h-table .l {
+        color: var(--bad);
+        font-weight: 700;
+      }
+      #h2h-table .up {
+        color: var(--muted);
+      }
+      .dist {
+        display: block;
+        color: var(--turf);
+      }
+      .dist text {
+        fill: var(--muted);
+        font: 500 10px var(--body);
+      }
+      .note-card p {
+        color: var(--muted);
+        font-size: 16px;
+      }
+      .note-card p b {
+        color: var(--fg);
+        font-weight: 600;
+      }
+      .nav .tools {
+        margin-left: auto;
+      }
+      .navbtn {
+        background: none;
+        border: 1px solid var(--line);
+        color: var(--muted);
+        font: 600 13px var(--body);
+        padding: 5px 12px;
+        margin: 8px 0;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+      .navbtn:hover {
+        color: var(--fg);
+        border-color: var(--fg);
+      }
+      dialog.team-card {
+        width: min(680px, calc(100vw - 24px));
+        max-height: calc(100vh - 32px);
+        padding: 0;
+        border: 1px solid var(--line);
+        background: var(--surface);
+        color: var(--fg);
+        overflow: hidden;
+        flex-direction: column;
+      }
+      dialog.team-card[open] {
+        display: flex;
+      }
+      dialog.team-card::backdrop {
+        background: rgba(14, 8, 22, 0.66);
+      }
+      .dlg-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 18px 20px 12px;
+        border-bottom: 3px solid var(--fg);
+      }
+      .dlg-head h3 {
+        font-size: clamp(24px, 6vw, 34px);
+        line-height: 1;
+        text-transform: uppercase;
+      }
+      .dlg-sub {
+        color: var(--muted);
+        font-size: 14px;
+        margin-top: 4px;
+      }
+      .dlg-x {
+        background: none;
+        border: 1px solid var(--line);
+        color: var(--muted);
+        font: 600 13px var(--body);
+        padding: 5px 12px;
+        cursor: pointer;
+      }
+      .dlg-x:hover {
+        color: var(--fg);
+        border-color: var(--fg);
+      }
+      .dlg-body {
+        padding: 16px 20px 22px;
+        overflow-y: auto;
+      }
+      .dlg-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
+        gap: 10px 16px;
+        margin: 0 0 18px;
+      }
+      .dlg-stats div {
+        border-left: 3px solid var(--flag);
+        padding-left: 9px;
+      }
+      .dlg-stats dt {
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .dlg-stats dd {
+        margin: 0;
+        font-weight: 700;
+        font-size: 17px;
+      }
+      table.mini {
+        min-width: 0;
+      }
+      table.mini th,
+      table.mini td {
+        padding: 8px 10px;
+        font-size: 14px;
+      }
+      table.mini td.team {
+        white-space: normal;
+      }
+      table.mini tr.upc td {
+        color: var(--muted);
+      }
+
+      footer {
+        background: var(--turf-deep);
+        color: #bdb0d0;
+        border-top: 6px solid var(--flag);
+      }
+      footer .wrap {
+        padding-block: 28px 40px;
+        font-size: 14px;
+        display: grid;
+        gap: 8px;
+      }
+      footer .wrap > * {
+        max-width: 80ch;
+      }
+
+      @media (max-width: 760px) {
+        .lead {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+      }
+      @media (max-width: 560px) {
+        .field .wrap {
+          padding-block: 44px 28px;
+        }
+        .yards span:nth-child(even) {
+          visibility: hidden;
+        }
+        section {
+          padding-top: 44px;
+        }
+        .vs {
+          grid-template-columns: 1fr 1fr;
+          grid-template-areas: "a b" "m m";
+          gap: 14px 16px;
+        }
+        .vs .side:first-child {
+          grid-area: a;
+        }
+        .vs .side.r {
+          grid-area: b;
+        }
+        .vs .meter {
+          grid-area: m;
+        }
+        .board {
+          padding: 18px 14px;
+          gap: 8px;
+        }
+        .odds th,
+        .odds td {
+          padding: 7px 6px;
+          font-size: 14px;
+        }
+        .odds th {
+          font-size: 12px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="field">
+      <div class="wrap">
+        <p class="kicker">Week 8 press box</p>
+        <h1>F's for Kamala</h1>
+        <p class="sub">
+          Headlines, standings and matchup previews for F's for Kamala.
+        </p>
+        <dl class="meta">
+          <div>
+            <dt>Data through</dt>
+            <dd>Week 7 and Wednesday's waiver run</dd>
+          </div>
+          <div>
+            <dt>Posted</dt>
+            <dd>Wed, Oct 28, 2026</dd>
+          </div>
+          <div>
+            <dt>Playoffs</dt>
+            <dd>6 teams, start Week 15</dd>
+          </div>
+          <div>
+            <dt>Trade deadline</dt>
+            <dd>Week 11</dd>
+          </div>
+        </dl>
+      </div>
+      <div class="yards" aria-hidden="true">
+        <span>10</span><span>20</span><span>30</span><span>40</span
+        ><span>50</span><span>40</span><span>30</span><span>20</span
+        ><span>10</span>
+      </div>
+    </header>
+
+    <nav class="nav" aria-label="Sections">
+      <ul class="wrap">
+        <li><a href="#stories">Headlines</a></li>
+        <li><a href="#standings">Standings</a></li>
+        <li><a href="#power">Power</a></li>
+        <li><a href="#seeds">Seeds</a></li>
+        <li><a href="#awards">Awards</a></li>
+        <li><a href="#rivals">Head to head</a></li>
+        <li><a href="#luck">Luck check</a></li>
+        <li><a href="#week7">Week 8</a></li>
+        <li><a href="#corner">Trash talk</a></li>
+        <li><a href="#around">Around the league</a></li>
+        <li class="tools">
+          <button type="button" class="navbtn" id="sharebtn">Share card</button>
+        </li>
+        <li>
+          <button type="button" class="navbtn" id="themebtn">Dark mode</button>
+        </li>
+      </ul>
+    </nav>
+
+    <main>
+      <div class="wrap">
+        <section id="stories">
+          <div class="sec-head">
+            <h2>Last week's headlines</h2>
+            <span class="note">Week 7 results</span>
+          </div>
+
+          <article class="lead">
+            <div
+              class="board"
+              role="img"
+              aria-label="Beggars 148.46, JoshisAntifa 109.68"
+            >
+              <div>
+                <span class="pts">148.46</span><span class="team">Beggars</span>
+              </div>
+              <div class="dash">–</div>
+              <div class="r lose">
+                <span class="pts">109.68</span
+                ><span class="team">JoshisAntifa</span>
+              </div>
+            </div>
+            <div>
+              <p class="cat">Top score</p>
+              <h3>
+                Beggars post the week's high score and hand the first seed a
+                38.78-point loss
+              </h3>
+              <p>
+                Beggars scored <b>148.46</b> and beat JoshisAntifa 109.68, the
+                week's biggest margin. Trey McBride had <b>27.1</b>, KC
+                Concepcion <b>23.2</b>, Puka Nacua <b>21.8</b> and Ashton Jeanty
+                <b>21.6</b>. Another <b>59.2</b> points sat on the bench,
+                including Caleb Williams (22.12) and Rico Dowdle (14.6).
+              </p>
+            </div>
+          </article>
+
+          <div class="story-run">
+            <article class="story">
+              <p class="cat">Bench watch</p>
+              <h3>
+                Club Space wins with the week's biggest score on the bench
+              </h3>
+              <p>
+                Tony Pollard scored <b>36.5</b>, the highest single-player total
+                of the week, and spent it on Club Space's bench. The flex slot
+                got Michael Wilson's 10.6. Club Space still beat
+                Hanginwithhernandez 130.42 to 123.18 and sits at <b>5-2</b>.
+              </p>
+            </article>
+            <article class="story">
+              <p class="cat">Still winless</p>
+              <h3>
+                Azzfaulters are 0-7 after the fourth-highest score of the week
+              </h3>
+              <p>
+                They put up <b>132.18</b> and lost to Bomb Squad by <b>6.14</b>.
+                Joe Burrow had 28.88 and Brandon Aubrey added 14.0. Two of their
+                seven losses have come by fewer than 7 points, and their scoring
+                says they should have about <b>2.6</b> wins.
+              </p>
+            </article>
+            <article class="story">
+              <p class="cat">Skid</p>
+              <h3>
+                Hanginwithhernandez drop a third straight with the league's best
+                offense
+              </h3>
+              <p>
+                They lead the league in points for (<b>1047.34</b>, 149.6 per
+                game) but have lost Weeks 5, 6 and 7. Their last two scores,
+                110.02 and 123.18, both came in under that week's league
+                average. The Minnesota defense gave them 11.0, the best defense
+                score of the week.
+              </p>
+            </article>
+            <article class="story">
+              <p class="cat">Winning streak</p>
+              <h3>
+                kcnotbuns win a third straight on Jaxon Smith-Njigba's 31.3
+              </h3>
+              <p>
+                The wide receiver had the
+                <b>highest score by any starter</b> this week, and kcnotbuns
+                beat Kiffin's Kittens 124.92 to 110.6. They are 4-3 and sit 7th
+                in the standings, just outside the top six.
+              </p>
+            </article>
+            <article class="story">
+              <p class="cat">Defense</p>
+              <h3>Two defenses finished in the red</h3>
+              <p>
+                Make Bama Great Again!'s Baltimore defense scored
+                <b>-3.0</b> and Kiffin's Kittens' New England defense scored
+                <b>-1.0</b>. Both teams lost. Make Bama also had only 5.3 points
+                on the bench, the league's lowest.
+              </p>
+            </article>
+            <article class="story">
+              <p class="cat">Scoring</p>
+              <h3>
+                Week 7 averaged 126.5 per team, with the highest floor of the
+                season
+              </h3>
+              <p>
+                JoshisAntifa's <b>109.68</b> was the lowest score of the week,
+                yet it is the best low of any week this season. Week 6 averaged
+                118.2. Five teams topped 130.
+              </p>
+            </article>
+            <article class="story">
+              <p class="cat">Bubble</p>
+              <h3>
+                Five teams are 4-3 and the top six is a points-for tiebreak
+              </h3>
+              <p>
+                Hanginwithhernandez, Kittens, Bomb Squad, Beggars and kcnotbuns
+                all sit at 4-3, behind 5-2 JoshisAntifa and Club Space. Only
+                kcnotbuns miss the cut on points for, and Picken Good Bijana
+                (3-4) are one game back.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section id="standings">
+          <div class="sec-head">
+            <h2>Standings</h2>
+            <span class="note">Tiebreaker assumed: points for</span>
+          </div>
+          <div
+            class="tablewrap"
+            tabindex="0"
+            role="region"
+            aria-label="League standings"
+          >
+            <table id="standings-table">
+              <thead>
+                <tr></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <p class="legend-line">
+            Weekly score strips run Week 1 to Week
+            <span class="js-g">6</span> on one shared scale,
+            <span class="js-lo">50</span> to
+            <span class="js-hi">220</span> points. The lavender dot is the
+            latest week. Exp. W is each week's score measured against all nine
+            other teams, divided by nine.
+          </p>
+          <p class="legend-line">
+            Playoff % is the share of 20,000 simulated seasons in which a team
+            finishes in the top six after the Week 14 regular season. Each
+            simulated week draws a score for every team from its own season
+            average and week-to-week swing, using the projected lineup total for
+            the upcoming week, and ties are broken by points for. Click any
+            column heading to sort; click again to reverse. Luck is wins minus
+            expected wins. Proj. W is the simulation's average final win total.
+            Sched. left is the average points per game of the opponents still to
+            come, so a lower number is an easier schedule. Click a team name
+            anywhere on the page for its team card.
+          </p>
+        </section>
+
+        <section id="power">
+          <div class="sec-head">
+            <h2>Power rankings</h2>
+            <span class="note">Not the standings</span>
+          </div>
+          <div
+            class="tablewrap"
+            tabindex="0"
+            role="region"
+            aria-label="Power rankings"
+          >
+            <table id="power-table">
+              <thead>
+                <tr></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <p class="legend-line">
+            The index blends 40% season points per game, 30% the last three
+            weeks and 30% all-play win rate, each compared with the rest of the
+            league. "Vs. record" shows how far a team's power rank sits above or
+            below its place in the standings.
+          </p>
+        </section>
+
+        <section id="seeds">
+          <div class="sec-head">
+            <h2>Seeds and the bubble</h2>
+            <span class="note">Playoff simulation</span>
+          </div>
+          <h3 class="sub-head">Chance of each seed</h3>
+          <div
+            class="tablewrap"
+            tabindex="0"
+            role="region"
+            aria-label="Seed odds grid"
+          >
+            <table id="seed-table" class="grid"></table>
+          </div>
+          <p class="legend-line">
+            Each cell is the percent of 20,000 simulated seasons in which the
+            team finishes in that spot after Week 14. The top six make the
+            playoffs. A dash means under half a percent.
+          </p>
+          <h3 class="sub-head">Clinch and elimination tracker</h3>
+          <div
+            class="tablewrap"
+            tabindex="0"
+            role="region"
+            aria-label="Clinch and elimination tracker"
+          >
+            <table id="bubble-table"></table>
+          </div>
+          <p class="legend-line">
+            "Even odds at" is the lowest final win total that made the playoffs
+            in at least half of the simulated seasons where a team finished with
+            it. "Safe at" is the same cutoff at 95%.
+          </p>
+          <h3 class="sub-head">Where the win totals land</h3>
+          <div
+            class="tablewrap"
+            tabindex="0"
+            role="region"
+            aria-label="Final win total chances"
+          >
+            <table id="dist-table"></table>
+          </div>
+        </section>
+
+        <section id="awards">
+          <div class="sec-head">
+            <h2>Awards and records</h2>
+            <span class="note" id="award-note">Week 7 results</span>
+          </div>
+          <div class="notes" id="award-cards"></div>
+          <h3 class="sub-head">Season records</h3>
+          <div class="notes" id="record-cards"></div>
+          <h3 class="sub-head">Bench points</h3>
+          <div
+            class="tablewrap"
+            tabindex="0"
+            role="region"
+            aria-label="Bench points"
+          >
+            <table id="bench-table">
+              <thead>
+                <tr></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <p class="legend-line">
+            Bench points are every point scored by players who were not in the
+            starting lineup. Positions and lineup slots limit what could have
+            been started, so this is not all points left on the table.
+          </p>
+        </section>
+
+        <section id="rivals">
+          <div class="sec-head">
+            <h2>Head to head</h2>
+            <span class="note">This season</span>
+          </div>
+          <div
+            class="tablewrap"
+            tabindex="0"
+            role="region"
+            aria-label="Head to head results"
+          >
+            <table id="h2h-table" class="grid"></table>
+          </div>
+          <p class="legend-line">
+            Rows show how each team did against the team in the column, with the
+            scoring margin. Upcoming meetings show the week. Only this season is
+            counted.
+          </p>
+        </section>
+
+        <section id="luck">
+          <div class="sec-head">
+            <h2>Luck check</h2>
+            <span class="note">Actual wins vs expected wins</span>
+          </div>
+          <p class="chart-intro">
+            A filled dot is the record. A hollow dot is what the scoring says
+            the record should be. Rose means the team has won more than its
+            scores earned, blue means fewer.
+          </p>
+          <div
+            class="chartwrap"
+            tabindex="0"
+            role="region"
+            aria-label="Actual wins versus expected wins by team"
+          >
+            <svg
+              id="luck-chart"
+              viewBox="0 0 720 420"
+              role="img"
+              aria-label="Dumbbell chart of actual wins and expected wins for each team"
+            ></svg>
+          </div>
+          <div class="key">
+            <span><i class="dot-act"></i> Actual wins</span>
+            <span><i class="dot-exp"></i> Expected wins</span>
+          </div>
+        </section>
+
+        <section id="week7">
+          <div class="sec-head">
+            <h2>Week 8 matchups</h2>
+            <span class="note">Favorite is underlined</span>
+          </div>
+          <p class="chart-intro">
+            House lines, not from a sportsbook. Each team is projected from
+            player projections for the lineup it has set, and the spread,
+            moneyline and totals come from that plus how much each team's score
+            has swung week to week. No vig.
+          </p>
+          <div class="matches">
+            <article class="match" data-a="Beggars" data-b="Azzfaulters">
+              <h3>
+                Beggars go for a third straight win against the last winless
+                team
+              </h3>
+              <div class="vs">
+                <div class="side fav">
+                  <div class="tn">Beggars</div>
+                  <div class="mg"><span class="rec">4-3</span>, 6th, jrk3</div>
+                </div>
+                <div class="meter">
+                  <div class="bar">
+                    <i class="a" style="width: 51.8%"></i
+                    ><i class="b" style="width: 48.2%"></i>
+                  </div>
+                  <div class="bar-note">
+                    <span>130.9</span><span>per game</span><span>122.0</span>
+                  </div>
+                </div>
+                <div class="side r">
+                  <div class="tn">Azzfaulters</div>
+                  <div class="mg">
+                    <span class="rec">0-7</span>, 10th, ohmygodfrey2
+                  </div>
+                </div>
+              </div>
+              <p class="edge">
+                <b>Edge: Beggars.</b> Projected lineups favor Beggars, 143.7 to
+                131.2. Beggars scored 131.04 and 148.46 in their last two games.
+                Azzfaulters have lost by 4.38 and 6.14 in two of their seven
+                games.
+              </p>
+            </article>
+
+            <article
+              class="match"
+              data-a="Blueeeeyyyyyy bomb squad"
+              data-b="kcnotbuns"
+            >
+              <h3>
+                Two 4-3 teams on win streaks meet with a playoff spot in play
+              </h3>
+              <div class="vs">
+                <div class="side">
+                  <div class="tn">Blueeeeyyyyyy bomb squad</div>
+                  <div class="mg">
+                    <span class="rec">4-3</span>, 5th, trentxsweat
+                  </div>
+                </div>
+                <div class="meter">
+                  <div class="bar">
+                    <i class="a" style="width: 53.8%"></i
+                    ><i class="b" style="width: 46.2%"></i>
+                  </div>
+                  <div class="bar-note">
+                    <span>139.9</span><span>per game</span><span>120.1</span>
+                  </div>
+                </div>
+                <div class="side r fav">
+                  <div class="tn">kcnotbuns</div>
+                  <div class="mg">
+                    <span class="rec">4-3</span>, 7th, kcnotbuns
+                  </div>
+                </div>
+              </div>
+              <p class="edge">
+                <b>Edge: kcnotbuns.</b> Projected lineups favor kcnotbuns, 131.7
+                to 128.9. Both teams changed defenses in Wednesday's waiver run,
+                Bomb Squad to Cincinnati and kcnotbuns to Washington.
+              </p>
+            </article>
+
+            <article class="match" data-a="JoshisAntifa" data-b="Club Space">
+              <h3>The two 5-2 teams meet for first place</h3>
+              <div class="vs">
+                <div class="side fav">
+                  <div class="tn">JoshisAntifa</div>
+                  <div class="mg">
+                    <span class="rec">5-2</span>, 1st, snakyjester
+                  </div>
+                </div>
+                <div class="meter">
+                  <div class="bar">
+                    <i class="a" style="width: 52.6%"></i
+                    ><i class="b" style="width: 47.4%"></i>
+                  </div>
+                  <div class="bar-note">
+                    <span>141.2</span><span>per game</span><span>127.2</span>
+                  </div>
+                </div>
+                <div class="side r">
+                  <div class="tn">Club Space</div>
+                  <div class="mg">
+                    <span class="rec">5-2</span>, 2nd, Couget25
+                  </div>
+                </div>
+              </div>
+              <p class="edge">
+                <b>Edge: JoshisAntifa.</b> Projected lineups favor JoshisAntifa,
+                140.8 to 133.1. Club Space has allowed the fewest points in the
+                league (754.0), while JoshisAntifa scored 109.68 last week.
+              </p>
+            </article>
+
+            <article
+              class="match"
+              data-a="Kiffin&#39;s Kittens"
+              data-b="Make Bama Great Again!"
+            >
+              <h3>
+                A 4-3 team and a 2-5 team, and the projections lean toward the
+                2-5 side
+              </h3>
+              <div class="vs">
+                <div class="side">
+                  <div class="tn">Kiffin's Kittens</div>
+                  <div class="mg">
+                    <span class="rec">4-3</span>, 4th, stpederson
+                  </div>
+                </div>
+                <div class="meter">
+                  <div class="bar">
+                    <i class="a" style="width: 56.5%"></i
+                    ><i class="b" style="width: 43.5%"></i>
+                  </div>
+                  <div class="bar-note">
+                    <span>147.3</span><span>per game</span><span>113.3</span>
+                  </div>
+                </div>
+                <div class="side r fav">
+                  <div class="tn">Make Bama Great Again!</div>
+                  <div class="mg">
+                    <span class="rec">2-5</span>, 9th, TTLEE25
+                  </div>
+                </div>
+              </div>
+              <p class="edge">
+                <b>Edge: Make Bama Great Again!</b> Projected lineups favor
+                them, 127.9 to 117.9, with the Kittens' lineup showing an empty
+                slot that counts as zero. The Kittens average 147.3 per game
+                this season, Make Bama 113.3.
+              </p>
+              <p class="flagnote">
+                Kiffin's Kittens appear to have an empty flex slot in their
+                lineup as of this update, so it counts as zero in their
+                projection. Worth a check before Thursday.
+              </p>
+            </article>
+
+            <article
+              class="match"
+              data-a="Picken Good Bijana"
+              data-b="Hanginwithhernandez"
+            >
+              <h3>A three-game skid meets a team starting without a defense</h3>
+              <div class="vs">
+                <div class="side fav">
+                  <div class="tn">Picken Good Bijana</div>
+                  <div class="mg">
+                    <span class="rec">3-4</span>, 8th, HunnaNe
+                  </div>
+                </div>
+                <div class="meter">
+                  <div class="bar">
+                    <i class="a" style="width: 46.7%"></i
+                    ><i class="b" style="width: 53.3%"></i>
+                  </div>
+                  <div class="bar-note">
+                    <span>131.0</span><span>per game</span><span>149.6</span>
+                  </div>
+                </div>
+                <div class="side r">
+                  <div class="tn">Hanginwithhernandez</div>
+                  <div class="mg">
+                    <span class="rec">4-3</span>, 3rd, milsted
+                  </div>
+                </div>
+              </div>
+              <p class="edge">
+                <b>Edge: Picken Good Bijana.</b> Projected lineups favor them,
+                122.8 to 115.6, even with an empty defense slot.
+                Hanginwithhernandez have the league's highest points per game
+                but have lost three in a row.
+              </p>
+              <p class="flagnote">
+                Picken Good Bijana's lineup shows an empty defense slot, and
+                Hanginwithhernandez have two starters, including Chris Olave,
+                with no Week 8 projection. Both count as zero. Worth a check
+                before Thursday.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section id="corner">
+          <div class="sec-head">
+            <h2>Trash talk corner</h2>
+            <span class="note">All in good fun</span>
+          </div>
+          <div class="notes">
+            <div class="note-card">
+              <h3>Beggars, take a bow</h3>
+              <p>
+                Beggars were 3-3 two weeks ago and have since scored 131.04 and
+                148.46 to climb to 4-3. The simulation now gives them
+                <b>73%</b> to make the playoffs, up from 65%, and nobody was
+                louder this week than their 38.78-point win.
+              </p>
+            </div>
+            <div class="note-card">
+              <h3>Kittens, check the defense</h3>
+              <p>
+                Kiffin's Kittens lost by <b>14.32</b> with Nico Collins at 2.6,
+                Patrick Mahomes at 6.0 and the New England defense at -1.0. They
+                left 59.7 points on the bench, and their playoff odds slid from
+                99% to 91%.
+              </p>
+            </div>
+            <div class="note-card">
+              <h3>Peaks and valleys</h3>
+              <p>
+                JoshisAntifa own the season high (210.64) and this week's low
+                (109.68), a gap of <b>100.96</b> points. They are still 5-2, but
+                the first-place spot is shared with Club Space now.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="around">
+          <div class="sec-head">
+            <h2>Around the league</h2>
+            <span class="note">Odds, deadline, draft, bench</span>
+          </div>
+          <div class="notes">
+            <div class="note-card">
+              <h3>Playoff odds movers</h3>
+              <ul>
+                <li>
+                  <b>kcnotbuns +12.</b> From 27% to 39% after a third straight
+                  win.
+                </li>
+                <li>
+                  <b>Beggars +8.</b> From 65% to 73% on the week's high score.
+                </li>
+                <li>
+                  <b>Kittens -8 and Bomb Squad -7.</b> Kittens went from 99% to
+                  91%, Bomb Squad from 92% to 85% despite winning.
+                </li>
+                <li>
+                  <b>The edge of the cut.</b> kcnotbuns (39%) and Picken Good
+                  Bijana (38%) are nearly level, while Make Bama Great Again!
+                  sit at 2%.
+                </li>
+              </ul>
+            </div>
+            <div class="note-card">
+              <h3>Trade deadline watch</h3>
+              <ul>
+                <li>
+                  <b>The deadline is Week 11.</b> Three weeks of games come
+                  before it.
+                </li>
+                <li>
+                  <b>No trades in the last two weeks.</b> Sleeper's transaction
+                  log for Weeks 7 and 8 shows only free-agent and waiver moves.
+                </li>
+                <li>
+                  <b>Crowded middle.</b> Five teams are 4-3, and the cut line
+                  sits between Beggars (6th) and kcnotbuns (7th) in the
+                  standings, decided by points for.
+                </li>
+              </ul>
+            </div>
+            <div class="note-card">
+              <h3>Draft day, revisited</h3>
+              <ul>
+                <li>
+                  <b>Kickers and defenses.</b> Brandon Aubrey (round 9, pick 89)
+                  had the top kicker score of the week among starters, 14.0, for
+                  Azzfaulters.
+                </li>
+                <li>
+                  <b>Last pick, best defense.</b> Minnesota went at pick 150 and
+                  scored 11.0 for Hanginwithhernandez.
+                </li>
+                <li>
+                  <b>Round 13 defenses.</b> Baltimore (pick 123, Make Bama)
+                  scored -3.0 and New England (pick 127, Kittens) scored -1.0.
+                </li>
+                <li>
+                  <b>Round 15 kickers.</b> Will Reichard (pick 143) had 12.0 and
+                  Jake Bates (pick 144) had 9.0.
+                </li>
+              </ul>
+            </div>
+            <div class="note-card">
+              <h3>Bench watch</h3>
+              <ul>
+                <li>
+                  <b>Biggest benches.</b> Kittens 59.7, Beggars 59.2, Bomb Squad
+                  48.0, Club Space 45.1.
+                </li>
+                <li>
+                  <b>Bomb Squad's wide receiver slot.</b> Josh Downs gave them
+                  3.8 while Makai Lemon (listed as a receiver) had 19.7 on the
+                  bench.
+                </li>
+                <li>
+                  <b>Then Lemon was dropped.</b> Bomb Squad released him in
+                  Wednesday's waiver run, and no claim is shown yet.
+                </li>
+                <li>
+                  <b>Thinnest bench.</b> Make Bama Great Again! had 5.3 bench
+                  points, Picken Good Bijana 11.5.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <p>
+          Built from Sleeper league data through Week 7 plus Wednesday's waiver
+          run. Week 8 has not started, so no scores are final.
+        </p>
+        <p>
+          A few pickups appeared only as player IDs, so they are left unnamed.
+          Claims about bench points assume the benched player was eligible for
+          the slot.
+        </p>
+        <p>
+          Projected points are Sleeper player projections for each lineup as set
+          Wednesday. A starter with no Week 8 projection counts as zero (two for
+          Hanginwithhernandez, one for Picken Good Bijana), an empty lineup slot
+          also counts as zero (Picken Good Bijana's defense, Kiffin's Kittens'
+          flex), and lineups can change before kickoff.
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      (function () {
+        var T = [
+          {
+            n: "JoshisAntifa",
+            m: "snakyjester",
+            w: 5,
+            l: 2,
+            pf: 988.08,
+            pa: 906.18,
+            st: "L1",
+            ap: 33,
+            s: [159.5, 102.26, 146.38, 123.78, 210.64, 135.84, 109.68],
+            pj: 140.8,
+            sch: [
+              "Club Space",
+              "Picken Good Bijana",
+              "Kiffin's Kittens",
+              "Blueeeeyyyyyy bomb squad",
+              "kcnotbuns",
+              "Make Bama Great Again!",
+              "Hanginwithhernandez",
+            ],
+            opp: [
+              "Kiffin's Kittens",
+              "Blueeeeyyyyyy bomb squad",
+              "kcnotbuns",
+              "Make Bama Great Again!",
+              "Hanginwithhernandez",
+              "Azzfaulters",
+              "Beggars",
+            ],
+            bn: [53.2, 49.3, 16.4, 63.6, 16.0, 13.3, 17.1],
+            bb: [27.8, 39.5, 7.4, 28.0, 11.0, 6.9, 17.1],
+            sh: "Josh",
+          },
+          {
+            n: "Club Space",
+            m: "Couget25",
+            w: 5,
+            l: 2,
+            pf: 890.56,
+            pa: 754.0,
+            st: "W2",
+            ap: 24,
+            s: [143.86, 153.22, 107.36, 144.02, 108.48, 103.2, 130.42],
+            pj: 133.1,
+            sch: [
+              "JoshisAntifa",
+              "Beggars",
+              "Azzfaulters",
+              "Picken Good Bijana",
+              "Kiffin's Kittens",
+              "Blueeeeyyyyyy bomb squad",
+              "kcnotbuns",
+            ],
+            opp: [
+              "Azzfaulters",
+              "Picken Good Bijana",
+              "Kiffin's Kittens",
+              "Blueeeeyyyyyy bomb squad",
+              "kcnotbuns",
+              "Make Bama Great Again!",
+              "Hanginwithhernandez",
+            ],
+            bn: [34.6, 32.8, 94.3, 50.6, 13.4, 0.0, 45.1],
+            bb: [18.0, 13.6, 25.9, 18.0, 5.7, 0.0, 36.5],
+            sh: "Club",
+          },
+          {
+            n: "Hanginwithhernandez",
+            m: "milsted",
+            w: 4,
+            l: 3,
+            pf: 1047.34,
+            pa: 995.62,
+            st: "L3",
+            ap: 46,
+            s: [167.6, 164.56, 164.84, 151.6, 165.54, 110.02, 123.18],
+            pj: 115.6,
+            sch: [
+              "Picken Good Bijana",
+              "Kiffin's Kittens",
+              "Blueeeeyyyyyy bomb squad",
+              "kcnotbuns",
+              "Make Bama Great Again!",
+              "Azzfaulters",
+              "JoshisAntifa",
+            ],
+            opp: [
+              "Blueeeeyyyyyy bomb squad",
+              "kcnotbuns",
+              "Make Bama Great Again!",
+              "Azzfaulters",
+              "JoshisAntifa",
+              "Beggars",
+              "Club Space",
+            ],
+            bn: [28.5, 37.3, 41.2, 42.4, 40.0, 27.9, 30.9],
+            bb: [8.1, 13.5, 21.0, 21.6, 15.4, 14.3, 18.5],
+            sh: "Hangin",
+          },
+          {
+            n: "Kiffin's Kittens",
+            m: "stpederson",
+            w: 4,
+            l: 3,
+            pf: 1030.96,
+            pa: 895.14,
+            st: "L2",
+            ap: 43,
+            s: [155.36, 154.24, 153.94, 193.1, 119.54, 144.18, 110.6],
+            pj: 117.9,
+            sch: [
+              "Make Bama Great Again!",
+              "Hanginwithhernandez",
+              "JoshisAntifa",
+              "Beggars",
+              "Club Space",
+              "Picken Good Bijana",
+              "Azzfaulters",
+            ],
+            opp: [
+              "JoshisAntifa",
+              "Beggars",
+              "Club Space",
+              "Picken Good Bijana",
+              "Azzfaulters",
+              "Blueeeeyyyyyy bomb squad",
+              "kcnotbuns",
+            ],
+            bn: [47.0, 32.9, 46.4, 48.2, 4.5, 68.8, 59.7],
+            bb: [21.7, 29.0, 23.8, 22.8, 2.6, 27.0, 16.4],
+            sh: "Kittens",
+          },
+          {
+            n: "Blueeeeyyyyyy bomb squad",
+            m: "trentxsweat",
+            w: 4,
+            l: 3,
+            pf: 979.08,
+            pa: 949.36,
+            st: "W2",
+            ap: 39,
+            s: [136.46, 124.88, 144.88, 128.92, 155.26, 150.36, 138.32],
+            pj: 128.9,
+            sch: [
+              "kcnotbuns",
+              "Make Bama Great Again!",
+              "Hanginwithhernandez",
+              "JoshisAntifa",
+              "Beggars",
+              "Club Space",
+              "Picken Good Bijana",
+            ],
+            opp: [
+              "Hanginwithhernandez",
+              "JoshisAntifa",
+              "Beggars",
+              "Club Space",
+              "Picken Good Bijana",
+              "Kiffin's Kittens",
+              "Azzfaulters",
+            ],
+            bn: [28.3, 41.3, 55.4, 40.3, 38.1, 12.0, 48.0],
+            bb: [10.3, 14.2, 20.6, 18.4, 17.5, 4.9, 22.5],
+            sh: "Bomb Sq",
+          },
+          {
+            n: "Beggars",
+            m: "jrk3",
+            w: 4,
+            l: 3,
+            pf: 916.36,
+            pa: 875.06,
+            st: "W2",
+            ap: 34,
+            s: [163.06, 93.42, 86.26, 180.98, 113.14, 131.04, 148.46],
+            pj: 143.7,
+            sch: [
+              "Azzfaulters",
+              "Club Space",
+              "Picken Good Bijana",
+              "Kiffin's Kittens",
+              "Blueeeeyyyyyy bomb squad",
+              "kcnotbuns",
+              "Make Bama Great Again!",
+            ],
+            opp: [
+              "Picken Good Bijana",
+              "Kiffin's Kittens",
+              "Blueeeeyyyyyy bomb squad",
+              "kcnotbuns",
+              "Make Bama Great Again!",
+              "Hanginwithhernandez",
+              "JoshisAntifa",
+            ],
+            bn: [65.3, 42.0, 9.9, 26.1, 3.7, 44.4, 59.2],
+            bb: [23.7, 22.5, 7.0, 11.4, 3.7, 16.5, 22.5],
+            sh: "Beggars",
+          },
+          {
+            n: "kcnotbuns",
+            m: "kcnotbuns",
+            w: 4,
+            l: 3,
+            pf: 840.88,
+            pa: 952.56,
+            st: "W3",
+            ap: 21,
+            s: [127.4, 121.8, 108.88, 117.52, 113.76, 126.6, 124.92],
+            pj: 131.7,
+            sch: [
+              "Blueeeeyyyyyy bomb squad",
+              "Azzfaulters",
+              "Make Bama Great Again!",
+              "Hanginwithhernandez",
+              "JoshisAntifa",
+              "Beggars",
+              "Club Space",
+            ],
+            opp: [
+              "Make Bama Great Again!",
+              "Hanginwithhernandez",
+              "JoshisAntifa",
+              "Beggars",
+              "Club Space",
+              "Picken Good Bijana",
+              "Kiffin's Kittens",
+            ],
+            bn: [20.8, 23.7, 37.2, 40.4, 9.5, 39.6, 19.4],
+            bb: [7.8, 14.6, 11.8, 19.3, 4.9, 25.7, 8.8],
+            sh: "kcnot",
+          },
+          {
+            n: "Picken Good Bijana",
+            m: "HunnaNe",
+            w: 3,
+            l: 4,
+            pf: 916.94,
+            pa: 1033.02,
+            st: "W1",
+            ap: 34,
+            s: [100.82, 70.32, 167.84, 150.96, 172.86, 121.9, 132.24],
+            pj: 122.8,
+            sch: [
+              "Hanginwithhernandez",
+              "JoshisAntifa",
+              "Beggars",
+              "Club Space",
+              "Azzfaulters",
+              "Kiffin's Kittens",
+              "Blueeeeyyyyyy bomb squad",
+            ],
+            opp: [
+              "Beggars",
+              "Club Space",
+              "Azzfaulters",
+              "Kiffin's Kittens",
+              "Blueeeeyyyyyy bomb squad",
+              "kcnotbuns",
+              "Make Bama Great Again!",
+            ],
+            bn: [38.2, 42.6, 25.6, 41.4, 6.9, 54.0, 11.5],
+            bb: [15.5, 14.3, 11.1, 26.2, 3.9, 19.8, 6.1],
+            sh: "Bijana",
+          },
+          {
+            n: "Make Bama Great Again!",
+            m: "TTLEE25",
+            w: 2,
+            l: 5,
+            pf: 793.0,
+            pa: 894.58,
+            st: "L2",
+            ap: 18,
+            s: [119.66, 144.8, 118.04, 100.68, 137.9, 56.62, 115.3],
+            pj: 127.9,
+            sch: [
+              "Kiffin's Kittens",
+              "Blueeeeyyyyyy bomb squad",
+              "kcnotbuns",
+              "Azzfaulters",
+              "Hanginwithhernandez",
+              "JoshisAntifa",
+              "Beggars",
+            ],
+            opp: [
+              "kcnotbuns",
+              "Azzfaulters",
+              "Hanginwithhernandez",
+              "JoshisAntifa",
+              "Beggars",
+              "Club Space",
+              "Picken Good Bijana",
+            ],
+            bn: [55.8, 30.5, 43.4, 31.9, 28.8, 23.4, 5.3],
+            bb: [24.7, 16.2, 19.7, 13.5, 16.7, 16.4, 5.3],
+            sh: "Bama",
+          },
+          {
+            n: "Azzfaulters",
+            m: "ohmygodfrey2",
+            w: 0,
+            l: 7,
+            pf: 854.12,
+            pa: 1001.8,
+            st: "L7",
+            ap: 23,
+            s: [107.26, 129.98, 126.48, 147.22, 108.62, 102.38, 132.18],
+            pj: 131.2,
+            sch: [
+              "Beggars",
+              "kcnotbuns",
+              "Club Space",
+              "Make Bama Great Again!",
+              "Picken Good Bijana",
+              "Hanginwithhernandez",
+              "Kiffin's Kittens",
+            ],
+            opp: [
+              "Club Space",
+              "Make Bama Great Again!",
+              "Picken Good Bijana",
+              "Hanginwithhernandez",
+              "Kiffin's Kittens",
+              "JoshisAntifa",
+              "Blueeeeyyyyyy bomb squad",
+            ],
+            bn: [35.0, 45.5, 39.5, 33.1, 46.5, 0.0, 17.5],
+            bb: [12.6, 27.0, 20.9, 13.7, 24.6, 0.0, 17.5],
+            sh: "Azz",
+          },
+        ];
+        function f1(v) {
+          return v.toFixed(1);
+        }
+        // Weeks played and the shared score range come from the data, so weekly updates only touch T
+        var all = [].concat.apply(
+          [],
+          T.map(function (t) {
+            return t.s;
+          }),
+        );
+        var G = Math.max.apply(
+          null,
+          T.map(function (t) {
+            return t.s.length;
+          }),
+        );
+        var LO = Math.floor(Math.min.apply(null, all) / 10) * 10,
+          HI = Math.ceil(Math.max.apply(null, all) / 10) * 10;
+
+        function spark(scores) {
+          var W = 100,
+            H = 30,
+            lo = LO,
+            hi = HI,
+            px = 4,
+            pts = [],
+            i;
+          function X(k) {
+            return px + k * ((W - 2 * px) / (scores.length - 1));
+          }
+          function Y(v) {
+            return H - 3 - ((v - lo) / (hi - lo)) * (H - 6);
+          }
+          for (i = 0; i < scores.length; i++)
+            pts.push(X(i).toFixed(1) + "," + Y(scores[i]).toFixed(1));
+          var last = scores.length - 1;
+          return (
+            '<svg class="spark" width="100" height="30" viewBox="0 0 100 30" role="img" aria-label="Weekly scores ' +
+            scores
+              .map(function (v) {
+                return Math.round(v);
+              })
+              .join(", ") +
+            '">' +
+            '<line class="base" x1="0" y1="' +
+            Y(130).toFixed(1) +
+            '" x2="100" y2="' +
+            Y(130).toFixed(1) +
+            '" stroke-dasharray="2 3"/>' +
+            '<polyline points="' +
+            pts.join(" ") +
+            '" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>' +
+            '<circle class="end" cx="' +
+            X(last).toFixed(1) +
+            '" cy="' +
+            Y(scores[last]).toFixed(1) +
+            '" r="3.2"/></svg>'
+          );
+        }
+
+        /* ===== Season model: standings math, playoff odds, power rankings, awards, rivalries and team cards (all computed from T) ===== */
+        (function () {
+          var REG = 14,
+            SIMS = 20000,
+            SPOTS = 6,
+            MINSD = 20;
+          var n = T.length,
+            idx = {},
+            a,
+            b,
+            k,
+            w,
+            p;
+          T.forEach(function (t, q) {
+            idx[t.n] = q;
+          });
+          function zeros(m) {
+            var r = [];
+            while (m--) r.push(0);
+            return r;
+          }
+          function avg(x) {
+            return (
+              x.reduce(function (s, v) {
+                return s + v;
+              }, 0) / x.length
+            );
+          }
+          function sdev(x) {
+            var m = avg(x);
+            return Math.max(
+              MINSD,
+              Math.sqrt(
+                x.reduce(function (s, v) {
+                  return s + (v - m) * (v - m);
+                }, 0) /
+                  (x.length - 1),
+              ),
+            );
+          }
+          function sg(v, d) {
+            return (v > 0 ? "+" : "") + v.toFixed(d);
+          }
+          function tl(q) {
+            return (
+              '<button type="button" class="tlink" data-t="' +
+              q +
+              '">' +
+              T[q].n +
+              "</button>"
+            );
+          }
+          function sum(x) {
+            return x.reduce(function (s, v) {
+              return s + v;
+            }, 0);
+          }
+          function ord(v) {
+            var s = ["th", "st", "nd", "rd"],
+              m = v % 100;
+            return v + (s[(m - 20) % 10] || s[m] || s[0]);
+          }
+          var ppg = T.map(function (t) {
+              return avg(t.s);
+            }),
+            sdv = T.map(function (t) {
+              return sdev(t.s);
+            }),
+            l3 = T.map(function (t) {
+              return avg(t.s.slice(-3));
+            });
+          var left = Math.max.apply(
+            null,
+            T.map(function (t) {
+              return (t.sch || []).length;
+            }),
+          );
+          var res = T.map(function (t) {
+            return t.s.map(function (sc, wk) {
+              var o = idx[t.opp[wk]],
+                os = T[o].s[wk];
+              return {
+                wk: wk + 1,
+                o: o,
+                f: sc,
+                ag: os,
+                m: sc - os,
+                win: sc > os,
+              };
+            });
+          });
+          var games = [];
+          T.forEach(function (t, q) {
+            res[q].forEach(function (r) {
+              if (r.o > q)
+                games.push({ wk: r.wk, a: q, b: r.o, sa: r.f, sb: r.ag });
+            });
+          });
+
+          /* Playoff odds: simulate the rest of the regular season (weeks listed in each team's sch array) */
+          var seedN = [],
+            winN = [],
+            madeW = [],
+            sumW = [],
+            made = [],
+            seed = 20261021;
+          for (a = 0; a < n; a++) {
+            seedN.push(zeros(n));
+            winN.push(zeros(REG + 1));
+            madeW.push(zeros(REG + 1));
+            sumW.push(0);
+            made.push(0);
+          }
+          function rnd() {
+            seed = (seed + 0x6d2b79f5) | 0;
+            var t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+            t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+            return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+          }
+          function gauss() {
+            var u = 1 - rnd(),
+              v = rnd();
+            return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+          }
+          for (p = 0; p < SIMS; p++) {
+            var Wn = T.map(function (t) {
+                return t.w;
+              }),
+              Fp = T.map(function (t) {
+                return t.pf;
+              }),
+              sc = [],
+              order = [];
+            for (w = 0; w < left; w++) {
+              for (a = 0; a < n; a++)
+                sc[a] =
+                  (w === 0 && T[a].pj != null ? T[a].pj : ppg[a]) +
+                  sdv[a] * gauss();
+              for (a = 0; a < n; a++) {
+                Fp[a] += sc[a];
+                b = idx[(T[a].sch || [])[w]];
+                if (b !== undefined && b > a) {
+                  if (sc[a] > sc[b]) Wn[a]++;
+                  else Wn[b]++;
+                }
+              }
+            }
+            for (a = 0; a < n; a++) order.push(a);
+            order.sort(function (x, y) {
+              return Wn[y] - Wn[x] || Fp[y] - Fp[x];
+            });
+            for (k = 0; k < n; k++) {
+              a = order[k];
+              seedN[a][k]++;
+              var fw = Math.min(Wn[a], REG);
+              winN[a][fw]++;
+              sumW[a] += Wn[a];
+              if (k < SPOTS) {
+                made[a]++;
+                madeW[a][fw]++;
+              }
+            }
+          }
+          var po = made.map(function (m) {
+              return m / SIMS;
+            }),
+            pw = sumW.map(function (m) {
+              return m / SIMS;
+            });
+          function fmtPo(q) {
+            return q > 0.995
+              ? ">99%"
+              : q < 0.005
+                ? "<1%"
+                : Math.round(q * 100) + "%";
+          }
+          var sos = T.map(function (t) {
+            var s = t.sch || [];
+            return s.length
+              ? avg(
+                  s.map(function (nm) {
+                    return ppg[idx[nm]];
+                  }),
+                )
+              : 0;
+          });
+
+          /* Power index: 40% season points per game, 30% last three weeks, 30% all-play win rate (z-scores) */
+          function zs(x) {
+            var m = avg(x),
+              s =
+                Math.sqrt(
+                  avg(
+                    x.map(function (v) {
+                      return (v - m) * (v - m);
+                    }),
+                  ),
+                ) || 1;
+            return x.map(function (v) {
+              return (v - m) / s;
+            });
+          }
+          var apr = T.map(function (t) {
+            return t.ap / (9 * t.s.length);
+          });
+          var zp = zs(ppg),
+            zl = zs(l3),
+            za = zs(apr);
+          var pidx = T.map(function (t, q) {
+            return 0.4 * zp[q] + 0.3 * zl[q] + 0.3 * za[q];
+          });
+          var prank = T.map(function (t, q) {
+            return (
+              1 +
+              pidx.filter(function (v) {
+                return v > pidx[q];
+              }).length
+            );
+          });
+          var pscore = pidx.map(function (v) {
+            return Math.round(50 + 15 * v);
+          });
+
+          /* Generic sortable table: cols = [{ label, cls, v(row), html(row), first: 1 asc / -1 desc, sort: false }] */
+          function sorter(table, cols, rows, o) {
+            var head = table.tHead.rows[0],
+              body = table.tBodies[0],
+              key = o.key,
+              dir = o.dir,
+              key0 = o.key,
+              dir0 = o.dir,
+              by = {};
+            cols.forEach(function (c) {
+              if (c.sort !== false) by[c.k] = c;
+            });
+            head.innerHTML = cols
+              .map(function (c) {
+                var cl = c.cls ? ' class="' + c.cls + '"' : "";
+                return c.sort === false
+                  ? "<th" + cl + ">" + c.label + "</th>"
+                  : "<th" +
+                      cl +
+                      ' data-k="' +
+                      c.k +
+                      '" aria-sort="none"><button type="button">' +
+                      c.label +
+                      "</button></th>";
+              })
+              .join("");
+            function draw() {
+              var list = rows.slice(),
+                c = by[key],
+                natural = key === key0 && dir === dir0;
+              list.sort(function (x, y) {
+                var u = c.v(x),
+                  v = c.v(y),
+                  d = typeof u === "string" ? u.localeCompare(v) : u - v;
+                return d ? d * dir : x.i - y.i;
+              });
+              body.innerHTML = list
+                .map(function (r, pos) {
+                  return o.row(r, pos, natural, cols);
+                })
+                .join("");
+              Array.prototype.forEach.call(
+                head.querySelectorAll("th[data-k]"),
+                function (th) {
+                  th.setAttribute(
+                    "aria-sort",
+                    th.dataset.k === key
+                      ? dir === 1
+                        ? "ascending"
+                        : "descending"
+                      : "none",
+                  );
+                },
+              );
+            }
+            head.addEventListener("click", function (e) {
+              var th = e.target.closest("th[data-k]");
+              if (!th) return;
+              var kk = th.dataset.k;
+              if (kk === key) dir = -dir;
+              else {
+                key = kk;
+                dir = by[kk].first;
+              }
+              draw();
+            });
+            draw();
+          }
+          function cells(r, cols) {
+            return cols
+              .map(function (c) {
+                return c.html(r);
+              })
+              .join("");
+          }
+          function srows() {
+            return T.map(function (t, q) {
+              return { i: q, t: t };
+            });
+          }
+
+          /* Standings */
+          var stCols = [
+            {
+              k: "rank",
+              label: "#",
+              v: function (r) {
+                return r.i;
+              },
+              html: function (r) {
+                return '<td class="rank">' + (r.i + 1) + "</td>";
+              },
+              first: 1,
+            },
+            {
+              k: "team",
+              label: "Team",
+              v: function (r) {
+                return r.t.n.toLowerCase();
+              },
+              html: function (r) {
+                return (
+                  '<td class="team">' +
+                  tl(r.i) +
+                  "<small>" +
+                  r.t.m +
+                  "</small></td>"
+                );
+              },
+              first: 1,
+            },
+            {
+              k: "w",
+              label: "W-L",
+              cls: "num",
+              v: function (r) {
+                return r.t.w + r.t.pf / 100000;
+              },
+              html: function (r) {
+                return '<td class="num">' + r.t.w + "-" + r.t.l + "</td>";
+              },
+              first: -1,
+            },
+            {
+              k: "pf",
+              label: "PF",
+              cls: "num",
+              v: function (r) {
+                return r.t.pf;
+              },
+              html: function (r) {
+                return '<td class="num">' + r.t.pf.toFixed(1) + "</td>";
+              },
+              first: -1,
+            },
+            {
+              k: "pa",
+              label: "PA",
+              cls: "num",
+              v: function (r) {
+                return r.t.pa;
+              },
+              html: function (r) {
+                return '<td class="num">' + r.t.pa.toFixed(1) + "</td>";
+              },
+              first: 1,
+            },
+            {
+              k: "st",
+              label: "Streak",
+              v: function (r) {
+                return (
+                  (r.t.st.charAt(0) === "W" ? 1 : -1) *
+                  parseInt(r.t.st.slice(1), 10)
+                );
+              },
+              html: function (r) {
+                return (
+                  '<td class="streak-' +
+                  r.t.st.charAt(0) +
+                  '">' +
+                  r.t.st +
+                  "</td>"
+                );
+              },
+              first: -1,
+            },
+            {
+              k: "sp",
+              label: "Weekly scores",
+              sort: false,
+              html: function (r) {
+                return "<td>" + spark(r.t.s) + "</td>";
+              },
+            },
+            {
+              k: "ew",
+              label: "Exp. W",
+              cls: "num",
+              v: function (r) {
+                return r.t.ap / 9;
+              },
+              html: function (r) {
+                return '<td class="num">' + f1(r.t.ap / 9) + "</td>";
+              },
+              first: -1,
+            },
+            {
+              k: "lk",
+              label: "Luck",
+              cls: "num",
+              v: function (r) {
+                return r.t.w - r.t.ap / 9;
+              },
+              html: function (r) {
+                return '<td class="num">' + sg(r.t.w - r.t.ap / 9, 1) + "</td>";
+              },
+              first: -1,
+            },
+            {
+              k: "pw",
+              label: "Proj. W",
+              cls: "num",
+              v: function (r) {
+                return pw[r.i];
+              },
+              html: function (r) {
+                return '<td class="num">' + f1(pw[r.i]) + "</td>";
+              },
+              first: -1,
+            },
+            {
+              k: "so",
+              label: "Sched. left",
+              cls: "num",
+              v: function (r) {
+                return sos[r.i];
+              },
+              html: function (r) {
+                return (
+                  '<td class="num">' + (sos[r.i] ? f1(sos[r.i]) : "-") + "</td>"
+                );
+              },
+              first: 1,
+            },
+            {
+              k: "po",
+              label: "Playoff %",
+              cls: "num",
+              v: function (r) {
+                return po[r.i];
+              },
+              html: function (r) {
+                return '<td class="num">' + fmtPo(po[r.i]) + "</td>";
+              },
+              first: -1,
+            },
+          ];
+          sorter(document.getElementById("standings-table"), stCols, srows(), {
+            key: "rank",
+            dir: 1,
+            row: function (r, pos, natural, cols) {
+              return (
+                "<tr" +
+                (natural && pos === 5 ? ' class="cut"' : "") +
+                ">" +
+                cells(r, cols) +
+                "</tr>" +
+                (natural && pos === 5
+                  ? '<tr class="cut-label"><td colspan="' +
+                    cols.length +
+                    '">Playoff line: top six advance</td></tr>'
+                  : "")
+              );
+            },
+          });
+
+          /* Power rankings */
+          var pwCols = [
+            {
+              k: "pr",
+              label: "Power",
+              v: function (r) {
+                return prank[r.i];
+              },
+              html: function (r) {
+                return '<td class="rank">' + prank[r.i] + "</td>";
+              },
+              first: 1,
+            },
+            {
+              k: "team",
+              label: "Team",
+              v: function (r) {
+                return r.t.n.toLowerCase();
+              },
+              html: function (r) {
+                return (
+                  '<td class="team">' +
+                  tl(r.i) +
+                  "<small>" +
+                  r.t.w +
+                  "-" +
+                  r.t.l +
+                  ", " +
+                  ord(r.i + 1) +
+                  " in the standings</small></td>"
+                );
+              },
+              first: 1,
+            },
+            {
+              k: "ix",
+              label: "Index",
+              cls: "num",
+              v: function (r) {
+                return pscore[r.i];
+              },
+              html: function (r) {
+                return '<td class="num">' + pscore[r.i] + "</td>";
+              },
+              first: -1,
+            },
+            {
+              k: "mv",
+              label: "Vs. record",
+              cls: "num",
+              v: function (r) {
+                return r.i - (prank[r.i] - 1);
+              },
+              html: function (r) {
+                var d = r.i + 1 - prank[r.i];
+                return (
+                  '<td class="num ' +
+                  (d > 0 ? "streak-W" : d < 0 ? "streak-L" : "") +
+                  '">' +
+                  (d > 0 ? "▲ " + d : d < 0 ? "▼ " + -d : "even") +
+                  "</td>"
+                );
+              },
+              first: -1,
+            },
+            {
+              k: "pg",
+              label: "Season PPG",
+              cls: "num",
+              v: function (r) {
+                return ppg[r.i];
+              },
+              html: function (r) {
+                return '<td class="num">' + f1(ppg[r.i]) + "</td>";
+              },
+              first: -1,
+            },
+            {
+              k: "l3",
+              label: "Last 3",
+              cls: "num",
+              v: function (r) {
+                return l3[r.i];
+              },
+              html: function (r) {
+                return '<td class="num">' + f1(l3[r.i]) + "</td>";
+              },
+              first: -1,
+            },
+            {
+              k: "ap",
+              label: "All-play",
+              cls: "num",
+              v: function (r) {
+                return apr[r.i];
+              },
+              html: function (r) {
+                return (
+                  '<td class="num">' + Math.round(apr[r.i] * 100) + "%</td>"
+                );
+              },
+              first: -1,
+            },
+          ];
+          sorter(document.getElementById("power-table"), pwCols, srows(), {
+            key: "pr",
+            dir: 1,
+            row: function (r, pos, nat, cols) {
+              return "<tr>" + cells(r, cols) + "</tr>";
+            },
+          });
+
+          /* Seed odds grid, bubble tracker and final-win charts */
+          var byPo = srows().sort(function (x, y) {
+            return po[y.i] - po[x.i] || x.i - y.i;
+          });
+          var sh = "<thead><tr><th>Team</th>";
+          for (k = 1; k <= n; k++) sh += '<th class="num">' + ord(k) + "</th>";
+          sh += '<th class="num">Top 6</th></tr></thead><tbody>';
+          byPo.forEach(function (r) {
+            sh += '<tr><td class="team">' + tl(r.i) + "</td>";
+            for (k = 0; k < n; k++) {
+              var q = seedN[r.i][k] / SIMS;
+              sh +=
+                '<td class="num heat" style="background:color-mix(in srgb, var(--turf) ' +
+                Math.round(q * 85) +
+                '%, var(--surface))">' +
+                (q < 0.005
+                  ? '<span class="dim">-</span>'
+                  : Math.round(q * 100)) +
+                "</td>";
+            }
+            sh += '<td class="num"><b>' + fmtPo(po[r.i]) + "</b></td></tr>";
+          });
+          document.getElementById("seed-table").innerHTML = sh + "</tbody>";
+
+          function line(q, ratio) {
+            for (var kk = 0; kk <= REG; kk++) {
+              if (winN[q][kk] >= 25 && madeW[q][kk] / winN[q][kk] >= ratio)
+                return kk;
+            }
+            return -1;
+          }
+          var bh =
+            '<thead><tr><th>Team</th><th class="num">Record</th><th class="num">Games left</th><th>Status</th><th class="num">Even odds at</th><th class="num">Safe at</th></tr></thead><tbody>';
+          byPo.forEach(function (r) {
+            var q = r.i,
+              gl = (T[q].sch || []).length,
+              st =
+                po[q] >= 0.9995
+                  ? "Clinched"
+                  : po[q] <= 0.0005
+                    ? "Eliminated"
+                    : "Alive";
+            function need(kk) {
+              return kk < 0
+                ? "-"
+                : kk +
+                    " wins" +
+                    (kk > T[q].w ? " (" + (kk - T[q].w) + " more)" : "");
+            }
+            bh +=
+              '<tr><td class="team">' +
+              tl(q) +
+              '</td><td class="num">' +
+              T[q].w +
+              "-" +
+              T[q].l +
+              '</td><td class="num">' +
+              gl +
+              '</td><td class="' +
+              (st === "Clinched"
+                ? "streak-W"
+                : st === "Eliminated"
+                  ? "streak-L"
+                  : "") +
+              '">' +
+              st +
+              '</td><td class="num">' +
+              need(line(q, 0.5)) +
+              '</td><td class="num">' +
+              need(line(q, 0.95)) +
+              "</td></tr>";
+          });
+          document.getElementById("bubble-table").innerHTML = bh + "</tbody>";
+
+          function dist(q, W, H) {
+            var mx = Math.max.apply(null, winN[q]),
+              bw = W / (REG + 1),
+              mode = winN[q].indexOf(mx),
+              s =
+                '<svg class="dist" width="' +
+                W +
+                '" height="' +
+                (H + 14) +
+                '" viewBox="0 0 ' +
+                W +
+                " " +
+                (H + 14) +
+                '" role="img" aria-label="Chance of each final win total for ' +
+                T[q].n +
+                ". Most likely: " +
+                mode +
+                ' wins.">';
+            for (var kk = 0; kk <= REG; kk++) {
+              var h = (winN[q][kk] / mx) * H;
+              s +=
+                '<rect x="' +
+                (kk * bw + 1).toFixed(1) +
+                '" y="' +
+                (H - h).toFixed(1) +
+                '" width="' +
+                (bw - 2).toFixed(1) +
+                '" height="' +
+                Math.max(h, 0).toFixed(1) +
+                '" fill="currentColor" opacity="' +
+                (kk === mode ? 1 : 0.5) +
+                '"/>';
+            }
+            [0, 7, 14].forEach(function (kk) {
+              s +=
+                '<text x="' +
+                ((kk + 0.5) * bw).toFixed(1) +
+                '" y="' +
+                (H + 11) +
+                '" text-anchor="middle">' +
+                kk +
+                "</text>";
+            });
+            return s + "</svg>";
+          }
+          var dh =
+            '<thead><tr><th>Team</th><th>Final wins, 0 to 14</th><th class="num">Most likely</th><th class="num">Proj. W</th></tr></thead><tbody>';
+          byPo.forEach(function (r) {
+            var q = r.i;
+            dh +=
+              '<tr><td class="team">' +
+              tl(q) +
+              "</td><td>" +
+              dist(q, 210, 34) +
+              '</td><td class="num">' +
+              winN[q].indexOf(Math.max.apply(null, winN[q])) +
+              ' wins</td><td class="num">' +
+              f1(pw[q]) +
+              "</td></tr>";
+          });
+          document.getElementById("dist-table").innerHTML = dh + "</tbody>";
+
+          /* Awards for the latest week */
+          var wk = G,
+            wg = games.filter(function (g) {
+              return g.wk === wk;
+            }),
+            wt = [];
+          T.forEach(function (t, q) {
+            wt.push(res[q][wk - 1]);
+            wt[q].q = q;
+          });
+          function card(title, body) {
+            return (
+              '<div class="note-card"><h3>' +
+              title +
+              "</h3><p>" +
+              body +
+              "</p></div>"
+            );
+          }
+          var top = wt.slice().sort(function (x, y) {
+            return y.f - x.f;
+          })[0];
+          var losers = wt
+            .filter(function (r) {
+              return !r.win;
+            })
+            .sort(function (x, y) {
+              return y.f - x.f;
+            })[0];
+          var winners = wt
+            .filter(function (r) {
+              return r.win;
+            })
+            .sort(function (x, y) {
+              return x.f - y.f;
+            })[0];
+          var low = wt.slice().sort(function (x, y) {
+            return x.f - y.f;
+          })[0];
+          var close = wg.slice().sort(function (x, y) {
+            return Math.abs(x.sa - x.sb) - Math.abs(y.sa - y.sb);
+          })[0];
+          var blow = wg.slice().sort(function (x, y) {
+            return Math.abs(y.sa - y.sb) - Math.abs(x.sa - x.sb);
+          })[0];
+          function gm(g) {
+            var win = g.sa > g.sb ? g.a : g.b,
+              los = g.sa > g.sb ? g.b : g.a;
+            return {
+              w: win,
+              l: los,
+              ws: Math.max(g.sa, g.sb),
+              ls: Math.min(g.sa, g.sb),
+              m: Math.abs(g.sa - g.sb),
+            };
+          }
+          var cg = gm(close),
+            bg = gm(blow);
+          document.getElementById("award-cards").innerHTML =
+            card(
+              "Team of the week",
+              "<b>" +
+                T[top.q].n +
+                "</b> posted the top score of the week, <b>" +
+                top.f.toFixed(1) +
+                "</b>, " +
+                (top.win ? "and beat " : "but lost to ") +
+                T[top.o].n +
+                " (" +
+                top.ag.toFixed(1) +
+                ").",
+            ) +
+            card(
+              "Unlucky loser",
+              "<b>" +
+                T[losers.q].n +
+                "</b> scored <b>" +
+                losers.f.toFixed(1) +
+                "</b> and still lost to " +
+                T[losers.o].n +
+                ", who put up " +
+                losers.ag.toFixed(1) +
+                ".",
+            ) +
+            card(
+              "Lucky winner",
+              "<b>" +
+                T[winners.q].n +
+                "</b> won with just <b>" +
+                winners.f.toFixed(1) +
+                "</b>, because " +
+                T[winners.o].n +
+                " managed only " +
+                winners.ag.toFixed(1) +
+                ".",
+            ) +
+            card(
+              "Nail-biter",
+              "<b>" +
+                T[cg.w].n +
+                "</b> " +
+                cg.ws.toFixed(1) +
+                ", " +
+                T[cg.l].n +
+                " " +
+                cg.ls.toFixed(1) +
+                ". A <b>" +
+                cg.m.toFixed(1) +
+                "</b> point margin.",
+            ) +
+            card(
+              "Blowout of the week",
+              "<b>" +
+                T[bg.w].n +
+                "</b> " +
+                bg.ws.toFixed(1) +
+                ", " +
+                T[bg.l].n +
+                " " +
+                bg.ls.toFixed(1) +
+                ". A <b>" +
+                bg.m.toFixed(1) +
+                "</b> point margin.",
+            ) +
+            card(
+              "Clunker of the week",
+              "<b>" +
+                T[low.q].n +
+                "</b> scored the lowest total of the week, <b>" +
+                low.f.toFixed(1) +
+                "</b>" +
+                (low.win ? ", and still won." : "."),
+            );
+          document.getElementById("award-note").textContent =
+            "Week " + wk + " results";
+
+          /* Season records */
+          var allr = [];
+          res.forEach(function (rr, q) {
+            rr.forEach(function (r) {
+              r.q = q;
+              allr.push(r);
+            });
+          });
+          var hi = allr.slice().sort(function (x, y) {
+              return y.f - x.f;
+            })[0],
+            lo = allr.slice().sort(function (x, y) {
+              return x.f - y.f;
+            })[0];
+          var sgm = games.slice().sort(function (x, y) {
+              return Math.abs(y.sa - y.sb) - Math.abs(x.sa - x.sb);
+            })[0],
+            cgm = games.slice().sort(function (x, y) {
+              return Math.abs(x.sa - x.sb) - Math.abs(y.sa - y.sb);
+            })[0];
+          function run(q, want) {
+            var best = 0,
+              cur = 0;
+            res[q].forEach(function (r) {
+              cur = r.win === want ? cur + 1 : 0;
+              if (cur > best) best = cur;
+            });
+            return best;
+          }
+          var ws = T.map(function (t, q) {
+            return { q: q, v: run(q, true) };
+          }).sort(function (x, y) {
+            return y.v - x.v;
+          })[0];
+          var ls = T.map(function (t, q) {
+            return { q: q, v: run(q, false) };
+          }).sort(function (x, y) {
+            return y.v - x.v;
+          })[0];
+          var pamax = srows().sort(function (x, y) {
+            return y.t.pa - x.t.pa;
+          })[0];
+          var bn = T.map(function (t) {
+              return sum(t.bn || []);
+            }),
+            bking = srows().sort(function (x, y) {
+              return bn[y.i] - bn[x.i];
+            })[0];
+          var bbest = { v: -1, q: 0, wk: 0 };
+          T.forEach(function (t, q) {
+            (t.bb || []).forEach(function (v, kk) {
+              if (v > bbest.v) bbest = { v: v, q: q, wk: kk + 1 };
+            });
+          });
+          var s1 = gm(sgm),
+            s2 = gm(cgm);
+          document.getElementById("record-cards").innerHTML =
+            card(
+              "Highest score",
+              "<b>" +
+                hi.f.toFixed(1) +
+                "</b> by " +
+                T[hi.q].n +
+                " in Week " +
+                hi.wk +
+                ".",
+            ) +
+            card(
+              "Lowest score",
+              "<b>" +
+                lo.f.toFixed(1) +
+                "</b> by " +
+                T[lo.q].n +
+                " in Week " +
+                lo.wk +
+                ".",
+            ) +
+            card(
+              "Biggest blowout",
+              "<b>" +
+                s1.m.toFixed(1) +
+                "</b> points. " +
+                T[s1.w].n +
+                " " +
+                s1.ws.toFixed(1) +
+                ", " +
+                T[s1.l].n +
+                " " +
+                s1.ls.toFixed(1) +
+                " (Week " +
+                sgm.wk +
+                ").",
+            ) +
+            card(
+              "Closest game",
+              "<b>" +
+                s2.m.toFixed(1) +
+                "</b> points. " +
+                T[s2.w].n +
+                " " +
+                s2.ws.toFixed(1) +
+                ", " +
+                T[s2.l].n +
+                " " +
+                s2.ls.toFixed(1) +
+                " (Week " +
+                cgm.wk +
+                ").",
+            ) +
+            card(
+              "Longest win streak",
+              "<b>" + ws.v + "</b> games, " + T[ws.q].n + ".",
+            ) +
+            card(
+              "Hall of shame: losing streak",
+              "<b>" + ls.v + "</b> straight losses, " + T[ls.q].n + ".",
+            ) +
+            card(
+              "Most points against",
+              "<b>" +
+                pamax.t.pa.toFixed(1) +
+                "</b>, " +
+                pamax.t.n +
+                ". Opponents keep going off on them.",
+            ) +
+            card(
+              "Best bench score",
+              "<b>" +
+                bbest.v.toFixed(1) +
+                "</b> from one bench player, " +
+                T[bbest.q].n +
+                ", Week " +
+                bbest.wk +
+                ".",
+            );
+
+          /* Bench points */
+          var bnCols = [
+            {
+              k: "team",
+              label: "Team",
+              v: function (r) {
+                return r.t.n.toLowerCase();
+              },
+              html: function (r) {
+                return '<td class="team">' + tl(r.i) + "</td>";
+              },
+              first: 1,
+            },
+            {
+              k: "tot",
+              label: "Season bench points",
+              cls: "num",
+              v: function (r) {
+                return bn[r.i];
+              },
+              html: function (r) {
+                return '<td class="num">' + bn[r.i].toFixed(1) + "</td>";
+              },
+              first: -1,
+            },
+            {
+              k: "avg",
+              label: "Per week",
+              cls: "num",
+              v: function (r) {
+                return bn[r.i] / r.t.bn.length;
+              },
+              html: function (r) {
+                return (
+                  '<td class="num">' + f1(bn[r.i] / r.t.bn.length) + "</td>"
+                );
+              },
+              first: -1,
+            },
+            {
+              k: "top",
+              label: "Best bench score",
+              cls: "num",
+              v: function (r) {
+                return Math.max.apply(null, r.t.bb);
+              },
+              html: function (r) {
+                var m = Math.max.apply(null, r.t.bb);
+                return (
+                  '<td class="num">' +
+                  m.toFixed(1) +
+                  ' <span class="dim">Wk ' +
+                  (r.t.bb.indexOf(m) + 1) +
+                  "</span></td>"
+                );
+              },
+              first: -1,
+            },
+            {
+              k: "lw",
+              label: "Last week",
+              cls: "num",
+              v: function (r) {
+                return r.t.bn[r.t.bn.length - 1];
+              },
+              html: function (r) {
+                return (
+                  '<td class="num">' +
+                  r.t.bn[r.t.bn.length - 1].toFixed(1) +
+                  "</td>"
+                );
+              },
+              first: -1,
+            },
+          ];
+          sorter(document.getElementById("bench-table"), bnCols, srows(), {
+            key: "tot",
+            dir: -1,
+            row: function (r, pos, nat, cols) {
+              return "<tr>" + cells(r, cols) + "</tr>";
+            },
+          });
+
+          /* Head to head grid: this season's results, with upcoming meetings by week */
+          var hh =
+            "<thead><tr><th></th>" +
+            T.map(function (t, q) {
+              return '<th class="num">' + t.sh + "</th>";
+            }).join("") +
+            "</tr></thead><tbody>";
+          T.forEach(function (t, q) {
+            hh += '<tr><td class="team">' + tl(q) + "</td>";
+            T.forEach(function (u, o) {
+              if (o === q) {
+                hh += '<td class="h2h self"></td>';
+                return;
+              }
+              var items = [];
+              res[q].forEach(function (r) {
+                if (r.o === o)
+                  items.push(
+                    '<span class="' +
+                      (r.win ? "w" : "l") +
+                      '">' +
+                      (r.win ? "W" : "L") +
+                      " " +
+                      sg(r.m, 1) +
+                      "</span>",
+                  );
+              });
+              (t.sch || []).forEach(function (nm, kk) {
+                if (idx[nm] === o)
+                  items.push('<span class="up">Wk ' + (G + 1 + kk) + "</span>");
+              });
+              hh +=
+                '<td class="h2h">' +
+                (items.join("<br>") || '<span class="dim">-</span>') +
+                "</td>";
+            });
+            hh += "</tr>";
+          });
+          document.getElementById("h2h-table").innerHTML = hh + "</tbody>";
+
+          /* Team card: click any team name */
+          var dlg = document.createElement("dialog");
+          dlg.className = "team-card";
+          dlg.setAttribute("aria-label", "Team card");
+          document.body.appendChild(dlg);
+          function teamHtml(q) {
+            var t = T[q],
+              s =
+                '<div class="dlg-head"><div><h3>' +
+                t.n +
+                '</h3><p class="dlg-sub">' +
+                t.m +
+                '</p></div><button type="button" class="dlg-x" aria-label="Close">Close</button></div><div class="dlg-body">';
+            s +=
+              '<dl class="dlg-stats">' +
+              "<div><dt>Record</dt><dd>" +
+              t.w +
+              "-" +
+              t.l +
+              ", " +
+              ord(q + 1) +
+              "</dd></div>" +
+              "<div><dt>Playoff odds</dt><dd>" +
+              fmtPo(po[q]) +
+              "</dd></div>" +
+              "<div><dt>Projected wins</dt><dd>" +
+              f1(pw[q]) +
+              "</dd></div>" +
+              "<div><dt>Power rank</dt><dd>" +
+              ord(prank[q]) +
+              "</dd></div>" +
+              "<div><dt>Points per game</dt><dd>" +
+              f1(ppg[q]) +
+              "</dd></div>" +
+              "<div><dt>Bench points</dt><dd>" +
+              sum(t.bn || []).toFixed(1) +
+              "</dd></div></dl>";
+            s +=
+              '<div class="tablewrap"><table class="mini"><thead><tr><th>Week</th><th>Opponent</th><th class="num">Score</th><th class="num">Opp.</th><th class="num">Result</th><th class="num">Bench</th></tr></thead><tbody>';
+            res[q].forEach(function (r, kk) {
+              s +=
+                "<tr><td>" +
+                r.wk +
+                '</td><td class="team">' +
+                T[r.o].n +
+                '</td><td class="num">' +
+                r.f.toFixed(1) +
+                '</td><td class="num">' +
+                r.ag.toFixed(1) +
+                '</td><td class="num ' +
+                (r.win ? "streak-W" : "streak-L") +
+                '">' +
+                (r.win ? "W " : "L ") +
+                sg(r.m, 1) +
+                '</td><td class="num">' +
+                ((t.bn || [])[kk] != null ? t.bn[kk].toFixed(1) : "-") +
+                "</td></tr>";
+            });
+            (t.sch || []).forEach(function (nm, kk) {
+              s +=
+                '<tr class="upc"><td>' +
+                (G + 1 + kk) +
+                '</td><td class="team">' +
+                nm +
+                '</td><td class="num" colspan="2">' +
+                f1(ppg[idx[nm]]) +
+                ' per game</td><td class="num">' +
+                (kk === 0 && t.pj != null ? "proj " + f1(t.pj) : "") +
+                "</td><td></td></tr>";
+            });
+            s +=
+              '</tbody></table></div><p class="legend-line">Final wins chart: chance of each season win total from the playoff simulation.</p>' +
+              dist(q, 420, 44) +
+              "</div>";
+            return s;
+          }
+          document.addEventListener("click", function (e) {
+            var tb = e.target.closest(".tlink");
+            if (tb) {
+              dlg.innerHTML = teamHtml(+tb.dataset.t);
+              if (dlg.showModal) dlg.showModal();
+              else dlg.setAttribute("open", "");
+              return;
+            }
+            if (dlg.open && (e.target === dlg || e.target.closest(".dlg-x")))
+              dlg.close();
+          });
+
+          /* Theme toggle and share card */
+          var root = document.documentElement,
+            tbtn = document.getElementById("themebtn"),
+            sbtn = document.getElementById("sharebtn");
+          function isDark() {
+            var v = root.getAttribute("data-theme");
+            return v
+              ? v === "dark"
+              : !!(
+                  window.matchMedia &&
+                  matchMedia("(prefers-color-scheme: dark)").matches
+                );
+          }
+          function paint() {
+            tbtn.textContent = isDark() ? "Light mode" : "Dark mode";
+          }
+          try {
+            var sv = localStorage.getItem("fk-theme");
+            if (sv === "light" || sv === "dark")
+              root.setAttribute("data-theme", sv);
+          } catch (er) {}
+          paint();
+          tbtn.addEventListener("click", function () {
+            var nv = isDark() ? "light" : "dark";
+            root.setAttribute("data-theme", nv);
+            try {
+              localStorage.setItem("fk-theme", nv);
+            } catch (er) {}
+            paint();
+          });
+          sbtn.addEventListener("click", function () {
+            var c = document.createElement("canvas"),
+              g,
+              i2,
+              F = "Roboto, system-ui, sans-serif";
+            c.width = 1200;
+            c.height = 630;
+            g = c.getContext("2d");
+            for (i2 = 0; i2 < 12; i2++) {
+              g.fillStyle = i2 % 2 ? "#2c1c44" : "#33214e";
+              g.fillRect(i2 * 100, 0, 100, 630);
+            }
+            g.fillStyle = "rgba(246,243,250,0.18)";
+            for (i2 = 0; i2 <= 12; i2++) g.fillRect(i2 * 100 - 1, 0, 2, 630);
+            g.fillStyle = "#c7aef0";
+            g.fillRect(0, 618, 1200, 12);
+            g.fillStyle = "#211630";
+            g.fillRect(0, 0, 1200, 8);
+            g.textBaseline = "alphabetic";
+            g.fillStyle = "#c7aef0";
+            g.font = "700 34px " + F;
+            g.fillText(document.querySelector(".kicker").textContent, 60, 90);
+            g.fillStyle = "#ffffff";
+            g.font = "700 92px " + F;
+            g.fillText("F'S FOR KAMALA", 60, 190);
+            var pts = document.querySelectorAll(".board .pts"),
+              tms = document.querySelectorAll(".board .team");
+            if (pts.length > 1) {
+              g.fillStyle = "#c7aef0";
+              g.font = "700 26px " + F;
+              g.fillText(
+                document
+                  .getElementById("award-note")
+                  .textContent.toUpperCase() + ": TOP GAME",
+                60,
+                270,
+              );
+              g.fillStyle = "#ffffff";
+              g.font = "700 84px " + F;
+              g.fillText(pts[0].textContent, 60, 360);
+              g.fillStyle = "#b9acd0";
+              g.fillText(pts[1].textContent, 60, 450);
+              g.font = "500 28px " + F;
+              g.fillStyle = "#ffffff";
+              g.fillText(tms[0].textContent, 330, 355);
+              g.fillStyle = "#b9acd0";
+              g.fillText(tms[1].textContent, 330, 445);
+            }
+            g.fillStyle = "#c7aef0";
+            g.font = "700 26px " + F;
+            g.fillText("PLAYOFF ODDS", 800, 270);
+            byPo.slice(0, 6).forEach(function (r, kk) {
+              g.fillStyle = "#ffffff";
+              g.font = "700 28px " + F;
+              g.fillText(
+                r.t.n.length > 20 ? r.t.n.slice(0, 19) + "…" : r.t.n,
+                800,
+                315 + kk * 46,
+              );
+              g.textAlign = "right";
+              g.fillStyle = "#c7aef0";
+              g.fillText(fmtPo(po[r.i]), 1140, 315 + kk * 46);
+              g.textAlign = "left";
+            });
+            g.fillStyle = "#bdb0d0";
+            g.font = "500 22px " + F;
+            g.fillText(
+              location.hostname || "F's for Kamala press box",
+              60,
+              590,
+            );
+            var done = function (m) {
+              sbtn.textContent = m;
+              setTimeout(function () {
+                sbtn.textContent = "Share card";
+              }, 2200);
+            };
+            function dl(bl) {
+              var an = document.createElement("a");
+              an.href = URL.createObjectURL(bl);
+              an.download = "fs-for-kamala-press-box.png";
+              document.body.appendChild(an);
+              an.click();
+              an.remove();
+            }
+            c.toBlob(function (bl) {
+              if (!bl) return;
+              if (navigator.clipboard && window.ClipboardItem)
+                navigator.clipboard
+                  .write([new ClipboardItem({ "image/png": bl })])
+                  .then(
+                    function () {
+                      done("Copied");
+                    },
+                    function () {
+                      dl(bl);
+                      done("Saved");
+                    },
+                  );
+              else {
+                dl(bl);
+                done("Saved");
+              }
+            });
+          });
+        })();
+        [
+          ["js-g", G],
+          ["js-lo", LO],
+          ["js-hi", HI],
+        ].forEach(function (k) {
+          document.querySelector("." + k[0]).textContent = k[1];
+        });
+
+        /* Luck dumbbell chart */
+        var rows = T.map(function (t) {
+          return { n: t.n, a: t.w, e: t.ap / 9 };
+        });
+        rows.sort(function (x, y) {
+          return y.a - y.e - (x.a - x.e);
+        });
+        var svg = document.getElementById("luck-chart");
+        var left = 200,
+          scale = 408 / G,
+          top = 28,
+          rh = 36,
+          i2,
+          out = "";
+        var H = top + rows.length * rh + 28;
+        svg.setAttribute("viewBox", "0 0 720 " + H);
+        function X(v) {
+          return left + v * scale;
+        }
+        for (i2 = 0; i2 <= G; i2 += G > 10 ? 2 : 1) {
+          out +=
+            '<line class="c-grid" x1="' +
+            X(i2) +
+            '" y1="' +
+            (top - 10) +
+            '" x2="' +
+            X(i2) +
+            '" y2="' +
+            (top + rows.length * rh - 6) +
+            '"/>' +
+            '<text class="c-tick" x="' +
+            X(i2) +
+            '" y="' +
+            (top + rows.length * rh + 12) +
+            '" text-anchor="middle">' +
+            i2 +
+            "</text>";
+        }
+        out +=
+          '<text class="c-tick" x="' +
+          X(G / 2) +
+          '" y="' +
+          (top + rows.length * rh + 26) +
+          '" text-anchor="middle">wins after ' +
+          G +
+          " games</text>";
+        rows.forEach(function (r, k) {
+          var cy = top + k * rh + 8,
+            diff = r.a - r.e;
+          var col = diff >= 0 ? "var(--lucky)" : "var(--unlucky)";
+          var x1 = X(Math.min(r.a, r.e)),
+            x2 = X(Math.max(r.a, r.e));
+          out +=
+            '<text class="c-label" x="' +
+            (left - 14) +
+            '" y="' +
+            (cy + 4) +
+            '" text-anchor="end">' +
+            r.n +
+            "</text>";
+          out +=
+            '<line x1="' +
+            x1 +
+            '" y1="' +
+            cy +
+            '" x2="' +
+            x2 +
+            '" y2="' +
+            cy +
+            '" stroke="' +
+            col +
+            '" stroke-width="4" stroke-linecap="round"/>';
+          out +=
+            '<circle class="c-exp" cx="' +
+            X(r.e) +
+            '" cy="' +
+            cy +
+            '" r="6" stroke="' +
+            col +
+            '"/>';
+          out +=
+            '<circle class="c-act" cx="' +
+            X(r.a) +
+            '" cy="' +
+            cy +
+            '" r="6" fill="var(--fg)"/>';
+          var sign = diff > 0.05 ? "+" : "";
+          out +=
+            '<text class="c-val" x="620" y="' +
+            (cy + 4) +
+            '">' +
+            r.a +
+            " vs " +
+            r.e.toFixed(1) +
+            " (" +
+            sign +
+            diff.toFixed(1) +
+            ")</text>";
+        });
+        svg.innerHTML = out;
+
+        /* Nav: scroll in JS so the tabs also work where #hash navigation is blocked (data: URLs, embeds) */
+        Array.prototype.forEach.call(
+          document.querySelectorAll('.nav a[href^="#"]'),
+          function (a) {
+            a.addEventListener("click", function (e) {
+              var target = document.getElementById(
+                a.getAttribute("href").slice(1),
+              );
+              if (!target) return;
+              e.preventDefault();
+              target.scrollIntoView({
+                behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
+                  ? "auto"
+                  : "smooth",
+              });
+              try {
+                history.replaceState(null, "", a.getAttribute("href"));
+              } catch (err) {}
+            });
+          },
+        );
+
+        /* Highlight the tab for the section under the nav bar */
+        var links = Array.prototype.slice.call(
+          document.querySelectorAll('.nav a[href^="#"]'),
+        );
+        function spy() {
+          var line = document.querySelector(".nav").offsetHeight + 80,
+            current = null;
+          links.forEach(function (a) {
+            var s = document.getElementById(a.getAttribute("href").slice(1));
+            if (s && s.getBoundingClientRect().top <= line) current = a;
+          });
+          // at the very bottom the last short section can't reach the line, so give it the highlight
+          if (
+            innerHeight + scrollY >=
+            document.documentElement.scrollHeight - 2
+          )
+            current = links[links.length - 1];
+          links.forEach(function (a) {
+            if (a === current) a.setAttribute("aria-current", "true");
+            else a.removeAttribute("aria-current");
+          });
+        }
+        addEventListener("scroll", spy, { passive: true });
+        addEventListener("resize", spy);
+        spy();
+
+        /* Week 7 house lines: projection = sum of starters' projected points (falls back to season PPG), win odds from a normal on the score difference */
+        var MIN_SD = 20; // ponytail: six games is a tiny sample, so floor each team's swing; tune if lines look too sharp
+        function mean(s) {
+          return (
+            s.reduce(function (a, b) {
+              return a + b;
+            }) / s.length
+          );
+        }
+        function sd(s) {
+          var m = mean(s);
+          return Math.max(
+            MIN_SD,
+            Math.sqrt(
+              s.reduce(function (a, v) {
+                return a + (v - m) * (v - m);
+              }, 0) /
+                (s.length - 1),
+            ),
+          );
+        }
+        function phi(z) {
+          // standard normal CDF (Abramowitz-Stegun 26.2.17)
+          var t = 1 / (1 + 0.2316419 * Math.abs(z)),
+            d = 0.3989423 * Math.exp((-z * z) / 2);
+          var p =
+            d *
+            t *
+            (0.3193815 +
+              t *
+                (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
+          return z > 0 ? 1 - p : p;
+        }
+        function half(v) {
+          return (Math.round(v * 2) / 2).toFixed(1);
+        }
+        function ml(p) {
+          var v =
+            p >= 0.5
+              ? -Math.round((100 * p) / (1 - p) / 5) * 5
+              : Math.round((100 * (1 - p)) / p / 5) * 5;
+          return v > 0 ? "+" + v : String(v);
+        }
+        function spread(d) {
+          var h = Math.round(d * 2) / 2;
+          return h === 0 ? "PK" : (h > 0 ? "+" : "") + h.toFixed(1);
+        }
+        function byName(n) {
+          return T.filter(function (t) {
+            return t.n === n;
+          })[0];
+        }
+
+        Array.prototype.forEach.call(
+          document.querySelectorAll(".match[data-a]"),
+          function (m) {
+            var a = byName(m.dataset.a),
+              b = byName(m.dataset.b);
+            var pa = a.pj != null ? a.pj : mean(a.s),
+              pb = b.pj != null ? b.pj : mean(b.s);
+            var p = phi(
+              (pa - pb) /
+                Math.sqrt(Math.pow(sd(a.s), 2) + Math.pow(sd(b.s), 2)),
+            );
+            function row(t, proj, opp, pr) {
+              var s = t.s,
+                last = s[s.length - 1];
+              return (
+                '<tr><td class="team">' +
+                t.n +
+                '</td><td class="num">' +
+                spread(opp - proj) +
+                '</td><td class="num">' +
+                ml(pr) +
+                '</td><td class="num">' +
+                half(proj) +
+                '</td><td class="num">' +
+                Math.round(pr * 100) +
+                "%</td>" +
+                '<td class="num form">' +
+                last.toFixed(1) +
+                '</td><td class="num form-n">' +
+                mean(s.slice(-3)).toFixed(1) +
+                '</td><td class="num form-n">' +
+                Math.max.apply(null, s).toFixed(1) +
+                '</td><td class="num form-n">' +
+                Math.min.apply(null, s).toFixed(1) +
+                "</td></tr>"
+              );
+            }
+            var wrap = document.createElement("div");
+            wrap.className = "oddswrap";
+            wrap.tabIndex = 0;
+            wrap.setAttribute("role", "region");
+            wrap.setAttribute(
+              "aria-label",
+              "Betting lines and recent form: " + a.n + " vs " + b.n,
+            );
+            wrap.innerHTML =
+              '<table class="odds"><thead><tr><th>Team</th><th class="num">Spread</th><th class="num">Moneyline</th><th class="num">Team total</th><th class="num">Win</th>' +
+              '<th class="num form">Last week</th><th class="num">Last 3 avg</th><th class="num">High</th><th class="num">Low</th></tr></thead><tbody>' +
+              row(a, pa, pb, p) +
+              row(b, pb, pa, 1 - p) +
+              '</tbody><tfoot><tr><td colspan="9"><div class="tot"><span>Game total over/under <b>' +
+              half(pa + pb) +
+              "</b></span>" +
+              "<span>Projected final <b>" +
+              half(pa) +
+              " to " +
+              half(pb) +
+              "</b></span>" +
+              "<span>Combined last week <b>" +
+              (a.s[a.s.length - 1] + b.s[b.s.length - 1]).toFixed(1) +
+              "</b></span></div></td></tr></tfoot></table>";
+            m.querySelector(".vs").after(wrap);
+          },
+        );
+      })();
+    </script>
+  </body>
 </html>
